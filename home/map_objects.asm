@@ -124,18 +124,11 @@ CheckGrassTile:: ; 1875
 	cp $10
 	jr z, .ok_10
 	cp $20
-	jr z, .ok_20
+	jr z, .ok_10
 	scf
 	ret
 
 .ok_10
-	ld a, d
-	and 7
-	ret z
-	scf
-	ret
-; For some reason, the above code is duplicated down here.
-.ok_20
 	ld a, d
 	and 7
 	ret z

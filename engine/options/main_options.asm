@@ -1,3 +1,21 @@
+MainOptionsString:: ; e4241
+	db "TEXT SPEED<LNBRK>"
+	db "        :<LNBRK>"
+	db "HOLD TO MASH<LNBRK>"
+	db "        :<LNBRK>"
+	db "BATTLE SCENE<LNBRK>"
+	db "        :<LNBRK>"
+	db "BATTLE STYLE<LNBRK>"
+	db "        :<LNBRK>"
+	db "SOUND<LNBRK>"
+	db "        :<LNBRK>"
+	db "MENU ACCOUNT<LNBRK>"
+	db "        :<LNBRK>"
+	db "FRAME<LNBRK>"
+	db "        :TYPE<LNBRK>"
+	db "CANCEL@"
+; e42d6
+
 MainOptionsPointers::
 	dw Options_TextSpeed
 	dw Options_HoldToMash

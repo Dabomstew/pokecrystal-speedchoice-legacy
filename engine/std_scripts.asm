@@ -290,6 +290,8 @@ GoldenrodRocketsScript:
 	end
 
 RadioTowerRocketsScript:
+	check_permaoptions ROCKETLESS
+	iftrue SeventhBadgeRocketlessScript
 	setflag ENGINE_ROCKETS_IN_RADIO_TOWER
 	setevent EVENT_GOLDENROD_CITY_CIVILIANS
 	setevent EVENT_RADIO_TOWER_BLACKBELT_BLOCKS_STAIRS
@@ -298,6 +300,7 @@ RadioTowerRocketsScript:
 	setevent EVENT_MAHOGANY_TOWN_POKEFAN_M_BLOCKS_EAST
 	specialphonecall SPECIALCALL_WEIRDBROADCAST
 	domaptrigger MAHOGANY_TOWN, $1
+SeventhBadgeRocketlessScript:
 	end
 
 BugContestResultsWarpScript:

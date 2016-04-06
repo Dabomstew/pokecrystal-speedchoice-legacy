@@ -66,6 +66,7 @@ NewGame: ; 5b6b
 	ld [wMonStatusFlags], a
 	call ResetWRAM
 	call NewGame_ClearTileMapEtc
+	callba IntroPermaOptions
 	call AreYouABoyOrAreYouAGirl
 	call OakSpeech
 	call InitializeWorld
@@ -81,14 +82,7 @@ NewGame: ; 5b6b
 ; 5b8f
 
 AreYouABoyOrAreYouAGirl: ; 5b8f
-	callba Mobile_AlwaysReturnNotCarry ; some mobile stuff
-	jr c, .ok
 	callba InitGender
-	ret
-
-.ok
-	ld c, 0
-	callba InitMobileProfile ; mobile
 	ret
 ; 5ba7
 

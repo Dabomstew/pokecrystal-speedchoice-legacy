@@ -1,3 +1,12 @@
+PermaOptionsMenu:
+	push de
+	ld a, 3
+	ld hl, PermaOptionsString
+	ld de, PermaOptionsPointers
+	call StoreOptionsMenuConfig
+	pop de
+	jr OptionsMenuCommon
+	
 OptionsMenu:
 	push de
 	ld a, 7
@@ -73,24 +82,6 @@ OptionsMenuCommon:: ; e41d0
 	ld [hInMenu], a
 	ret
 ; e4241
-
-MainOptionsString:: ; e4241
-	db "TEXT SPEED<LNBRK>"
-	db "        :<LNBRK>"
-	db "HOLD TO MASH<LNBRK>"
-	db "        :<LNBRK>"
-	db "BATTLE SCENE<LNBRK>"
-	db "        :<LNBRK>"
-	db "BATTLE STYLE<LNBRK>"
-	db "        :<LNBRK>"
-	db "SOUND<LNBRK>"
-	db "        :<LNBRK>"
-	db "MENU ACCOUNT<LNBRK>"
-	db "        :<LNBRK>"
-	db "FRAME<LNBRK>"
-	db "        :TYPE<LNBRK>"
-	db "CANCEL@"
-; e42d6
 
 StoreOptionsMenuConfig::
 	ld [wOptionsMenuCount], a
@@ -190,3 +181,4 @@ Options_UpdateCursorPosition: ; e455c
 ; e4579
 
 INCLUDE "engine/options/main_options.asm"
+INCLUDE "engine/options/perma_options.asm"

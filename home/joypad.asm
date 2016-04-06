@@ -377,7 +377,12 @@ WaitPressAorB_BlinkCursor:: ; a80
 	pop hl
 
 	call JoyTextDelay
+	ld a, [Options2]
+	bit HOLD_TO_MASH, a
 	ld a, [hJoyLast]
+	jr z, .checkInput
+	ld a, [hJoyDown]
+.checkInput
 	and A_BUTTON | B_BUTTON
 	jr z, .loop
 

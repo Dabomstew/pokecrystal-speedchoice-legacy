@@ -55,10 +55,14 @@ LanceScript_0x70022:
 	writetext UnknownText_0x70157
 	buttonsound
 	faceplayer
+	check_permaoptions ROCKETLESS
+	iftrue RocketlessLoRLanceScript1
 	writetext UnknownText_0x701b4
 	yesorno
 	iffalse UnknownScript_0x7004e
 UnknownScript_0x70035:
+	check_permaoptions ROCKETLESS
+	iftrue RocketlessLoRLanceScript2
 	writetext UnknownText_0x702c6
 	waitbutton
 	closetext
@@ -68,6 +72,77 @@ UnknownScript_0x70035:
 	clearevent EVENT_MAHOGANY_MART_LANCE_AND_DRAGONITE
 	setevent EVENT_DECIDED_TO_HELP_LANCE
 	domaptrigger MAHOGANY_MART_1F, $1
+	end
+	
+RocketlessLoRLanceScript1:
+	writetext UnknownText_0x701b4_Rocketless
+	yesorno
+	iffalse UnknownScript_0x7004e
+RocketlessLoRLanceScript2:
+	writetext UnknownText_0x702c6_Rocketless
+	setevent EVENT_UNCOVERED_STAIRCASE_IN_MAHOGANY_MART
+	setevent EVENT_DECIDED_TO_HELP_LANCE
+	domaptrigger MAHOGANY_MART_1F, $0
+	setevent EVENT_LANCE_HEALED_YOU_IN_TEAM_ROCKET_BASE
+	setevent EVENT_TEAM_ROCKET_BASE_B2F_EXECUTIVE
+	setevent EVENT_TEAM_ROCKET_BASE_B2F_GRUNT_WITH_EXECUTIVE
+	setevent EVENT_TEAM_ROCKET_BASE_B2F_LANCE
+	setevent EVENT_BEAT_ROCKET_EXECUTIVEF_2
+	verbosegiveitem HM_WHIRLPOOL
+	setevent EVENT_GOT_HM06_WHIRLPOOL
+	domaptrigger TEAM_ROCKET_BASE_B2F, $3
+	setevent EVENT_CLEARED_ROCKET_HIDEOUT
+	clearflag ENGINE_ROCKET_SIGNAL_ON_CH20
+	setevent EVENT_ROUTE_43_GATE_ROCKETS
+	setevent EVENT_MAHOGANY_TOWN_POKEFAN_M_BLOCKS_GYM
+	clearevent EVENT_LAKE_OF_RAGE_CIVILIANS
+	setevent EVENT_TURNED_OFF_SECURITY_CAMERAS
+	setevent EVENT_SECURITY_CAMERA_1
+	setevent EVENT_SECURITY_CAMERA_2
+	setevent EVENT_SECURITY_CAMERA_3
+	setevent EVENT_SECURITY_CAMERA_4
+	setevent EVENT_SECURITY_CAMERA_5
+	setflag ENGINE_ROCKETS_IN_RADIO_TOWER
+	setevent EVENT_RADIO_TOWER_BLACKBELT_BLOCKS_STAIRS
+	clearevent EVENT_RADIO_TOWER_ROCKET_TAKEOVER
+	setevent EVENT_MAHOGANY_TOWN_POKEFAN_M_BLOCKS_EAST
+	domaptrigger MAHOGANY_TOWN, $1
+	verbosegiveitem BASEMENT_KEY
+	setevent EVENT_BEAT_ROCKET_EXECUTIVEM_3
+	verbosegiveitem CARD_KEY
+	setevent EVENT_RECEIVED_CARD_KEY
+	setevent EVENT_WAREHOUSE_LAYOUT_1
+	clearevent EVENT_WAREHOUSE_LAYOUT_2
+	clearevent EVENT_WAREHOUSE_LAYOUT_3
+	setevent EVENT_USED_THE_CARD_KEY_IN_THE_RADIO_TOWER
+	setevent EVENT_BEAT_ROCKET_EXECUTIVEM_1
+	setevent EVENT_CLEARED_RADIO_TOWER
+	clearflag ENGINE_ROCKETS_IN_RADIO_TOWER
+	setevent EVENT_GOLDENROD_CITY_ROCKET_SCOUT
+	setevent EVENT_GOLDENROD_CITY_ROCKET_TAKEOVER
+	setevent EVENT_RADIO_TOWER_ROCKET_TAKEOVER
+	clearevent EVENT_MAHOGANY_MART_OWNERS
+	clearflag ENGINE_ROCKETS_IN_MAHOGANY
+	clearevent EVENT_RADIO_TOWER_CIVILIANS_AFTER
+	setevent EVENT_BLACKTHORN_CITY_SUPER_NERD_BLOCKS_GYM
+	clearevent EVENT_BLACKTHORN_CITY_SUPER_NERD_DOES_NOT_BLOCK_GYM
+	verbosegiveitem CLEAR_BELL
+	domaptrigger RADIO_TOWER_5F, $2
+	domaptrigger ECRUTEAK_HOUSE, $0
+	setevent EVENT_GOT_CLEAR_BELL
+	setevent EVENT_TEAM_ROCKET_DISBANDED
+	setevent EVENT_OPENED_DOOR_TO_ROCKET_HIDEOUT_TRANSMITTER
+	domaptrigger TEAM_ROCKET_BASE_B3F, $3
+	setevent EVENT_OPENED_DOOR_TO_GIOVANNIS_OFFICE
+	setevent EVENT_TEAM_ROCKET_BASE_POPULATION
+	setevent EVENT_TEAM_ROCKET_BASE_B3F_LANCE_PASSWORDS
+	setevent EVENT_TEAM_ROCKET_BASE_B3F_EXECUTIVE
+	setevent EVENT_RIVAL_TEAM_ROCKET_BASE
+	waitbutton
+	closetext
+	playsound SFX_WARP_TO
+	applymovement LAKEOFRAGE_LANCE, MovementData_0x70155
+	disappear LAKEOFRAGE_LANCE
 	end
 
 UnknownScript_0x7004e:
@@ -289,6 +364,30 @@ UnknownText_0x701b4:
 	line "could you help me"
 	cont "investigate?"
 	done
+	
+UnknownText_0x701b4_Rocketless:
+	text "Did you come here"
+	line "because of the"
+	cont "rumors?"
+
+	para "You're <PLAYER>?"
+	line "I'm LANCE, a"
+	cont "trainer like you."
+
+	para "I saw the way you"
+	line "battled earlier,"
+	cont "<PLAY_G>."
+
+	para "I can tell that"
+	line "you're a trainer"
+
+	para "with considerable"
+	line "skill."
+
+	para "If you don't mind,"
+	line "could you take"
+	cont "this junk away?"
+	done
 
 UnknownText_0x702c6:
 	text "LANCE: Excellent!"
@@ -307,6 +406,18 @@ UnknownText_0x702c6:
 
 	para "I'll be waiting"
 	line "for you, <PLAY_G>."
+	done
+	
+UnknownText_0x702c6_Rocketless:
+	text "LANCE: Excellent!"
+
+	para "I found all this"
+	line "around town,"
+	cont "but I have no use"
+	cont "for it at all."
+	
+	para "Take it off my"
+	line "hands, please!"
 	done
 
 UnknownText_0x70371:

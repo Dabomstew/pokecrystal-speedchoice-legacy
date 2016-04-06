@@ -11621,3 +11621,7 @@ INCBIN "misc/stadium2_2.bin"
 ELSE
 INCBIN "misc/stadium2_1.bin"
 ENDC
+
+SECTION "permaoptionsintro", ROMX
+INCLUDE "engine/intro_permaoptions.asm"
+

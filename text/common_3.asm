@@ -1170,6 +1170,17 @@ UnknownText_0x1c1cf3::
 	para "registered for use"
 	line "on SELECT Button."
 	done
+	
+_PleaseSetOptions::
+	text "Please set the"
+	line "permanent options"
+	cont "for this game."
+	prompt
+	
+_AreOptionsAcceptable::
+	text "Are these options"
+	line "acceptable?"
+	done
 
 _OakText1::
 	text "Hello! Sorry to"
