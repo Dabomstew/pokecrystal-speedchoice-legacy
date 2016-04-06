@@ -1491,7 +1491,8 @@ Options2:: ; cfd1
 PermanentOptions::
 ; bit 0: rocketless
 ; bit 1-2: spinner behavior
-;   normal 0; rotato 1; spinnerhell 2
+;   %00 = normal, %01 = spinnerless, %10 = spinnerhell, %11 = super spinnerhell
+; bit 3: max range all trainers (off/on)
 	ds 1
 	ds 1
 OptionsEnd::

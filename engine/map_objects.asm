@@ -1067,6 +1067,21 @@ RandomStepDuration_Slow: ; 4b1d
 RandomStepDuration_Fast: ; 4b26
 	call Random
 	ld a, [hRandomAdd]
+	ld h, a
+	ld a, [PermanentOptions]
+	bit SPINNERHELL, a
+	jr z, .normalBehavior
+	bit 1, a ; superfast?
+	ld l, %00001111
+	jr z, .normalSpinnerHell
+	ld l, %00000111
+.normalSpinnerHell
+	ld a, h
+	and l
+	inc a
+	jr SetRandomStepDuration
+.normalBehavior
+	ld a, h
 	and %00011111
 SetRandomStepDuration: ; 4b2d
 	ld hl, OBJECT_STEP_DURATION

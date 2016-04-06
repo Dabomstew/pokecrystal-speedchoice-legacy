@@ -21,6 +21,11 @@ BATTLE_SCENE   EQU 7
 MENU_ACCOUNT EQU 0
 HOLD_TO_MASH EQU 1
 
+; PermanentOptions:
+ROCKETLESS EQU 0
+SPINNERHELL EQU 2 ; this isn't actually just a bit, but both spinner hell modes have bit 2 set
+MAX_RANGE EQU 3
+
 ; GBPrinter:
 PRINT_LIGHTEST EQU $00
 PRINT_LIGHTER  EQU $20

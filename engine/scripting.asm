@@ -242,6 +242,7 @@ ENDC
 	dw Script_name                       ; a7
 	dw Script_wait                       ; a8
 	dw Script_check_save                 ; a9
+	dw Script_check_permaoptions         ; aa
 ; 96e05
 
 StartScript: ; 96e05
@@ -3247,11 +3248,37 @@ Script_check_save: ; 97c15
 ; 97c20
 
 
-; 97c20 unreferenced
-	ld a, [.byte]
+Script_check_permaoptions:
+; script command 0xaa
+; parameters:
+;       bit to check (SingleByteParam)
+	call GetScriptByte
+	cp 8 ; is it in the second byte?
+	jr c, .firstByte
+	sub 8
+	ld c, a
+	ld a, [PermanentOptions+1]
+	ld b, a
+	jr .continue
+.firstByte
+	ld c, a
+	ld a, [PermanentOptions]
+	ld b, a
+.continue
+	ld a, c
+	and a
+	jr z, .test
+.shiftLoop
+	srl b
+	dec a
+	jr nz, .shiftLoop
+.test
+	ld a, b
+	and $1
+	jr z, .writeResult
+	ld a, TRUE
+.writeResult
 	ld [ScriptVar], a
 	ret
-
-.byte
-	db 0
+	
 ; 97c28

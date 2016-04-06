@@ -1066,3 +1066,9 @@ wait: macro
 check_save: macro
 	db check_save_command
 	endm
+	
+	enum check_permaoptions_command
+check_permaoptions: macro
+	db check_permaoptions_command
+	db \1 ; bit
+	endm

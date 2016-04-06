@@ -619,8 +619,7 @@ ReadObjectEvents:: ; 241f
 	; jr c, .skip
 
 ; stupid waste of time and space
-	ld bc, 1
-	add hl, bc
+	inc hl
 ; Fill the remaining sprite IDs and y coords with 0 and -1, respectively.
 ; Bleeds into wObjectMasks due to a bug.  Uncomment the above subtraction
 ; to fix.
@@ -659,6 +658,7 @@ CopyMapObjectHeaders:: ; 2457
 	jr nz, .loop2
 
 	pop hl
+	call CheckSpinnerSettings
 	ld bc, OBJECT_LENGTH
 	add hl, bc
 	pop bc
@@ -666,6 +666,57 @@ CopyMapObjectHeaders:: ; 2457
 	jr nz, .loop
 	ret
 ; 2471
+
+CheckSpinnerSettings::
+	ld a, [PermanentOptions]
+	and %1110 ; spinner + range settings
+	ret z ; normal behavior
+	push hl
+	push bc
+	ld bc, MAPOBJECT_RANGE
+	add hl, bc
+	ld a, [hl]
+	and a
+	jr z, .done ; we only care if they have range
+	ld a, [PermanentOptions]
+	bit MAX_RANGE, a
+	jr z, .spinnerCheck
+	ld b, 5
+	ld [hl], b
+.spinnerCheck
+	; a is still PermanentOptions from above
+	and %0110 ; now we want only spinner settings, not range settings
+	jr z, .done ; no change to spinning behavior
+	ld bc, MAPOBJECT_MOVEMENT - MAPOBJECT_RANGE
+	add hl, bc
+	cp %010 ; spinnerless
+	jr z, .RemoveSpinners
+	; make everyone a spinner (%100 or %110)
+	ld a, [hl]
+	; only change WANDER-SPRITEMOVEDATA_STANDING_RIGHT
+	cp SPRITEMOVEDATA_WANDER
+	jr c, .done
+	cp SPRITEMOVEDATA_SPINRANDOM_FAST
+	jr nc, .done
+	ld a, SPRITEMOVEDATA_SPINRANDOM_FAST
+.changeBehavior
+	ld [hl], a
+.done
+	pop bc
+	pop hl
+	ret
+.RemoveSpinners
+	ld a, [hl]
+	cp SPRITEMOVEDATA_SPINRANDOM_SLOW
+	jr nz, .spinFastCheck
+	ld a, SPRITEMOVEDATA_SPINCLOCKWISE
+	jr .changeBehavior
+.spinFastCheck
+	cp SPRITEMOVEDATA_SPINRANDOM_FAST
+	jr nz, .done
+	ld a, SPRITEMOVEDATA_SPINCLOCKWISE
+	jr .changeBehavior
+	
 
 ClearObjectStructs:: ; 2471
 	ld hl, Object1Struct
