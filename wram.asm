@@ -1459,7 +1459,7 @@ wNumHits:: ds 2
 
 Options:: ; cfcc
 ; bit 0-2: number of frames to delay when printing text
-;   fast 1; mid 3; slow 5
+;   inst 0; fast 1; mid 3; slow 5
 ; bit 3: ?
 ; bit 4: no text delay
 ; bit 5: stereo off/on
@@ -1485,10 +1485,15 @@ GBPrinter:: ; cfd0
 	ds 1
 
 Options2:: ; cfd1
-; bit 1: menu account off/on
+; bit 0: menu account off/on
+; bit 1: hold to mash off/on
 	ds 1
-
-	ds 2
+PermanentOptions::
+; bit 0: rocketless
+; bit 1-2: spinner behavior
+;   normal 0; rotato 1; spinnerhell 2
+	ds 1
+	ds 1
 OptionsEnd::
 
 ; Time buffer, for counting the amount of time since

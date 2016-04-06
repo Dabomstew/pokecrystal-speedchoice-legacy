@@ -34,3 +34,20 @@ pokecrystal.txt
 # swap files for gedit
 *~
 
+#croudmap
+crowdmap
+
+gfx/credits/border.2bpp
+gfx/credits/ditto.2bpp
+gfx/credits/igglybuff.2bpp
+gfx/credits/pichu.2bpp
+gfx/credits/smoochum.2bpp
+gfx/credits/theend.2bpp
+gfx/misc/badges.2bpp
+gfx/misc/font.1bpp
+gfx/misc/font_battle_extra.2bpp
+gfx/misc/font_extra.2bpp
+gfx/misc/font_inversed.1bpp
+gfx/misc/footprints.1bpp
+gfx/misc/pack.2bpp
+gfx/misc/pack_f.2bpp

@@ -338,32 +338,12 @@ PrintLetterDelay:: ; 313d
 .updatedelay
 	ld [TextDelayFrames], a
 
-.checkjoypad
-	call GetJoypad
-
-; input override
-	ld a, [wc2d7]
-	and a
-	jr nz, .wait
-
-; Wait one frame if holding A or B.
-	ld a, [hJoyDown]
-	bit 0, a ; A_BUTTON
-	jr z, .checkb
-	jr .delay
-.checkb
-	bit 1, a ; B_BUTTON
-	jr z, .wait
-
-.delay
-	call DelayFrame
-	jr .end
-
 .wait
 	ld a, [TextDelayFrames]
 	and a
-	jr nz, .checkjoypad
-
+	jr z, .end
+	call DelayFrame
+	jr .wait
 .end
 	pop af
 	ld [hOAMUpdate], a

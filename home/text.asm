@@ -268,48 +268,6 @@ endm
 	dict "<USER>", PlaceMoveUsersName
 	dict "<ENEMY>", PlaceEnemysName
 	dict "<PLAY_G>", PlaceGenderedPlayerName
-
-	cp "ﾟ"
-	jr z, .place ; should be .diacritic
-	cp "ﾞ"
-	jr z, .place ; should be .diacritic
-	jr .not_diacritic
-
-.diacritic
-	ld b, a
-	call Diacritic
-	jp NextChar
-
-.not_diacritic
-	cp $60 ; Regular characters
-	jr nc, .place
-
-	cp "パ"
-	jr nc, .handakuten
-
-.dakuten
-	cp $20
-	jr nc, .daku1
-	add "カ" - "ガ"
-	jr .daku2
-.daku1
-	add "か" - "が"
-.daku2
-	ld b, "ﾞ" ; dakuten
-	call Diacritic
-	jr .place
-
-.handakuten
-	cp "ぱ"
-	jr nc, .han1
-	add "ハ" - "パ"
-	jr .han2
-.han1
-	add "は" - "ぱ"
-.han2
-	ld b, "ﾟ" ; handakuten
-	call Diacritic
-
 .place
 	ld [hli], a
 	call PrintLetterDelay
@@ -533,7 +491,7 @@ Paragraph:: ; 12f2
 	lb bc, TEXTBOX_INNERH - 1, TEXTBOX_INNERW
 	call ClearBox
 	call UnloadBlinkingCursor
-	ld c, 20
+	ld c, 3
 	call DelayFrames
 	hlcoord TEXTBOX_INNERX, TEXTBOX_INNERY
 	pop de

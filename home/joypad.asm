@@ -421,7 +421,12 @@ ButtonSound:: ; aaf
 .input_wait_loop
 	call .blink_cursor
 	call JoyTextDelay
+	ld a, [Options2]
+	bit HOLD_TO_MASH, a
 	ld a, [hJoyPressed]
+	jr z, .checkInput
+	ld a, [hJoyDown]
+.checkInput
 	and A_BUTTON | B_BUTTON
 	jr nz, .received_input
 	call RTC

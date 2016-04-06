@@ -116,7 +116,7 @@ Options_TextSpeed: ; e42f5
 	ld a, c ; right pressed
 	cp SLOW_TEXT
 	jr c, .Increase
-	ld c, FAST_TEXT +- 1
+	ld c, INST_TEXT +- 1
 
 .Increase
 	inc c
@@ -156,9 +156,13 @@ endr
 ; e4331
 
 .Strings
+	dw .Inst
 	dw .Fast
 	dw .Mid
 	dw .Slow
+	
+.Inst
+	db "INST@"
 
 .Fast
 	db "FAST@"
@@ -174,20 +178,27 @@ GetTextSpeed: ; e4346
 	and 7
 	cp 5 ; 5 frames of delay is slow
 	jr z, .slow
+	cp 0 ; 0 frames of delay is instant
+	jr z, .inst
 	cp 1 ; 1 frame of delay is fast
 	jr z, .fast
 	ld c, MED_TEXT ; set it to mid if not one of the above
 	lb de, 1, 5
 	ret
+	
+.inst
+	ld c, INST_TEXT
+	lb de, 5, 1
+	ret
 
 .slow
 	ld c, SLOW_TEXT
-	lb de, 3, 1
+	lb de, 3, 0
 	ret
 
 .fast
 	ld c, FAST_TEXT
-	lb de, 5, 3
+	lb de, 0, 3
 	ret
 ; e4365
 
