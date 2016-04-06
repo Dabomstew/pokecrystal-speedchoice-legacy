@@ -61,11 +61,6 @@ MysteryGift: ; 5b54
 	ret
 ; 5b64
 
-OptionsMenu: ; 5b64
-	callba _OptionsMenu
-	ret
-; 5b6b
-
 NewGame: ; 5b6b
 	xor a
 	ld [wMonStatusFlags], a

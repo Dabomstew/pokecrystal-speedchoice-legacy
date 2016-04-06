@@ -1505,6 +1505,10 @@ wMinutesSince:: ds 1
 wHoursSince:: ds 1
 wDaysSince:: ds 1
 
+wOptionsMenuCount:: ds 1
+wOptionsStringPtr:: ds 2
+wOptionsJumptablePtr:: ds 2
+
 wRAM0End:: ; cfd8
 
 

@@ -1,4 +1,13 @@
-_OptionsMenu: ; e41d0
+OptionsMenu:
+	push de
+	ld a, 7
+	ld hl, MainOptionsString
+	ld de, MainOptionsPointers
+	call StoreOptionsMenuConfig
+	pop de
+	; fallthrough
+
+OptionsMenuCommon:: ; e41d0
 	ld hl, hInMenu
 	ld a, [hl]
 	push af
@@ -8,12 +17,16 @@ _OptionsMenu: ; e41d0
 	ld b, 16
 	ld c, 18
 	call TextBox
+	ld hl, wOptionsStringPtr
+	ld a, [hli]
+	ld e, a
+	ld d, [hl]
 	hlcoord 2, 2
-	ld de, StringOptions
 	call PlaceString
 	xor a
 	ld [wJumptableIndex], a
-	ld c, $6 ; number of items on the menu minus 1 (for cancel)
+	ld a, [wOptionsMenuCount]
+	ld c, a ; number of items on the menu
 
 .print_text_loop ; this next will display the settings of each option when the menu is opened
 	push bc
@@ -26,7 +39,7 @@ _OptionsMenu: ; e41d0
 	dec c
 	jr nz, .print_text_loop
 
-	call UpdateFrame
+	call LoadFontsExtra
 	xor a
 	ld [wJumptableIndex], a
 	inc a
@@ -61,7 +74,7 @@ _OptionsMenu: ; e41d0
 	ret
 ; e4241
 
-StringOptions: ; e4241
+MainOptionsString:: ; e4241
 	db "TEXT SPEED<LNBRK>"
 	db "        :<LNBRK>"
 	db "HOLD TO MASH<LNBRK>"
@@ -79,12 +92,26 @@ StringOptions: ; e4241
 	db "CANCEL@"
 ; e42d6
 
+StoreOptionsMenuConfig::
+	ld [wOptionsMenuCount], a
+	ld a, l
+	ld [wOptionsStringPtr], a
+	ld a, h
+	ld [wOptionsStringPtr+1], a
+	ld a, e
+	ld [wOptionsJumptablePtr], a
+	ld a, d
+	ld [wOptionsJumptablePtr+1], a
+	ret
 
 GetOptionPointer: ; e42d6
 	ld a, [wJumptableIndex] ; load the cursor position to a
 	ld e, a ; copy it to de
 	ld d, 0
-	ld hl, .Pointers
+	ld hl, wOptionsJumptablePtr
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
 rept 2
 	add hl, de
 endr
@@ -93,361 +120,6 @@ endr
 	ld l, a
 	jp [hl] ; jump to the code of the current highlighted item
 ; e42e5
-
-.Pointers
-	dw Options_TextSpeed
-	dw Options_HoldToMash
-	dw Options_BattleScene
-	dw Options_BattleStyle
-	dw Options_Sound
-	dw Options_MenuAccount
-	dw Options_Frame
-	dw Options_Cancel
-; e42f5
-
-
-Options_TextSpeed: ; e42f5
-	call GetTextSpeed
-	ld a, [hJoyPressed]
-	bit D_LEFT_F, a
-	jr nz, .LeftPressed
-	bit D_RIGHT_F, a
-	jr z, .NonePressed
-	ld a, c ; right pressed
-	cp SLOW_TEXT
-	jr c, .Increase
-	ld c, INST_TEXT +- 1
-
-.Increase
-	inc c
-	ld a, e
-	jr .Save
-
-.LeftPressed
-	ld a, c
-	and a
-	jr nz, .Decrease
-	ld c, SLOW_TEXT + 1
-
-.Decrease
-	dec c
-	ld a, d
-
-.Save
-	ld b, a
-	ld a, [Options]
-	and $f0
-	or b
-	ld [Options], a
-
-.NonePressed
-	ld b, 0
-	ld hl, .Strings
-rept 2
-	add hl, bc
-endr
-	ld e, [hl]
-	inc hl
-	ld d, [hl]
-	hlcoord 11, 3
-	call PlaceString
-	and a
-	ret
-; e4331
-
-.Strings
-	dw .Inst
-	dw .Fast
-	dw .Mid
-	dw .Slow
-	
-.Inst
-	db "INST@"
-
-.Fast
-	db "FAST@"
-.Mid
-	db "MID @"
-.Slow
-	db "SLOW@"
-; e4346
-
-
-GetTextSpeed: ; e4346
-	ld a, [Options] ; This converts the number of frames, to 0, 1, 2 representing speed
-	and 7
-	cp 5 ; 5 frames of delay is slow
-	jr z, .slow
-	cp 0 ; 0 frames of delay is instant
-	jr z, .inst
-	cp 1 ; 1 frame of delay is fast
-	jr z, .fast
-	ld c, MED_TEXT ; set it to mid if not one of the above
-	lb de, 1, 5
-	ret
-	
-.inst
-	ld c, INST_TEXT
-	lb de, 5, 1
-	ret
-
-.slow
-	ld c, SLOW_TEXT
-	lb de, 3, 0
-	ret
-
-.fast
-	ld c, FAST_TEXT
-	lb de, 0, 3
-	ret
-; e4365
-
-
-Options_BattleScene: ; e4365
-	ld hl, Options
-	ld a, [hJoyPressed]
-	bit D_LEFT_F, a
-	jr nz, .LeftPressed
-	bit D_RIGHT_F, a
-	jr z, .NonePressed
-	bit BATTLE_SCENE, [hl]
-	jr nz, .ToggleOn
-	jr .ToggleOff
-
-.LeftPressed
-	bit BATTLE_SCENE, [hl]
-	jr z, .ToggleOff
-	jr .ToggleOn
-
-.NonePressed
-	bit BATTLE_SCENE, [hl]
-	jr z, .ToggleOn
-	jr .ToggleOff
-
-.ToggleOn
-	res BATTLE_SCENE, [hl]
-	ld de, .On
-	jr .Display
-
-.ToggleOff
-	set BATTLE_SCENE, [hl]
-	ld de, .Off
-
-.Display
-	hlcoord 11, 7
-	call PlaceString
-	and a
-	ret
-; e4398
-
-.On
-	db "ON @"
-.Off
-	db "OFF@"
-; e43a0
-
-
-Options_BattleStyle: ; e43a0
-	ld hl, Options
-	ld a, [hJoyPressed]
-	bit D_LEFT_F, a
-	jr nz, .LeftPressed
-	bit D_RIGHT_F, a
-	jr z, .NonePressed
-	bit BATTLE_SHIFT, [hl]
-	jr nz, .ToggleShift
-	jr .ToggleSet
-
-.LeftPressed
-	bit BATTLE_SHIFT, [hl]
-	jr z, .ToggleSet
-	jr .ToggleShift
-
-.NonePressed
-	bit BATTLE_SHIFT, [hl]
-	jr nz, .ToggleSet
-
-.ToggleShift
-	res BATTLE_SHIFT, [hl]
-	ld de, .Shift
-	jr .Display
-
-.ToggleSet
-	set BATTLE_SHIFT, [hl]
-	ld de, .Set
-
-.Display
-	hlcoord 11, 9
-	call PlaceString
-	and a
-	ret
-; e43d1
-
-.Shift
-	db "SHIFT@"
-.Set
-	db "SET  @"
-; e43dd
-
-
-Options_Sound: ; e43dd
-	ld hl, Options
-	ld a, [hJoyPressed]
-	bit D_LEFT_F, a
-	jr nz, .LeftPressed
-	bit D_RIGHT_F, a
-	jr z, .NonePressed
-	bit STEREO, [hl]
-	jr nz, .SetMono
-	jr .SetStereo
-
-.LeftPressed
-	bit STEREO, [hl]
-	jr z, .SetStereo
-	jr .SetMono
-
-.NonePressed
-	bit STEREO, [hl]
-	jr nz, .ToggleStereo
-	jr .ToggleMono
-
-.SetMono
-	res STEREO, [hl]
-	call RestartMapMusic
-
-.ToggleMono
-	ld de, .Mono
-	jr .Display
-
-.SetStereo
-	set STEREO, [hl]
-	call RestartMapMusic
-
-.ToggleStereo
-	ld de, .Stereo
-
-.Display
-	hlcoord 11, 11
-	call PlaceString
-	and a
-	ret
-; e4416
-
-.Mono
-	db "MONO  @"
-.Stereo
-	db "STEREO@"
-; e4424
-
-Options_HoldToMash: ; e44c1
-	ld hl, Options2
-	ld a, [hJoyPressed]
-	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
-	jr nz, .ButtonPressed
-	bit HOLD_TO_MASH, [hl]
-	jr z, .ToggleOff
-	jr nz, .ToggleOn
-
-.ButtonPressed
-	bit HOLD_TO_MASH, [hl]
-	jr z, .ToggleOn
-
-.ToggleOff
-	res HOLD_TO_MASH, [hl]
-	ld de, .Off
-	jr .Display
-
-.ToggleOn
-	set HOLD_TO_MASH, [hl]
-	ld de, .On
-
-.Display
-	hlcoord 11, 5
-	call PlaceString
-	and a
-	ret
-; e44f2
-
-.Off
-	db "OFF@"
-.On
-	db "ON @"
-; e44fa
-
-Options_MenuAccount: ; e44c1
-	ld hl, Options2
-	ld a, [hJoyPressed]
-	bit D_LEFT_F, a
-	jr nz, .LeftPressed
-	bit D_RIGHT_F, a
-	jr z, .NonePressed
-	bit MENU_ACCOUNT, [hl]
-	jr nz, .ToggleOff
-	jr .ToggleOn
-
-.LeftPressed
-	bit MENU_ACCOUNT, [hl]
-	jr z, .ToggleOn
-	jr .ToggleOff
-
-.NonePressed
-	bit MENU_ACCOUNT, [hl]
-	jr nz, .ToggleOn
-
-.ToggleOff
-	res MENU_ACCOUNT, [hl]
-	ld de, .Off
-	jr .Display
-
-.ToggleOn
-	set MENU_ACCOUNT, [hl]
-	ld de, .On
-
-.Display
-	hlcoord 11, 13
-	call PlaceString
-	and a
-	ret
-; e44f2
-
-.Off
-	db "OFF@"
-.On
-	db "ON @"
-; e44fa
-
-
-Options_Frame: ; e44fa
-	ld hl, TextBoxFrame
-	ld a, [hJoyPressed]
-	bit D_LEFT_F, a
-	jr nz, .LeftPressed
-	bit D_RIGHT_F, a
-	jr nz, .RightPressed
-	and a
-	ret
-
-.RightPressed
-	ld a, [hl]
-	inc a
-	jr .Save
-
-.LeftPressed
-	ld a, [hl]
-	dec a
-
-.Save
-	and $7
-	ld [hl], a
-UpdateFrame: ; e4512
-	ld a, [TextBoxFrame]
-	hlcoord 16, 15 ; where on the screen the number is drawn
-	add "1"
-	ld [hl], a
-	call LoadFontsExtra
-	and a
-	ret
-; e4520
 
 Options_Cancel: ; e4520
 	ld a, [hJoyPressed]
@@ -473,16 +145,13 @@ OptionsControl: ; e452a
 
 .DownPressed
 	ld a, [hl] ; load the cursor position to a
-	cp $7 ; maximum number of items in option menu
-	jr nz, .CheckFive
+	ld c, a
+	ld a, [wOptionsMenuCount]
+	cp c ; maximum number of items in option menu
+	jr nz, .Increase
 	ld [hl], $0
 	scf
 	ret
-
-.CheckFive ; I have no idea why this exists...
-	cp $5
-	jr nz, .Increase
-	ld [hl], $5
 
 .Increase
 	inc [hl]
@@ -491,16 +160,11 @@ OptionsControl: ; e452a
 
 .UpPressed
 	ld a, [hl]
-	cp $6
-	jr nz, .NotSix
-	ld [hl], $5 ; Another thing where I'm not sure why it exists
-	scf
-	ret
-
-.NotSix
 	and a
 	jr nz, .Decrease
-	ld [hl], $8 ; number of option items +1
+	ld a, [wOptionsMenuCount]
+	inc a
+	ld [hl], a ; number of option items +1
 
 .Decrease
 	dec [hl]
@@ -524,3 +188,5 @@ Options_UpdateCursorPosition: ; e455c
 	ld [hl], "▶"
 	ret
 ; e4579
+
+INCLUDE "engine/options/main_options.asm"
