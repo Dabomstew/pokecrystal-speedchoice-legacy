@@ -20,7 +20,7 @@ CheckPlayerMoveTypeMatchups: ; 3484e
 	jr z, .exit
 	push hl
 	dec a
-	ld hl, Moves + MOVE_POWER
+	call LoadHLMovesPlusPower
 	call GetMoveAttr
 	and a
 	jr z, .next
@@ -115,7 +115,7 @@ CheckPlayerMoveTypeMatchups: ; 3484e
 
 	inc de
 	dec a
-	ld hl, Moves + MOVE_POWER
+	call LoadHLMovesPlusPower
 	call GetMoveAttr
 	and a
 	jr z, .loop2
@@ -382,7 +382,7 @@ Function34a2a: ; 34a2a
 	call GetBaseData
 	ld a, [LastEnemyCounterMove]
 	dec a
-	ld hl, Moves + MOVE_POWER
+	call LoadHLMovesPlusPower
 	call GetMoveAttr
 	and a
 	jr z, .asm_34a77
@@ -472,7 +472,7 @@ Function34aa7: ; 34aa7
 	jr z, .break3
 
 	dec a
-	ld hl, Moves + MOVE_POWER
+	call LoadHLMovesPlusPower
 	call GetMoveAttr
 	and a
 	jr z, .nope
@@ -565,7 +565,7 @@ FindEnemyMonsThatResistPlayer: ; 34b20
 	jr z, .skip_move
 
 	dec a
-	ld hl, Moves + MOVE_POWER
+	call LoadHLMovesPlusPower
 	call GetMoveAttr
 	and a
 	jr z, .skip_move

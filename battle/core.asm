@@ -919,7 +919,7 @@ MoveEffectPriorities: ; 3c5df
 GetMoveEffect: ; 3c5ec
 	ld a, b
 	dec a
-	ld hl, Moves + MOVE_EFFECT
+	call LoadHLMovesPlusEffect
 	ld bc, MOVE_LENGTH
 	call AddNTimes
 	ld a, BANK(Moves)
@@ -3481,7 +3481,7 @@ LookUpTheEffectivenessOfEveryMove: ; 3d5d7
 	push de
 	push bc
 	dec a
-	ld hl, Moves
+	call LoadHLMoves
 	ld bc, MOVE_LENGTH
 	call AddNTimes
 	ld de, wEnemyMoveStruct
@@ -8663,7 +8663,7 @@ Function3f662: ; 3f662
 
 	push hl
 	dec a
-	ld hl, Moves + MOVE_PP
+	call LoadHLMovesPlusPP
 	ld bc, MOVE_LENGTH
 	call AddNTimes
 	ld a, BANK(Moves)

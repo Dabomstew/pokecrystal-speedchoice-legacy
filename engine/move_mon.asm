@@ -330,7 +330,7 @@ FillPP: ; da6d
 	push hl
 	push de
 	push bc
-	ld hl, Moves
+	call LoadHLMoves
 	ld bc, MOVE_LENGTH
 	call AddNTimes
 	ld de, StringBuffer1

@@ -773,7 +773,7 @@ INCLUDE "home/pokedex_flags.asm"
 NamesPointers:: ; 33ab
 	dba PokemonNames
 	dba MoveNames
-	dbw 0, 0
+	dba MoveNamesNerfedHMs
 	dba ItemNames
 	dbw 0, PartyMonOT
 	dbw 0, OTPartyMonOT
@@ -809,7 +809,14 @@ GetName:: ; 33c3
 	jr .done
 
 .NotPokeName
-	ld a, [wNamedObjectTypeBuffer]
+	cp MOVE_NAME
+	jr nz, .loadName
+	ld a, [PermanentOptions]
+	bit NERF_HMS, a
+	ld a, MOVE_NAME
+	jr z, .loadName
+	ld a, MOVE_NAME_NERFEDHMS
+.loadName
 	dec a
 	ld e, a
 	ld d, 0
@@ -1964,3 +1971,4 @@ ReinitSpriteAnimFrame:: ; 3b3c
 
 INCLUDE "home/audio.asm"
 INCLUDE "home/mobile.asm"
+INCLUDE "home/hlmoves.asm"

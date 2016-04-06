@@ -5,6 +5,8 @@ PermaOptionsString:: ; e4241
 	db "        :<LNBRK>"
 	db "TRAINER VISION<LNBRK>"
 	db "        :<LNBRK>"
+	db "NERF HMs<LNBRK>"
+	db "        :<LNBRK>"
 	db "DONE@"
 ; e42d6
 
@@ -12,6 +14,7 @@ PermaOptionsPointers::
 	dw Options_Rocketless
 	dw Options_Spinners
 	dw Options_TrainerVision
+	dw Options_NerfHMs
 	dw Options_Cancel
 
 Options_Rocketless:
@@ -143,4 +146,37 @@ Options_TrainerVision:
 	db "NORMAL@"
 .On
 	db "MAX   @"
+	
+Options_NerfHMs:
+	ld hl, PermanentOptions
+	ld a, [hJoyPressed]
+	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
+	jr nz, .ButtonPressed
+	bit NERF_HMS, [hl]
+	jr z, .ToggleOff
+	jr nz, .ToggleOn
+
+.ButtonPressed
+	bit NERF_HMS, [hl]
+	jr z, .ToggleOn
+
+.ToggleOff
+	res NERF_HMS, [hl]
+	ld de, .Off
+	jr .Display
+
+.ToggleOn
+	set NERF_HMS, [hl]
+	ld de, .On
+
+.Display
+	hlcoord 11, 9
+	call PlaceString
+	and a
+	ret
+	
+.Off
+	db "NO @"
+.On
+	db "YES@"
 

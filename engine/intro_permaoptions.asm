@@ -54,6 +54,13 @@ PrintPermaOptionsToScreen::
 	ld de, MaxVisionText
 .placeVisionSetting
 	call PlaceStringIncHL
+; hms
+	bit NERF_HMS, b
+	ld de, NormalHMsText
+	jr z, .placeHMSetting
+	ld de, NerfedHMsText
+.placeHMSetting
+	call PlaceStringIncHL
 ; checkvalue stuff
 	coord hl, 1, 11
 	ld [hl], "C"
@@ -138,6 +145,10 @@ NormalVisionText::
 	db "NORMAL VISION@"
 MaxVisionText::
 	db "MAX VISION@"
+NormalHMsText::
+	db "NORMAL HMs@"
+NerfedHMsText::
+	db "NERFED HMs@"
 
 
 PleaseSetOptions::

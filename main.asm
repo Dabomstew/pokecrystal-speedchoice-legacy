@@ -6097,7 +6097,6 @@ INCLUDE "engine/mysterygift2.asm"
 
 INCLUDE "engine/tmhm2.asm"
 
-MoveDescriptions:: ; 2cb52
 INCLUDE "battle/moves/move_descriptions.asm"
 
 GivePokerusAndConvertBerries: ; 2ed44
@@ -6614,8 +6613,6 @@ INCLUDE "battle/effect_command_pointers.asm"
 SECTION "bank10", ROMX, BANK[$10]
 
 INCLUDE "engine/pokedex.asm"
-
-INCLUDE "battle/moves/moves.asm"
 
 INCLUDE "engine/evolve.asm"
 
@@ -11624,4 +11621,11 @@ ENDC
 
 SECTION "permaoptionsintro", ROMX
 INCLUDE "engine/intro_permaoptions.asm"
+
+SECTION "monmoves", ROMX
+INCLUDE "battle/moves/moves.asm"
+
+SECTION "movenamesnerfed", ROMX
+MoveNamesNerfedHMs::
+INCLUDE "battle/move_names_nerfed.asm"
 

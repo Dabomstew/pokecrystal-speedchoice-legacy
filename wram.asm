@@ -1493,6 +1493,7 @@ PermanentOptions::
 ; bit 1-2: spinner behavior
 ;   %00 = normal, %01 = spinnerless, %10 = spinnerhell, %11 = super spinnerhell
 ; bit 3: max range all trainers (off/on)
+; bit 4: nerf surf+strength (off/on)
 	ds 1
 	ds 1
 OptionsEnd::

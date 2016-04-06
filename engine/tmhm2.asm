@@ -576,7 +576,12 @@ CountTMsHMs: ; 2cb2a (b:4b2a)
 
 PrintMoveDesc: ; 2cb3e
 	push hl
+	ld a, [PermanentOptions]
+	bit NERF_HMS, a
 	ld hl, MoveDescriptions
+	jr z, .loadDesc
+	ld hl, MoveDescriptionsHMNerfs
+.loadDesc
 	ld a, [CurSpecies]
 	dec a
 	ld c, a

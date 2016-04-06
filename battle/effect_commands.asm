@@ -4164,7 +4164,7 @@ BattleCommand_Conversion2: ; 359e6
 	jr z, .failed
 	push hl
 	dec a
-	ld hl, Moves + MOVE_TYPE
+	call LoadHLMovesPlusType
 	call GetMoveAttr
 	ld d, a
 	pop hl
@@ -4307,7 +4307,7 @@ BattleCommand_Sketch: ; 35a74
 	push bc
 	push hl
 	dec a
-	ld hl, Moves + MOVE_PP
+	call LoadHLMovesPlusPP
 	call GetMoveAttr
 	pop hl
 	ld bc, BattleMonPP - BattleMonMoves
@@ -8209,7 +8209,7 @@ BattleCommand_Conversion: ; 3707f
 	push hl
 	push bc
 	dec a
-	ld hl, Moves + MOVE_TYPE
+	call LoadHLMovesPlusType
 	call GetMoveAttr
 	ld [de], a
 	inc de
@@ -10007,7 +10007,7 @@ GetMoveAttr: ; 37ea1
 
 GetMoveData: ; 37ead
 ; Copy move struct a to de.
-	ld hl, Moves
+	call LoadHLMoves
 	ld bc, MOVE_LENGTH
 	call AddNTimes
 	ld a, Bank(Moves)

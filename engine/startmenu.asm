@@ -1870,7 +1870,7 @@ PlaceMoveData: ; 13256
 	predef PrintMoveType
 	ld a, [CurMove]
 	dec a
-	ld hl, Moves + MOVE_POWER
+	call LoadHLMovesPlusPower
 	ld bc, MOVE_LENGTH
 	call AddNTimes
 	ld a, BANK(Moves)

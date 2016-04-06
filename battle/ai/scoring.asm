@@ -1819,7 +1819,7 @@ AI_Smart_Conversion2: ; 38d98
 
 	push hl
 	dec a
-	ld hl, Moves + MOVE_TYPE
+	call LoadHLMovesPlusType
 	ld bc, MOVE_LENGTH
 	call AddNTimes
 
@@ -3608,7 +3608,7 @@ AIGetEnemyMove: ; 39508
 	push de
 	push bc
 	dec a
-	ld hl, Moves
+	call LoadHLMoves
 	ld bc, MOVE_LENGTH
 	call AddNTimes
 
