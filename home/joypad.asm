@@ -306,7 +306,12 @@ JoyWaitAorB:: ; a36
 .loop
 	call DelayFrame
 	call GetJoypad
+	ld a, [Options2]
+	bit HOLD_TO_MASH, a
 	ld a, [hJoyPressed]
+	jr z, .checkInput
+	ld a, [hJoyDown]
+.checkInput
 	and A_BUTTON | B_BUTTON
 	ret nz
 	call RTC
