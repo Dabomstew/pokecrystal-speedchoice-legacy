@@ -45,18 +45,21 @@ UnknownScript_0x18616b:
 	pause 5
 	disappear BURNEDTOWERB1F_RAIKOU2
 	pause 15
+Randomizer_RaikouCryBT::
 	cry RAIKOU
 	appear BURNEDTOWERB1F_ENTEI1
 	spriteface PLAYER, UP
 	pause 5
 	disappear BURNEDTOWERB1F_ENTEI2
 	pause 15
+Randomizer_EnteiCryBT::
 	cry ENTEI
 	appear BURNEDTOWERB1F_SUICUNE1
 	spriteface PLAYER, UP
 	pause 5
 	disappear BURNEDTOWERB1F_SUICUNE2
 	pause 15
+Randomizer_SuicuneCryBT1::
 	cry SUICUNE
 	pause 15
 	playsound SFX_WARP_FROM
@@ -78,6 +81,7 @@ UnknownScript_0x18616b:
 	applymovement BURNEDTOWERB1F_SUICUNE1, MovementData_0x186248
 	spriteface PLAYER, UP
 	pause 20
+Randomizer_SuicuneCryBT2::
 	cry SUICUNE
 	pause 30
 	playsound SFX_WARP_FROM

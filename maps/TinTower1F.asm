@@ -97,6 +97,7 @@ UnknownScript_0x18508f:
 	iftrue UnknownScript_0x1850b6
 	applymovement TINTOWER1F_RAIKOU, MovementData_0x1851d0
 	spriteface PLAYER, LEFT
+Randomizer_RaikouCryTT::
 	cry RAIKOU
 	pause 10
 	playsound SFX_WARP_FROM
@@ -110,6 +111,7 @@ UnknownScript_0x1850b6:
 	iftrue UnknownScript_0x1850d7
 	applymovement TINTOWER1F_ENTEI, MovementData_0x1851da
 	spriteface PLAYER, RIGHT
+Randomizer_EnteiCryTT::
 	cry ENTEI
 	pause 10
 	playsound SFX_WARP_FROM
@@ -122,8 +124,10 @@ UnknownScript_0x1850d7:
 	pause 10
 	applymovement PLAYER, MovementData_0x1851e8
 	applymovement TINTOWER1F_SUICUNE, MovementData_0x1851e4
+Randomizer_SuicuneCry::
 	cry SUICUNE
 	pause 20
+Randomizer_SuicuneSpecies::
 	loadwildmon SUICUNE, 40
 	writecode VAR_BATTLETYPE, BATTLETYPE_SUICUNE
 	startbattle

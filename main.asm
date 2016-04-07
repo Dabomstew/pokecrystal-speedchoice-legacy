@@ -485,6 +485,7 @@ SpecialGiveShuckle: ; 7305
 	ld [MonType], a
 
 ; Level 15 Shuckle.
+Randomizer_ShuckleSpecies::
 	ld a, SHUCKLE
 	ld [CurPartySpecies], a
 	ld a, 15

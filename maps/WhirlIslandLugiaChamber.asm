@@ -31,11 +31,13 @@ LugiaScript_0x18c518:
 	faceplayer
 	opentext
 	writetext UnknownText_0x18c531
+Randomizer_LugiaCry::
 	cry LUGIA
 	pause 15
 	closetext
 	setevent EVENT_FOUGHT_LUGIA
 	writecode VAR_BATTLETYPE, BATTLETYPE_FORCEITEM
+Randomizer_LugiaSpecies::
 	loadwildmon LUGIA, 60
 	startbattle
 	disappear WHIRLISLANDLUGIACHAMBER_LUGIA

@@ -227,7 +227,9 @@ GruntM19Script:
 	end
 
 VoltorbScript_0x6d101:
+Randomizer_Electrode1Cry::
 	cry ELECTRODE
+Randomizer_Electrode1Species::
 	loadwildmon ELECTRODE, 23
 	startbattle
 	iftrue UnknownScript_0x6d182
@@ -245,7 +247,9 @@ VoltorbScript_0x6d101:
 	jump UnknownScript_0x6d184
 
 VoltorbScript_0x6d12c:
+Randomizer_Electrode2Cry::
 	cry ELECTRODE
+Randomizer_Electrode2Species::
 	loadwildmon ELECTRODE, 23
 	startbattle
 	iftrue UnknownScript_0x6d182
@@ -263,7 +267,9 @@ VoltorbScript_0x6d12c:
 	jump UnknownScript_0x6d184
 
 VoltorbScript_0x6d157:
+Randomizer_Electrode3Cry::
 	cry ELECTRODE
+Randomizer_Electrode3Species::
 	loadwildmon ELECTRODE, 23
 	startbattle
 	iftrue UnknownScript_0x6d182

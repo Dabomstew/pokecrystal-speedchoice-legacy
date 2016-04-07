@@ -197,26 +197,27 @@ ElderScript_0x18d1a5:
 	faceplayer
 	opentext
 	checkevent EVENT_GAVE_KURT_APRICORNS
-	iftrue .DontGiveDratiniYet
+	iftrue DSElderDontGiveDratiniYet
 	checkevent EVENT_JUST_RECEIVED_DRATINI
-	iftrue .ReceivedDratini
+	iftrue DSElderReceivedDratini
 	checkevent EVENT_GOT_DRATINI
-	iffalse .GiveDratini
+	iffalse DSElderGiveDratini
 	checkevent EVENT_BEAT_RIVAL_IN_MT_MOON
-	iftrue .BeatRivalInMtMoon
+	iftrue DSElderBeatRivalInMtMoon
 	writetext UnknownText_0x18d724
 	waitbutton
 	closetext
 	end
 
-.GiveDratini:
+DSElderGiveDratini:
 	writetext UnknownText_0x18d604
 	waitbutton
 	checkcode VAR_PARTYCOUNT
-	if_equal 6, .PartyFull
+	if_equal 6, DSElderPartyFull
 	writetext UnknownText_0x18d697
 	playsound SFX_CAUGHT_MON
 	waitsfx
+Randomizer_DratiniSpecies::
 	givepoke DRATINI, 15
 	checkevent EVENT_ANSWERED_DRAGON_MASTER_QUIZ_WRONG
 	special SpecialDratini
@@ -227,25 +228,25 @@ ElderScript_0x18d1a5:
 	closetext
 	end
 
-.PartyFull:
+DSElderPartyFull:
 	writetext UnknownText_0x18d6ac
 	waitbutton
 	closetext
 	end
 
-.BeatRivalInMtMoon:
+DSElderBeatRivalInMtMoon:
 	writetext UnknownText_0x18d782
 	waitbutton
 	closetext
 	end
 
-.DontGiveDratiniYet:
+DSElderDontGiveDratiniYet:
 	writetext UnknownText_0x18d5e5
 	waitbutton
 	closetext
 	end
 
-.ReceivedDratini:
+DSElderReceivedDratini:
 	writetext UnknownText_0x18d6ca
 	waitbutton
 	closetext

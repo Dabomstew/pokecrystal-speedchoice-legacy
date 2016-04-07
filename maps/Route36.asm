@@ -82,6 +82,7 @@ WateredWeirdTreeScript::
 	writetext UnknownText_0x1942aa
 	waitbutton
 	closetext
+Randomizer_SudowoodoSpecies::
 	loadwildmon SUDOWOODO, 20
 	startbattle
 	setevent EVENT_FOUGHT_SUDOWOODO

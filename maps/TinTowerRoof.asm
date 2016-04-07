@@ -31,11 +31,13 @@ HoOhScript_0x77244:
 	faceplayer
 	opentext
 	writetext UnknownText_0x77260
+Randomizer_HoOhCry::
 	cry HO_OH
 	pause 15
 	closetext
 	setevent EVENT_FOUGHT_HO_OH
 	writecode VAR_BATTLETYPE, BATTLETYPE_FORCEITEM
+Randomizer_HoOhSpecies::
 	loadwildmon HO_OH, 60
 	startbattle
 	disappear TINTOWERROOF_HO_OH

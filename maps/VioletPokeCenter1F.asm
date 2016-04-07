@@ -19,16 +19,17 @@ VioletPokeCenter1F_ElmsAideScript:
 	faceplayer
 	opentext
 	checkevent EVENT_REFUSED_TO_TAKE_EGG_FROM_ELMS_AIDE
-	iftrue .SecondTimeAsking
+	iftrue VPCEASecondTimeAsking
 	writetext UnknownText_0x69555
-.AskTakeEgg:
+VPCEAAskTakeEgg:
 	yesorno
-	iffalse .RefusedEgg
+	iffalse VPCEARefusedEgg
 	checkcode VAR_PARTYCOUNT
-	if_equal PARTY_LENGTH, .PartyFull
+	if_equal PARTY_LENGTH, VPCEAPartyFull
+Randomizer_TogepiSpecies::
 	giveegg TOGEPI, 5
-	stringtotext .eggname, $1
-	scall .AideGivesEgg
+	stringtotext VPCEAeggname, $1
+	scall VPCEAAideGivesEgg
 	setevent EVENT_GOT_TOGEPI_EGG_FROM_ELMS_AIDE
 	clearevent EVENT_ELMS_AIDE_IN_LAB
 	clearevent EVENT_TOGEPI_HATCHED
@@ -37,7 +38,7 @@ VioletPokeCenter1F_ElmsAideScript:
 	waitbutton
 	closetext
 	checkcode VAR_FACING
-	if_equal UP, .AideWalksAroundPlayer
+	if_equal UP, VPCEAAideWalksAroundPlayer
 	spriteface PLAYER, DOWN
 	applymovement VIOLETPOKECENTER1F_SCIENTIST, MovementData_AideWalksStraightOutOfPokecenter
 	playsound SFX_EXIT_BUILDING
@@ -45,7 +46,7 @@ VioletPokeCenter1F_ElmsAideScript:
 	waitsfx
 	end
 
-.AideWalksAroundPlayer
+VPCEAAideWalksAroundPlayer
 	applymovement VIOLETPOKECENTER1F_SCIENTIST, MovementData_AideWalksLeftToExitPokecenter
 	spriteface PLAYER, DOWN
 	applymovement VIOLETPOKECENTER1F_SCIENTIST, MovementData_AideFinishesLeavingPokecenter
@@ -54,29 +55,29 @@ VioletPokeCenter1F_ElmsAideScript:
 	waitsfx
 	end
 
-.eggname
+VPCEAeggname
 	db "EGG@"
 
-.AideGivesEgg:
+VPCEAAideGivesEgg:
 	jumpstd receivetogepiegg
 	end
 
-.PartyFull:
+VPCEAPartyFull:
 	writetext UnknownText_0x69693
 	waitbutton
 	closetext
 	end
 
-.RefusedEgg:
+VPCEARefusedEgg:
 	writetext UnknownText_0x696f2
 	waitbutton
 	closetext
 	setevent EVENT_REFUSED_TO_TAKE_EGG_FROM_ELMS_AIDE
 	end
 
-.SecondTimeAsking:
+VPCEASecondTimeAsking:
 	writetext UnknownText_0x69712
-	jump .AskTakeEgg
+	jump VPCEAAskTakeEgg
 
 GameboyKidScript_0x69540:
 	jumptextfaceplayer UnknownText_0x69809

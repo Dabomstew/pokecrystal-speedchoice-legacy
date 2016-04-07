@@ -32,7 +32,9 @@ UnknownScript_0x5a31c:
 
 SurfScript_0x5a31f:
 	faceplayer
+Randomizer_LaprasCry::
 	cry LAPRAS
+Randomizer_LaprasSpecies::
 	loadwildmon LAPRAS, 20
 	startbattle
 	disappear UNIONCAVEB2F_SURF

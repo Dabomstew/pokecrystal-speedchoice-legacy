@@ -15,7 +15,7 @@ CeladonGameCornerPrizeRoomGentlemanScript:
 CeladonGameCornerPrizeRoomPharmacistScript:
 	jumptextfaceplayer CeladonGameCornerPrizeRoomPharmacistText
 
-GoldenrodGameCornerTMVendor:
+CeladonGameCornerTMVendor:
 	faceplayer
 	opentext
 	writetext CeladonPrizeRoom_PrizeVendorIntroText
@@ -119,29 +119,30 @@ CeladonPrizeRoom_TMMenuDataHeader:
 	db "CANCEL@"
 
 
-GoldenrodGameCornerPokemonVendor:
+CeladonGameCornerPokemonVendor:
 	faceplayer
 	opentext
 	writetext CeladonPrizeRoom_PrizeVendorIntroText
 	waitbutton
 	checkitem COIN_CASE
 	iffalse CeladonPrizeRoom_NoCoinCase
-.loop:
+CGCPVloop:
 	writetext CeladonPrizeRoom_AskWhichPrizeText
 	special Special_DisplayCoinCaseBalance
-	loadmenudata .MenuDataHeader
+	loadmenudata CGCPVMenuDataHeader
 	verticalmenu
 	closewindow
-	if_equal $1, .pikachu
-	if_equal $2, .porygon
-	if_equal $3, .larvitar
+	if_equal $1, CGCPVpikachu
+	if_equal $2, CGCPVporygon
+	if_equal $3, CGCPVlarvitar
 	jump CeladonPrizeRoom_cancel
 
-.pikachu:
+CGCPVpikachu:
 	checkcoins 2222
 	if_equal $2, CeladonPrizeRoom_notenoughcoins
 	checkcode VAR_PARTYCOUNT
 	if_equal $6, CeladonPrizeRoom_notenoughroom
+Randomizer_GameCornerPikachuSpecies1::
 	pokenamemem PIKACHU, $0
 	scall CeladonPrizeRoom_askbuy
 	iffalse CeladonPrizeRoom_cancel
@@ -149,17 +150,20 @@ GoldenrodGameCornerPokemonVendor:
 	playsound SFX_TRANSACTION
 	writetext CeladonPrizeRoom_HereYouGoText
 	waitbutton
+Randomizer_GameCornerPikachuSpecies2::
 	writebyte PIKACHU
 	special Special_GameCornerPrizeMonCheckDex
+Randomizer_GameCornerPikachuSpecies3::
 	givepoke PIKACHU, 25
 	takecoins 2222
-	jump .loop
+	jump CGCPVloop
 
-.porygon:
+CGCPVporygon:
 	checkcoins 5555
 	if_equal $2, CeladonPrizeRoom_notenoughcoins
 	checkcode VAR_PARTYCOUNT
 	if_equal $6, CeladonPrizeRoom_notenoughroom
+Randomizer_GameCornerPorygonSpecies1::
 	pokenamemem PORYGON, $0
 	scall CeladonPrizeRoom_askbuy
 	iffalse CeladonPrizeRoom_cancel
@@ -167,17 +171,20 @@ GoldenrodGameCornerPokemonVendor:
 	playsound SFX_TRANSACTION
 	writetext CeladonPrizeRoom_HereYouGoText
 	waitbutton
+Randomizer_GameCornerPorygonSpecies2::
 	writebyte PORYGON
 	special Special_GameCornerPrizeMonCheckDex
+Randomizer_GameCornerPorygonSpecies3::
 	givepoke PORYGON, 15
 	takecoins 5555
-	jump .loop
+	jump CGCPVloop
 
-.larvitar:
+CGCPVlarvitar:
 	checkcoins 8888
 	if_equal $2, CeladonPrizeRoom_notenoughcoins
 	checkcode VAR_PARTYCOUNT
 	if_equal $6, CeladonPrizeRoom_notenoughroom
+Randomizer_GameCornerLarvitarSpecies1::
 	pokenamemem LARVITAR, $0
 	scall CeladonPrizeRoom_askbuy
 	iffalse CeladonPrizeRoom_cancel
@@ -185,25 +192,30 @@ GoldenrodGameCornerPokemonVendor:
 	playsound SFX_TRANSACTION
 	writetext CeladonPrizeRoom_HereYouGoText
 	waitbutton
+Randomizer_GameCornerLarvitarSpecies2::
 	writebyte LARVITAR
 	special Special_GameCornerPrizeMonCheckDex
+Randomizer_GameCornerLarvitarSpecies3::
 	givepoke LARVITAR, 40
 	takecoins 8888
-	jump .loop
+	jump CGCPVloop
 
 
-.MenuDataHeader:
+CGCPVMenuDataHeader:
 	db $40 ; flags
 	db 02, 00 ; start coords
 	db 11, 17 ; end coords
-	dw .MenuData2
+	dw CGCPVMenuData2
 	db 1 ; default option
 
-.MenuData2:
+CGCPVMenuData2:
 	db $80 ; flags
 	db 4 ; items
+Randomizer_GameCornerPikachuName::
 	db "PIKACHU    2222@"
+Randomizer_GameCornerPorygonName::
 	db "PORYGON    5555@"
+Randomizer_GameCornerLarvitarName::
 	db "LARVITAR   8888@"
 	db "CANCEL@"
 
@@ -283,8 +295,8 @@ CeladonGameCornerPrizeRoom_MapEventHeader:
 
 .Signposts:
 	db 2
-	signpost 1, 2, SIGNPOST_READ, GoldenrodGameCornerTMVendor
-	signpost 1, 4, SIGNPOST_READ, GoldenrodGameCornerPokemonVendor
+	signpost 1, 2, SIGNPOST_READ, CeladonGameCornerTMVendor
+	signpost 1, 4, SIGNPOST_READ, CeladonGameCornerPokemonVendor
 
 .PersonEvents:
 	db 2

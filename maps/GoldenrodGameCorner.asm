@@ -165,22 +165,23 @@ GoldenrodGameCornerPrizeMonVendorScript:
 	waitbutton
 	checkitem COIN_CASE
 	iffalse GoldenrodGameCornerPrizeVendor_NoCoinCaseScript
-.loop
+GGCPMVloop
 	writetext GoldenrodGameCornerPrizeVendorWhichPrizeText
 	special Special_DisplayCoinCaseBalance
-	loadmenudata .MenuDataHeader
+	loadmenudata GGCPMVMenuDataHeader
 	verticalmenu
 	closewindow
-	if_equal $1, .abra
-	if_equal $2, .cubone
-	if_equal $3, .wobbuffet
+	if_equal $1, GGCPMVabra
+	if_equal $2, GGCPMVcubone
+	if_equal $3, GGCPMVwobbuffet
 	jump GoldenrodGameCornerPrizeVendor_CancelPurchaseScript
 
-.abra:
+GGCPMVabra:
 	checkcoins 100
 	if_equal $2, GoldenrodGameCornerPrizeVendor_NotEnoughCoinsScript
 	checkcode VAR_PARTYCOUNT
 	if_equal $6, GoldenrodGameCornerPrizeMonVendor_NoRoomForPrizeScript
+Randomizer_GameCornerAbraSpecies1::
 	pokenamemem ABRA, $0
 	scall GoldenrodGameCornerPrizeVendor_ConfirmPurchaseScript
 	iffalse GoldenrodGameCornerPrizeVendor_CancelPurchaseScript
@@ -188,17 +189,20 @@ GoldenrodGameCornerPrizeMonVendorScript:
 	playsound SFX_TRANSACTION
 	writetext GoldenrodGameCornerPrizeVendorHereYouGoText
 	waitbutton
+Randomizer_GameCornerAbraSpecies2::
 	writebyte ABRA
 	special Special_GameCornerPrizeMonCheckDex
+Randomizer_GameCornerAbraSpecies3::
 	givepoke ABRA, 5
 	takecoins 100
-	jump .loop
+	jump GGCPMVloop
 
-.cubone:
+GGCPMVcubone:
 	checkcoins 800
 	if_equal $2, GoldenrodGameCornerPrizeVendor_NotEnoughCoinsScript
 	checkcode VAR_PARTYCOUNT
 	if_equal $6, GoldenrodGameCornerPrizeMonVendor_NoRoomForPrizeScript
+Randomizer_GameCornerCuboneSpecies1::
 	pokenamemem CUBONE, $0
 	scall GoldenrodGameCornerPrizeVendor_ConfirmPurchaseScript
 	iffalse GoldenrodGameCornerPrizeVendor_CancelPurchaseScript
@@ -206,17 +210,20 @@ GoldenrodGameCornerPrizeMonVendorScript:
 	playsound SFX_TRANSACTION
 	writetext GoldenrodGameCornerPrizeVendorHereYouGoText
 	waitbutton
+Randomizer_GameCornerCuboneSpecies2::
 	writebyte CUBONE
 	special Special_GameCornerPrizeMonCheckDex
+Randomizer_GameCornerCuboneSpecies3::
 	givepoke CUBONE, 15
 	takecoins 800
-	jump .loop
+	jump GGCPMVloop
 
-.wobbuffet:
+GGCPMVwobbuffet:
 	checkcoins 1500
 	if_equal $2, GoldenrodGameCornerPrizeVendor_NotEnoughCoinsScript
 	checkcode VAR_PARTYCOUNT
 	if_equal $6, GoldenrodGameCornerPrizeMonVendor_NoRoomForPrizeScript
+Randomizer_GameCornerWobbuffetSpecies1::
 	pokenamemem WOBBUFFET, $0
 	scall GoldenrodGameCornerPrizeVendor_ConfirmPurchaseScript
 	iffalse GoldenrodGameCornerPrizeVendor_CancelPurchaseScript
@@ -224,25 +231,30 @@ GoldenrodGameCornerPrizeMonVendorScript:
 	playsound SFX_TRANSACTION
 	writetext GoldenrodGameCornerPrizeVendorHereYouGoText
 	waitbutton
+Randomizer_GameCornerWobbuffetSpecies2::
 	writebyte WOBBUFFET
 	special Special_GameCornerPrizeMonCheckDex
+Randomizer_GameCornerWobbuffetSpecies3::
 	givepoke WOBBUFFET, 15
 	takecoins 1500
-	jump .loop
+	jump GGCPMVloop
 
 
-.MenuDataHeader:
+GGCPMVMenuDataHeader:
 	db $40 ; flags
 	db 02, 00 ; start coords
 	db 11, 17 ; end coords
-	dw .MenuData2
+	dw GGCPMVMenuData2
 	db 1 ; default option
 
-.MenuData2:
+GGCPMVMenuData2:
 	db $80 ; flags
 	db 4 ; items
+Randomizer_GameCornerAbraName::
 	db "ABRA        100@"
+Randomizer_GameCornerCuboneName::
 	db "CUBONE      800@"
+Randomizer_GameCornerWobbuffetName::
 	db "WOBBUFFET  1500@"
 	db "CANCEL@"
 

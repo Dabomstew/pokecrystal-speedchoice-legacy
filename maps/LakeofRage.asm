@@ -164,8 +164,10 @@ GyaradosScript_0x70063:
 	opentext
 	writetext UnknownText_0x703cb
 	pause 15
+Randomizer_RedGyaradosCry::
 	cry GYARADOS
 	closetext
+Randomizer_RedGyaradosSpecies::
 	loadwildmon GYARADOS, 30
 	writecode VAR_BATTLETYPE, BATTLETYPE_SHINY
 	startbattle

@@ -14,53 +14,54 @@ OfficerScript_0x69d37:
 	faceplayer
 	opentext
 	checkevent EVENT_GOT_HP_UP_FROM_RANDY
-	iftrue .gothpup
+	iftrue GGOfficergothpup
 	checkevent EVENT_GAVE_KENYA
-	iftrue .questcomplete
+	iftrue GGOfficerquestcomplete
 	checkevent EVENT_GOT_KENYA
-	iftrue .alreadyhavekenya
+	iftrue GGOfficeralreadyhavekenya
 	writetext UnknownText_0x69ddd
 	yesorno
-	iffalse .refused
+	iffalse GGOfficerrefused
 	writetext UnknownText_0x69e48
 	buttonsound
 	waitsfx
 	checkcode VAR_PARTYCOUNT
-	if_equal PARTY_LENGTH, .partyfull
+	if_equal PARTY_LENGTH, GGOfficerpartyfull
 	writetext UnknownText_0x69eb8
 	playsound SFX_KEY_ITEM
 	waitsfx
+Randomizer_KenyaSpecies::
 	givepoke SPEAROW, 10, NO_ITEM, 1, GiftSpearowName, GiftSpearowOTName
 	givepokeitem GiftSpearowMail
 	setevent EVENT_GOT_KENYA
-.alreadyhavekenya:
+GGOfficeralreadyhavekenya:
 	writetext UnknownText_0x69ed6
 	waitbutton
 	closetext
 	end
 
-.partyfull:
+GGOfficerpartyfull:
 	writetext UnknownText_0x69f56
 	waitbutton
 	closetext
 	end
 
-.refused:
+GGOfficerrefused:
 	writetext UnknownText_0x69f74
 	waitbutton
 	closetext
 	end
 
-.questcomplete:
+GGOfficerquestcomplete:
 	writetext UnknownText_0x69f8b
 	buttonsound
 	verbosegiveitem HP_UP
-	iffalse .bagfull
+	iffalse GGOfficerbagfull
 	setevent EVENT_GOT_HP_UP_FROM_RANDY
-.gothpup:
+GGOfficergothpup:
 	writetext UnknownText_0x69fd9
 	waitbutton
-.bagfull:
+GGOfficerbagfull:
 	closetext
 	end
 

@@ -26,6 +26,7 @@ BillsHouseBill:
 	writetext UnknownText_0x54dae
 	playsound SFX_CAUGHT_MON
 	waitsfx
+Randomizer_EeveeSpecies::
 	givepoke EEVEE, 20
 	setevent EVENT_GOT_EEVEE
 	writetext UnknownText_0x54dc1

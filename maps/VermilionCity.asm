@@ -54,9 +54,11 @@ VermilionSnorlax:
 UnknownScript_0x1aa9ab:
 	writetext UnknownText_0x1aab84
 	pause 15
+Randomizer_SnorlaxCry::
 	cry SNORLAX
 	closetext
 	writecode VAR_BATTLETYPE, BATTLETYPE_FORCEITEM
+Randomizer_SnorlaxSpecies::
 	loadwildmon SNORLAX, 50
 	startbattle
 	disappear VERMILIONCITY_BIG_SNORLAX

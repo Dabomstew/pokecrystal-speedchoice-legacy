@@ -541,8 +541,10 @@ InitRoamMons: ; 2a2a0
 ; initialize wRoamMon structs
 
 ; species
+Randomizer_RaikouSpecies::
 	ld a, RAIKOU
 	ld [wRoamMon1Species], a
+Randomizer_EnteiSpecies::
 	ld a, ENTEI
 	ld [wRoamMon2Species], a
 ;	ld a, SUICUNE
