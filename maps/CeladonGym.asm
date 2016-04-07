@@ -156,7 +156,7 @@ UnknownText_0x72c96:
 	line "RAINBOWBADGE."
 	done
 
-UnknownText_0x72cb0:
+UnknownText_0x72cb0::
 	text "ERIKA: That was a"
 	line "delightful match."
 

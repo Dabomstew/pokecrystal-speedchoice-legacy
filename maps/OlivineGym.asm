@@ -152,7 +152,7 @@ UnknownText_0x9c393:
 	line "TM09."
 	done
 
-UnknownText_0x9c3a5:
+UnknownText_0x9c3a5::
 	text "…You could use"
 	line "that TM to teach"
 	cont "IRON TAIL."

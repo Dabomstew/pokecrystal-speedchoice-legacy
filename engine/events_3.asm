@@ -553,7 +553,7 @@ TreeMons: ; b82e8
 ; Structure:
 ;	db  %, species, level
 
-TreeMons1: ; b82fa
+TreeMons1:: ; b82fa
 	db 50, SPEAROW,    10
 	db 15, SPEAROW,    10
 	db 15, SPEAROW,    10

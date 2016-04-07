@@ -66,7 +66,7 @@ SandstormHouseWomanLoyalText:
 	line "your journey."
 	done
 
-SandstormHouseSandstormDescription:
+SandstormHouseSandstormDescription::
 	text "TM37 happens to be"
 	line "SANDSTORM."
 

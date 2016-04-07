@@ -825,7 +825,7 @@ TryEnemyFlee: ; 3c543
 	ret
 ; 3c59a
 
-FleeMons:
+FleeMons::
 
 SometimesFleeMons: ; 3c59a
 	db MAGNEMITE
@@ -6407,8 +6407,21 @@ LoadEnemyMon: ; 3e8eb
 ; Used by Red Gyarados at Lake of Rage
 	cp a, BATTLETYPE_SHINY
 	jr nz, .GenerateDVs
-
-	ld b, ATKDEFDV_SHINY ; $ea
+	
+	call BattleRandom
+	ld b, $2a ; correct defense + bit turned on for attack
+	bit 5, a
+	jr z, .checkDV2
+	set 4, b
+.checkDV2
+	bit 3, a
+	jr z, .checkDV3
+	set 6, b
+.checkDV3
+	bit 2, a
+	jr z, .doneShiny
+	set 7, b
+.doneShiny
 	ld c, SPDSPCDV_SHINY ; $aa
 	jr .UpdateDVs
 

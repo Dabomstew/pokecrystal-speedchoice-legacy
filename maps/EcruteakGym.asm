@@ -252,7 +252,7 @@ UnknownText_0x9a059:
 	line "this too."
 	done
 
-UnknownText_0x9a0ec:
+UnknownText_0x9a0ec::
 	text "It's SHADOW BALL."
 	line "It causes damage"
 

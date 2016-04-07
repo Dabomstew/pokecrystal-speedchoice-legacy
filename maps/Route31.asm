@@ -353,7 +353,7 @@ Text_Route31ReadingMail:
 	line "to have this!"
 	done
 
-Text_Route31DescribeNightmare:
+Text_Route31DescribeNightmare::
 	text "TM50 is NIGHTMARE."
 
 	para "It's a wicked move"

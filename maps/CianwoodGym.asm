@@ -217,7 +217,7 @@ UnknownText_0x9d84d:
 	line "too!"
 	done
 
-UnknownText_0x9d8da:
+UnknownText_0x9d8da::
 	text "That is DYNAMIC-"
 	line "PUNCH."
 

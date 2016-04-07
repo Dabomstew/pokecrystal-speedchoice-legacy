@@ -177,7 +177,7 @@ UnknownText_0x9d1b5:
 	line "TM13."
 	done
 
-UnknownText_0x9d1c7:
+UnknownText_0x9d1c7::
 	text "That there's"
 	line "SNORE."
 

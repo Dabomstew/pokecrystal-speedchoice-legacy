@@ -263,7 +263,7 @@ UnknownText_0x195feb:
 	line "SOULBADGE."
 	done
 
-UnknownText_0x196002:
+UnknownText_0x196002::
 	text "JANINE: You're so"
 	line "tough! I have a"
 	cont "special gift!"

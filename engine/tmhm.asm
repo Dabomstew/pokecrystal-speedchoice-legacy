@@ -45,7 +45,7 @@ GetTMHMMove: ; 1166a
 	ret
 ; 1167a
 
-TMHMMoves: ; 1167a
+TMHMMoves:: ; 1167a
 	db DYNAMICPUNCH
 	db HEADBUTT
 	db CURSE

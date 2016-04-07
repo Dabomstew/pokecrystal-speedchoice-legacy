@@ -862,7 +862,7 @@ Text_RoarIntro:
 	line "NOW TAKE THIS!"
 	done
 
-Text_RoarOutro:
+Text_RoarOutro::
 	text "WROOOAR!"
 	line "IT'S ROAR!"
 

@@ -102,7 +102,7 @@ UnknownText_0x62d9d:
 	line "this TM."
 	done
 
-UnknownText_0x62df6:
+UnknownText_0x62df6::
 	text "It's SWEET SCENT."
 
 	para "Use it wherever"

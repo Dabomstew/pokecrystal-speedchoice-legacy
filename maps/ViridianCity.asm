@@ -171,7 +171,7 @@ UnknownText_0x1a9cc4:
 	cont "this TM."
 	done
 
-UnknownText_0x1a9d86:
+UnknownText_0x1a9d86::
 	text "TM42 contains"
 	line "DREAM EATER…"
 

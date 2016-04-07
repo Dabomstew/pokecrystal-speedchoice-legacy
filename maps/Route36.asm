@@ -503,7 +503,7 @@ UnknownText_0x19451a:
 	line "TM08."
 	done
 
-UnknownText_0x19452c:
+UnknownText_0x19452c::
 	text "That happens to be"
 	line "ROCK SMASH."
 

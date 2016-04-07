@@ -407,33 +407,6 @@ PostCreditsSpawn: ; 5de7
 ; 5df0
 
 Continue_MobileAdapterMenu: ; 5df0
-	callba Mobile_AlwaysReturnNotCarry ; mobile check
-	ret nc
-
-; the rest of this stuff is never reached because
-; the previous function returns with carry not set
-	ld hl, wd479
-	bit 1, [hl]
-	ret nz
-	ld a, 5
-	ld [MusicFade], a
-	ld a, MUSIC_MOBILE_ADAPTER_MENU % $100
-	ld [MusicFadeIDLo], a
-	ld a, MUSIC_MOBILE_ADAPTER_MENU / $100
-	ld [MusicFadeIDHi], a
-	ld c, 20
-	call DelayFrames
-	ld c, $1
-	callba InitMobileProfile ; mobile
-	callba _SaveData
-	ld a, 8
-	ld [MusicFade], a
-	ld a, MUSIC_NONE % $100
-	ld [MusicFadeIDLo], a
-	ld a, MUSIC_NONE / $100
-	ld [MusicFadeIDHi], a
-	ld c, 35
-	call DelayFrames
 	ret
 ; 5e34
 
@@ -685,7 +658,7 @@ OakSpeech: ; 0x5f99
 	call PrintText
 	call RotateThreePalettesRight
 	call ClearTileMap
-
+Randomizer_IntroSpriteOffset::
 	ld a, WOOPER
 	ld [CurSpecies], a
 	ld [CurPartySpecies], a
@@ -746,6 +719,7 @@ OakText1: ; 0x6045
 OakText2: ; 0x604a
 	text_jump _OakText2
 	start_asm
+Randomizer_IntroCryOffset::
 	ld a, WOOPER
 	call PlayCry
 	call WaitSFX

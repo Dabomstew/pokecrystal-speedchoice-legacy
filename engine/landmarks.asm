@@ -49,7 +49,7 @@ endr
 ; 0x1ca8c3
 
 
-Landmarks: ; 0x1ca8c3
+Landmarks:: ; 0x1ca8c3
 
 landmark: MACRO
 	db \1, \2

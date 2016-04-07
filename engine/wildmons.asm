@@ -1055,7 +1055,7 @@ endr
 ; 2a5e9
 
 
-JohtoGrassWildMons: ; 0x2a5e9
+JohtoGrassWildMons:: ; 0x2a5e9
 INCLUDE "data/wild/johto_grass.asm"
 
 JohtoWaterWildMons: ; 0x2b11d

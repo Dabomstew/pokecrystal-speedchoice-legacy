@@ -428,7 +428,7 @@ GetTradeMonNames: ; fce1b
 ; fce58
 
 
-NPCTrades: ; fce58
+NPCTrades:: ; fce58
 npctrade: MACRO
 	db \1, \2, \3, \4 ; dialog set, requested mon, offered mon, nickname
 	db \5, \6 ; dvs

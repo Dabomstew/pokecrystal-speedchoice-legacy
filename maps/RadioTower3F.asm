@@ -221,7 +221,7 @@ UnknownText_0x5e7e2:
 	line "my appreciation."
 	done
 
-UnknownText_0x5e821:
+UnknownText_0x5e821::
 	text "It's SUNNY DAY."
 	line "It powers up fire-"
 	cont "type moves for a"

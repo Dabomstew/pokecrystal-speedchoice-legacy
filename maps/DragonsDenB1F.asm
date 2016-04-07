@@ -227,7 +227,7 @@ NotifyReceiveDragonbreath:
 	line "TM24."
 	done
 
-ClairText_DescribeDragonbreathDragonDen:
+ClairText_DescribeDragonbreathDragonDen::
 	text "That contains"
 	line "DRAGONBREATH."
 

@@ -252,7 +252,7 @@ UnknownText_0x5428b:
 	line "this too!"
 	done
 
-UnknownText_0x54302:
+UnknownText_0x54302::
 	text "It's ATTRACT!"
 	line "It makes full use"
 

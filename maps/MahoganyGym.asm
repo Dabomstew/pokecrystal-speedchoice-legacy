@@ -213,7 +213,7 @@ UnknownText_0x199d55:
 	line "a gift from me!"
 	done
 
-UnknownText_0x199def:
+UnknownText_0x199def::
 	text "That TM contains"
 	line "ICY WIND."
 

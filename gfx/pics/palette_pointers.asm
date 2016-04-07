@@ -1,4 +1,4 @@
-PokemonPalettes: ; a8ce
+PokemonPalettes:: ; a8ce
 
 ; 000
 	RGB 30, 22, 17

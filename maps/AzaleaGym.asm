@@ -205,7 +205,7 @@ BugsyText_HiveBadgeSpeech:
 	line "you to have this."
 	done
 
-BugsyText_FuryCutterSpeech:
+BugsyText_FuryCutterSpeech::
 	text "TM49 contains"
 	line "FURY CUTTER."
 

@@ -106,7 +106,7 @@ UnknownText_0x71ba3:
 	cont "take this--TM03!"
 	done
 
-UnknownText_0x71db3:
+UnknownText_0x71db3::
 	text "TM03 is CURSE."
 
 	para "It's a terrifying"

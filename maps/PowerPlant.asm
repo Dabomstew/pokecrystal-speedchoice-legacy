@@ -368,7 +368,7 @@ UnknownText_0x1893c4:
 	line "as a reward!"
 	done
 
-UnknownText_0x1893f4:
+UnknownText_0x1893f4::
 	text "MANAGER: TM07 is"
 	line "my ZAP CANNON."
 

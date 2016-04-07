@@ -238,7 +238,7 @@ BlackthornGymText_ReceivedTM24:
 	line "TM24."
 	done
 
-BlackthornGymClairText_DescribeTM24:
+BlackthornGymClairText_DescribeTM24::
 	text "That contains"
 	line "DRAGONBREATH."
 

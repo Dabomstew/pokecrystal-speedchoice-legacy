@@ -40,7 +40,7 @@ MrPsychicText1:
 	para "You wanted this!"
 	done
 
-MrPsychicText2:
+MrPsychicText2::
 	text "TM29 is PSYCHIC."
 
 	para "It may lower the"

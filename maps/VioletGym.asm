@@ -168,7 +168,7 @@ UnknownText_0x685c8:
 	line "too."
 	done
 
-UnknownText_0x68648:
+UnknownText_0x68648::
 	text "By using a TM, a"
 	line "#MON will"
 

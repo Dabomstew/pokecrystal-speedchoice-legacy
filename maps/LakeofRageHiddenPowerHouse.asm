@@ -49,7 +49,7 @@ HiddenPowerGuyText1:
 	line "Take this, child."
 	done
 
-HiddenPowerGuyText2:
+HiddenPowerGuyText2::
 	text "Do you see it? It"
 	line "is HIDDEN POWER!"
 

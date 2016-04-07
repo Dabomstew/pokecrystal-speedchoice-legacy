@@ -167,7 +167,9 @@ CyndaquilPokeBallScript:
 	iftrue LookAtElmPokeBallScript
 	spriteface ELMSLAB_ELM, DOWN
 	refreshscreen $0
+Randomizer_StarterCyndaquilOffset1::
 	pokepic CYNDAQUIL
+Randomizer_StarterCyndaquilOffset2::
 	cry CYNDAQUIL
 	waitbutton
 	closepokepic
@@ -180,11 +182,13 @@ CyndaquilPokeBallScript:
 	writetext ChoseStarterText
 	buttonsound
 	waitsfx
+Randomizer_StarterCyndaquilOffset3::
 	pokenamemem CYNDAQUIL, $0
 	writetext ReceivedStarterText
 	playsound SFX_CAUGHT_MON
 	waitsfx
 	buttonsound
+Randomizer_StarterCyndaquilOffset4::
 	givepoke CYNDAQUIL, 5, BERRY
 	closetext
 	checkcode VAR_FACING
@@ -197,7 +201,9 @@ TotodilePokeBallScript:
 	iftrue LookAtElmPokeBallScript
 	spriteface ELMSLAB_ELM, DOWN
 	refreshscreen $0
+Randomizer_StarterTotodileOffset1::
 	pokepic TOTODILE
+Randomizer_StarterTotodileOffset2::
 	cry TOTODILE
 	waitbutton
 	closepokepic
@@ -210,11 +216,13 @@ TotodilePokeBallScript:
 	writetext ChoseStarterText
 	buttonsound
 	waitsfx
+Randomizer_StarterTotodileOffset3::
 	pokenamemem TOTODILE, $0
 	writetext ReceivedStarterText
 	playsound SFX_CAUGHT_MON
 	waitsfx
 	buttonsound
+Randomizer_StarterTotodileOffset4::
 	givepoke TOTODILE, 5, BERRY
 	closetext
 	applymovement PLAYER, AfterTotodileMovement
@@ -225,7 +233,9 @@ ChikoritaPokeBallScript:
 	iftrue LookAtElmPokeBallScript
 	spriteface ELMSLAB_ELM, DOWN
 	refreshscreen $0
+Randomizer_StarterChikoritaOffset1::
 	pokepic CHIKORITA
+Randomizer_StarterChikoritaOffset2::
 	cry CHIKORITA
 	waitbutton
 	closepokepic
@@ -238,11 +248,13 @@ ChikoritaPokeBallScript:
 	writetext ChoseStarterText
 	buttonsound
 	waitsfx
+Randomizer_StarterChikoritaOffset3::
 	pokenamemem CHIKORITA, $0
 	writetext ReceivedStarterText
 	playsound SFX_CAUGHT_MON
 	waitsfx
 	buttonsound
+Randomizer_StarterChikoritaOffset4::
 	givepoke CHIKORITA, 5, BERRY
 	closetext
 	applymovement PLAYER, AfterChikoritaMovement

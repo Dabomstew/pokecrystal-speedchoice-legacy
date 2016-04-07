@@ -253,7 +253,7 @@ TryWildEncounter_BugContest: ; 97d64
 	ret
 ; 97d87
 
-ContestMons: ; 97d87
+ContestMons:: ; 97d87
 	;   %, species,   min, max
 	db 20, CATERPIE,    7, 18
 	db 20, WEEDLE,      7, 18

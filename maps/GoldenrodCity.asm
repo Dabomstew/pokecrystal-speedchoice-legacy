@@ -59,73 +59,77 @@ MoveTutor:
 	opentext
 	writetext UnknownText_0x199042
 	yesorno
-	iffalse .Refused
+	iffalse GCMTRefused
 	special Special_DisplayCoinCaseBalance
 	writetext UnknownText_0x199090
 	yesorno
-	iffalse .Refused2
+	iffalse GCMTRefused2
 	checkcoins 4000
-	if_equal $2, .NotEnoughMoney
+	if_equal $2, GCMTNotEnoughMoney
 	writetext UnknownText_0x1990ce
-	loadmenudata .MoveMenuDataHeader
+	loadmenudata GCMTMoveMenuDataHeader
 	verticalmenu
 	closewindow
-	if_equal $1, .Flamethrower
-	if_equal $2, .Thunderbolt
-	if_equal $3, .IceBeam
-	jump .Incompatible
+	if_equal $1, GCMTFlamethrower
+	if_equal $2, GCMTThunderbolt
+	if_equal $3, GCMTIceBeam
+	jump GCMTIncompatible
 
-.Flamethrower:
+GCMTFlamethrower:
 	writebyte $1
 	writetext UnknownText_0x1991cf
 	special Special_MoveTutor
-	if_equal $0, .TeachMove
-	jump .Incompatible
+	if_equal $0, GCMTTeachMove
+	jump GCMTIncompatible
 
-.Thunderbolt:
+GCMTThunderbolt:
 	writebyte $2
 	writetext UnknownText_0x1991cf
 	special Special_MoveTutor
-	if_equal $0, .TeachMove
-	jump .Incompatible
+	if_equal $0, GCMTTeachMove
+	jump GCMTIncompatible
 
-.IceBeam:
+GCMTIceBeam:
 	writebyte $3
 	writetext UnknownText_0x1991cf
 	special Special_MoveTutor
-	if_equal $0, .TeachMove
-	jump .Incompatible
+	if_equal $0, GCMTTeachMove
+	jump GCMTIncompatible
 
 
-.MoveMenuDataHeader:
+GCMTMoveMenuDataHeader:
 	db $40 ; flags
 	db 02, 00 ; start coords
 	db 11, 15 ; end coords
-	dw .MenuData2
+Randomizer_MoveTutorMenuOffset::
+	dw GCMTMenuData2
 	db 1 ; default option
 
-.MenuData2:
+GCMTMenuData2:
 	db $80 ; flags
 	db 4 ; items
 	db "FLAMETHROWER@"
 	db "THUNDERBOLT@"
 	db "ICE BEAM@"
 	db "CANCEL@"
+	
+Randomizer_MoveTutorMenuNewSpace::
+	ds $100
 
 
-.Refused:
+GCMTRefused:
 	writetext UnknownText_0x1990b4
 	waitbutton
 	closetext
 	end
 
-.Refused2:
+GCMTRefused2:
 	writetext UnknownText_0x199107
 	waitbutton
 	closetext
 	end
 
-.TeachMove:
+GCMTTeachMove:
 	writetext UnknownText_0x19913a
 	buttonsound
 	takecoins 4000
@@ -136,13 +140,13 @@ MoveTutor:
 	waitbutton
 	closetext
 	checkcode VAR_FACING
-	if_equal LEFT, .WalkAroundPlayer
+	if_equal LEFT, GCMTWalkAroundPlayer
 	applymovement GOLDENRODCITY_POKEFAN_M2, MovementData_0x198a5f
-	jump .GoInside
+	jump GCMTGoInside
 
-.WalkAroundPlayer:
+GCMTWalkAroundPlayer:
 	applymovement GOLDENRODCITY_POKEFAN_M2, MovementData_0x198a63
-.GoInside:
+GCMTGoInside:
 	playsound SFX_ENTER_DOOR
 	disappear GOLDENRODCITY_POKEFAN_M2
 	clearevent EVENT_GOLDENROD_GAME_CORNER_MOVE_TUTOR
@@ -150,13 +154,13 @@ MoveTutor:
 	waitsfx
 	end
 
-.Incompatible:
+GCMTIncompatible:
 	writetext UnknownText_0x1991a4
 	waitbutton
 	closetext
 	end
 
-.NotEnoughMoney:
+GCMTNotEnoughMoney:
 	writetext UnknownText_0x1991ac
 	waitbutton
 	closetext
