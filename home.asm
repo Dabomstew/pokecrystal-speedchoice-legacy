@@ -485,26 +485,32 @@ CompareLong:: ; 31e4
 ClearBGPalettes:: ; 31f3
 	call ClearPalettes
 WaitBGMap:: ; 31f6
+	ld a, [hCGB]
+	and a
+	jr z, WaitBGMapSlow
+WaitBGMap1Fast::
 ; Tell VBlank to update BG Map
 	ld a, 1 ; BG Map 0 tiles
 	ld [hBGMapMode], a
+WaitBGMapFast::
 ; Wait for it to do its magic
-	ld c, 4
-	call DelayFrames
-	ret
+	ld a, [rLY]
+	cp $7E
+	call nc, DelayFrame
+	jp DelayFrame
 ; 3200
 
 WaitBGMap2:: ; 0x3200
 	ld a, [hCGB]
 	and a
-	jr z, .bg0
+	jr z, WaitBGMapSlow
 
 	ld a, 2
 	ld [hBGMapMode], a
-	ld c, 4
-	call DelayFrames
+	call WaitBGMapFast
+	jr WaitBGMap1Fast
 
-.bg0
+WaitBGMapSlow::
 	ld a, 1
 	ld [hBGMapMode], a
 	ld c, 4
@@ -521,40 +527,23 @@ IsCGB:: ; 3218
 ApplyTilemap:: ; 321c
 	ld a, [hCGB]
 	and a
-	jr z, .dmg
+	jr z, WaitBGMapSlow
 
 	ld a, [wSpriteUpdatesEnabled]
-	cp 0
-	jr z, .dmg
+	and a
+	jr z, WaitBGMap
 
 	ld a, 1
 	ld [hBGMapMode], a
 	jr LoadEDTile
-
-.dmg
-; WaitBGMap
-	ld a, 1
-	ld [hBGMapMode], a
-	ld c, 4
-	call DelayFrames
-	ret
 ; 3238
 
 Function3238:: ; 3238
 	ld a, [hCGB]
 	and a
-	jr z, WaitBGMap
+	jr z, WaitBGMapSlow
 
 LoadEDTile:: ; 323d
-	jr .LoadEDTile
-; 323f
-
-; XXX
-	callba Function104000
-	ret
-; 3246
-
-.LoadEDTile ; 3246
 	ld a, [hBGMapMode]
 	push af
 	xor a
@@ -564,27 +553,19 @@ LoadEDTile:: ; 323d
 	push af
 	xor a
 	ld [hMapAnims], a
-
-.wait
+	
+; why lol
 	ld a, [rLY]
-	cp $7f
-	jr c, .wait
-
-	di
-	ld a, 1 ; BANK(VTiles3)
-	ld [rVBK], a
-	hlcoord 0, 0, AttrMap
-	call .StackPointerMagic
-	ld a, 0 ; BANK(VTiles0)
-	ld [rVBK], a
-	hlcoord 0, 0
-	call .StackPointerMagic
-
-.wait2
-	ld a, [rLY]
-	cp $7f
-	jr c, .wait2
-	ei
+	cp $7e
+	call nc, DelayFrame
+	
+	ld a, 1
+	ld [hBGMapMode], a
+	call DelayFrame
+	
+	ld a, 2
+	ld [hBGMapMode], a
+	call DelayFrame
 
 	pop af
 	ld [hMapAnims], a
@@ -592,48 +573,6 @@ LoadEDTile:: ; 323d
 	ld [hBGMapMode], a
 	ret
 ; 327b
-
-.StackPointerMagic ; 327b
-; Copy all tiles to VBGMap
-	ld [hSPBuffer], sp
-	ld sp, hl
-	ld a, [hBGMapAddress + 1]
-	ld h, a
-	ld l, 0
-	ld a, SCREEN_HEIGHT
-	ld [hTilesPerCycle], a
-	ld b, 1 << 1 ; not in v/hblank
-	ld c, rSTAT % $100
-
-.loop
-rept SCREEN_WIDTH / 2
-	pop de
-; if in v/hblank, wait until not in v/hblank
-.loop\@
-	ld a, [$ff00+c]
-	and b
-	jr nz, .loop\@
-; load BGMap0
-	ld [hl], e
-	inc l
-	ld [hl], d
-	inc l
-endr
-
-	ld de, $20 - SCREEN_WIDTH
-	add hl, de
-	ld a, [hTilesPerCycle]
-	dec a
-	ld [hTilesPerCycle], a
-	jr nz, .loop
-
-	ld a, [hSPBuffer]
-	ld l, a
-	ld a, [hSPBuffer + 1]
-	ld h, a
-	ld sp, hl
-	ret
-; 32f9
 
 SetPalettes:: ; 32f9
 ; Inits the Palettes
