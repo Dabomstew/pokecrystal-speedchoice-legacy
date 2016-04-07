@@ -24,10 +24,6 @@ Serve2bppRequest:: ; 1769
 	ld a, [Requested2bpp]
 	and a
 	ret z
-	
-	ld a, [hFFC6]
-	and a
-	ret z
 
 ; Back out if we're too far into VBlank
 	ld a, [rLY]
@@ -42,12 +38,8 @@ Serve2bppRequest@VBlank:: ; 1778
 	ld a, [Requested2bpp]
 	and a
 	ret z
-	
-	ld a, [hFFC6]
-	and a
-	ret z
 _Serve2bppRequest::
-; Copy [Requested2bpp] 2bpp tiles from [Requested2bppSource] to [Requested2bppDest], but no more than 16
+; Copy [Requested2bpp] 2bpp tiles from [Requested2bppSource] to [Requested2bppDest], but no more than 15
 
 	ld [hSPBuffer], sp
 	
@@ -66,7 +58,7 @@ _Serve2bppRequest::
 	
 ; # tiles to copy
 	ld a, [Requested2bpp]
-	cp $10 + 1
+	cp $0f + 1
 	jr nc, .short
 	ld b, a
 
@@ -74,29 +66,53 @@ _Serve2bppRequest::
 	ld [Requested2bpp], a
 	jr .next
 .short
-	ld b, 16
-	sub 16
+	ld b, 15
+	sub 15
 	ld [Requested2bpp], a
+; quarters left over from hblank?
+	ld a, [Requested2bppQuarters]
+	cp 4
+	jr z, .next
+	dec b
 	
 .next
 
-rept 7
+rept 4
 	pop de
 	ld [hl], e
 	inc l
 	ld [hl], d
 	inc l
-endr
 	pop de
 	ld [hl], e
 	inc l
 	ld [hl], d
-
 	inc hl
+endr
 	dec b
 	jr nz, .next
-
-
+	
+	ld a, [Requested2bppQuarters]
+	cp 4
+	jr z, .done
+	
+	ld b, a
+.finalizeloop
+	pop de
+	ld [hl], e
+	inc l
+	ld [hl], d
+	inc l
+	pop de
+	ld [hl], e
+	inc l
+	ld [hl], d
+	inc hl
+	dec b
+	jr nz, .finalizeloop
+	ld a, 4
+	ld [Requested2bppQuarters], a
+.done
 	ld a, l
 	ld [Requested2bppDest], a
 	ld a, h

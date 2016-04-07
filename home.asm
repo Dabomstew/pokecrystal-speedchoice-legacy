@@ -1927,6 +1927,9 @@ Function3b0c:: ; 3b0c
 	ld [Requested2bppDest], a
 	ld a, LYOverrides / $100
 	ld [Requested2bppDest + 1], a
+	
+	ld a, 4
+	ld [Requested2bppQuarters], a
 
 	ld a, (LYOverridesEnd - LYOverrides) / 16
 	ld [Requested2bpp], a
