@@ -294,37 +294,12 @@ BattleAnimFunction_12: ; cd15c (33:515c)
 	ret
 
 .three
-	call BattleAnim_IncAnonJumptableIndex
-	ld a, $9
-	call ReinitBattleAnimFrameset
-	ld hl, BATTLEANIMSTRUCT_0F
-	add hl, bc
-	ld [hl], $0
-	inc hl
-	ld [hl], $10
 .four
-	ld hl, BATTLEANIMSTRUCT_0F
-	add hl, bc
-	ld a, [hli]
-	ld d, [hl]
-	call BattleAnim_Sine
-	ld hl, BATTLEANIMSTRUCT_YOFFSET
-	add hl, bc
-	ld [hl], a
-	ld hl, BATTLEANIMSTRUCT_0F
+	ld hl, BATTLEANIMSTRUCT_YCOORD
 	add hl, bc
 	ld a, [hl]
-	dec a
+	sub 3
 	ld [hl], a
-	and $1f
-	ret nz
-	ld [hl], a
-	ld hl, BATTLEANIMSTRUCT_10
-	add hl, bc
-	ld a, [hl]
-	sub $4
-	ld [hl], a
-	ret nz
 	ld a, $c
 	call ReinitBattleAnimFrameset
 	call BattleAnim_IncAnonJumptableIndex

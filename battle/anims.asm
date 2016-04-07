@@ -385,22 +385,15 @@ BattleAnim_ThrowPokeBall
 	anim_wait 8
 	anim_incobj  2
 	anim_wait 16
-	anim_sound 0, 1, SFX_CHANGE_DEX_MODE
-	anim_incobj  1
-	anim_wait 32
-	anim_sound 0, 1, SFX_BALL_BOUNCE
-	anim_wait 32
-	anim_wait 32
-	anim_wait 32
-	anim_wait 8
-	anim_setvar $0
+	anim_setobj $1, $4
+	anim_wait 20
 .Loop
-	anim_wait 48
 	anim_checkpokeball
 	anim_jumpvar $1, .Click
 	anim_jumpvar $2, .BreakFree
 	anim_incobj  1
 	anim_sound 0, 1, SFX_BALL_WIGGLE
+	anim_wait 48
 	anim_jump .Loop
 ; c93bc
 
