@@ -65,11 +65,12 @@ _Serve2bppRequest::
 
 	xor a
 	ld [Requested2bpp], a
-	jr .next
+	jr .quarters
 .short
 	sub b
 	ld [Requested2bpp], a
 ; quarters left over from hblank?
+.quarters
 	ld a, [Requested2bppQuarters]
 	cp 4
 	jr z, .next
