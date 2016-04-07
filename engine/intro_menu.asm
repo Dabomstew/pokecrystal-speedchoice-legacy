@@ -1364,15 +1364,17 @@ Data63ca: ; 63ca
 ; 63e2
 
 Copyright: ; 63e2
+	call DisableLCD
 	call ClearTileMap
 	call LoadFontsExtra
 	ld de, CopyrightGFX
 	ld hl, VTiles2 tile $60
 	lb bc, BANK(CopyrightGFX), $1d
-	call Request2bpp
+	call Get2bpp
 	hlcoord 2, 7
 	ld de, CopyrightString
-	jp PlaceString
+	call PlaceString
+	jp EnableLCD
 ; 63fd
 
 CopyrightString: ; 63fd

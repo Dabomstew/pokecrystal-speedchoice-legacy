@@ -57,8 +57,9 @@ _Serve2bppRequest::
 	ld l, a
 	
 ; # tiles to copy
+	ld b, 15 ; max tiles
 	ld a, [Requested2bpp]
-	cp $0f + 1
+	cp b
 	jr nc, .short
 	ld b, a
 
@@ -66,8 +67,7 @@ _Serve2bppRequest::
 	ld [Requested2bpp], a
 	jr .next
 .short
-	ld b, 15
-	sub 15
+	sub b
 	ld [Requested2bpp], a
 ; quarters left over from hblank?
 	ld a, [Requested2bppQuarters]
@@ -406,6 +406,8 @@ UpdateBGMapAligned::
 	and a
 	jp nz, UpdateBGMapUnaligned
 .skipAlignmentCheck
+	xor a
+	ld [hBGMapThird], a
 	; BG Map 0
 	dec b ; 1
 	jr z, .Tiles

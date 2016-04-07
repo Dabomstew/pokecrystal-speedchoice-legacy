@@ -160,7 +160,12 @@ Init:: ; 17d
 
 	xor a
 	ld [rIF], a
+	ld a, [hCGB]
+	and a
 	ld a, %1111 ; VBlank, LCDStat, Timer, Serial interrupts
+	jr nz, .writeIE
+	ld a, %0001 ; Everything but LCDStat
+.writeIE
 	ld [rIE], a
 	ei
 

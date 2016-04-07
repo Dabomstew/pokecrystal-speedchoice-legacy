@@ -3,6 +3,8 @@ GBCOnlyScreen: ; 4ea82
 	ld a, [hCGB]
 	and a
 	ret nz
+	
+	call DisableLCD
 
 	ld de, MUSIC_NONE
 	call PlayMusic
@@ -11,13 +13,7 @@ GBCOnlyScreen: ; 4ea82
 
 	ld hl, GBCOnlyGFX
 	ld de, $d000
-	ld a, [rSVBK]
-	push af
-	ld a, 0
-	ld [rSVBK], a
 	call Decompress
-	pop af
-	ld [rSVBK], a
 
 	ld de, $d000
 	ld hl, VTiles2
@@ -30,6 +26,8 @@ GBCOnlyScreen: ; 4ea82
 	call Get1bpp
 
 	call DrawGBCOnlyScreen
+	
+	call EnableLCD
 
 	call WaitBGMap
 
