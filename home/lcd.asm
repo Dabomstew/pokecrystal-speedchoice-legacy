@@ -4,9 +4,17 @@ LCD:: ; 552
 	push af
 	ld a, [hFFC6]
 	and a
-	jr z, LCDTryServeRequests
+	jr nz, LYOverrideCode
+	ld a, [Requested2bpp]
+	and a
+	jr nz, _Serve2bppRequestHB
+	ld a, [Requested1bpp]
+	and a
+	jr nz, _Serve1bppRequestHB
+	jr LCDDone
 
 ; At this point it's assumed we're in WRAM bank 5!
+LYOverrideCode::
 	push bc
 	ld a, [rLY]
 	ld c, a
@@ -22,17 +30,9 @@ LCD:: ; 552
 LCDDone::
 	pop af
 	reti
-	
-LCDTryServeRequests
-	call _Serve2bppRequestHB
-	call _Serve1bppRequestHB
-	jr LCDDone
 ; 568
 
 _Serve2bppRequestHB:
-	ld a, [Requested2bpp]
-	and a
-	ret z
 	push hl
 	push de
 	ld hl, Requested2bppDest
@@ -46,7 +46,7 @@ _Serve2bppRequestHB:
 ; Destination
 	ld a, [rSTAT]
 	and $3
-	jr nz, .notDoneTile
+	jr nz, RequestDone
 rept 3
 	ld a, [hli]
 	ld [de], a
@@ -54,6 +54,10 @@ rept 3
 endr
 	ld a, [hli]
 	ld [de], a
+	ld a, [rSTAT]
+	and a
+	cp 3
+	jr z, RequestDone
 	inc de
 	ld a, e
 	ld [Requested2bppDest], a
@@ -65,19 +69,16 @@ endr
 	ld [Requested2bppSource + 1], a
 	ld hl, Requested2bppQuarters
 	dec [hl]
-	jr nz, .notDoneTile
+	jr nz, RequestDone
 	ld [hl], 4
 	ld hl, Requested2bpp
 	dec [hl]
-.notDoneTile
+RequestDone::
 	pop de
 	pop hl
-	ret
+	jr LCDDone
 	
 _Serve1bppRequestHB:
-	ld a, [Requested1bpp]
-	and a
-	ret z
 	push hl
 	push de
 	ld hl, Requested1bppDest
@@ -90,7 +91,7 @@ _Serve1bppRequestHB:
 	ld l, a
 	ld a, [rSTAT]
 	and $3
-	jr nz, .notDoneTile
+	jr nz, RequestDone
 ; Destination
 	ld a, [hli]
 	ld [de], a
@@ -101,6 +102,10 @@ _Serve1bppRequestHB:
 	ld [de], a
 	inc e
 	ld [de], a
+	ld a, [rSTAT]
+	and a
+	cp 3
+	jr z, RequestDone
 	inc de
 	ld a, e
 	ld [Requested1bppDest], a
@@ -112,14 +117,11 @@ _Serve1bppRequestHB:
 	ld [Requested1bppSource + 1], a
 	ld hl, Requested1bppQuarters
 	dec [hl]
-	jr nz, .notDoneTile
+	jr nz, RequestDone
 	ld [hl], 4
 	ld hl, Requested1bpp
 	dec [hl]
-.notDoneTile
-	pop de
-	pop hl
-	ret
+	jr RequestDone
 	
 
 
