@@ -26,6 +26,7 @@ ROCKETLESS EQU 0
 SPINNERHELL EQU 2 ; this isn't actually just a bit, but both spinner hell modes have bit 2 set
 MAX_RANGE EQU 3
 NERF_HMS EQU 4
+BETTER_ENC_SLOTS EQU 5
 
 ; GBPrinter:
 PRINT_LIGHTEST EQU $00

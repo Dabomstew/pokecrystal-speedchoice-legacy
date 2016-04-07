@@ -7,6 +7,8 @@ PermaOptionsString:: ; e4241
 	db "        :<LNBRK>"
 	db "NERF HMs<LNBRK>"
 	db "        :<LNBRK>"
+	db "BETTER ENC. SLOTS<LNBRK>"
+	db "        :<LNBRK>"
 	db "DONE@"
 ; e42d6
 
@@ -15,6 +17,7 @@ PermaOptionsPointers::
 	dw Options_Spinners
 	dw Options_TrainerVision
 	dw Options_NerfHMs
+	dw Options_BetterEncSlots
 	dw Options_Cancel
 
 Options_Rocketless:
@@ -179,4 +182,37 @@ Options_NerfHMs:
 	db "NO @"
 .On
 	db "YES@"
+	
+Options_BetterEncSlots:
+	ld hl, PermanentOptions
+	ld a, [hJoyPressed]
+	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
+	jr nz, .ButtonPressed
+	bit BETTER_ENC_SLOTS, [hl]
+	jr z, .ToggleOff
+	jr nz, .ToggleOn
+
+.ButtonPressed
+	bit BETTER_ENC_SLOTS, [hl]
+	jr z, .ToggleOn
+
+.ToggleOff
+	res BETTER_ENC_SLOTS, [hl]
+	ld de, .Off
+	jr .Display
+
+.ToggleOn
+	set BETTER_ENC_SLOTS, [hl]
+	ld de, .On
+
+.Display
+	hlcoord 11, 11
+	call PlaceString
+	and a
+	ret
+	
+.Off
+	db "OFF@"
+.On
+	db "ON @"
 

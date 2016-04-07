@@ -283,70 +283,101 @@ endr
 	ld d, [hl]
 	inc hl
 	ld e, [hl]
-	sla c
-	rl b
-
-	ld h, d
-	ld l, e
-rept 2
-	add hl, de
-endr
+	; new stuff
+	sla e
+	rl d
+	sla e
+	rl d ; de = MaxHP*4
+	
+	ld h, b
+	ld l, c
+	add hl, bc
+	add hl, bc ; hl = CurrHP*3
+	
+	ld a, e
+	sub l
+	ld e, a
+	ld a, d
+	sbc h
+	ld d, a ; de = MaxHP*4-CurrHP*3
+	
+	ld hl, EnemyMonMaxHP
+	ld b, [hl]
+	inc hl
+	ld c, [hl] ; bc = MaxHP
+	
+	ld h, b
+	ld l, c
+	add hl, bc
+	add hl, bc ; hl = MaxHP*3
+	
+	ld a, d
+	cp h
+	jr c, .noCapValue
+	jr nz, .capValue
+	
+	ld a, e
+	cp l
+	jr c, .noCapValue
+	jr z, .noCapValue
+	
+.capValue
 	ld d, h
 	ld e, l
-	ld a, d
-	and a
-	jr z, .okay_1
-
-	srl d
-	rr e
-	srl d
-	rr e
-	srl b
-	rr c
-	srl b
-	rr c
-
-	ld a, c
-	and a
-	jr nz, .okay_1
-	ld c, $1
-.okay_1
-	ld b, e
-
-	push bc
-	ld a, b
-	sub c
+	
+.noCapValue
+	push hl
+	ld a, [$ffb6]
 	ld [hMultiplier], a
+	ld a, d
+	ld [$ffb5], a
+	ld a, e
+	ld [$ffb6], a
 	xor a
-	ld [hDividend + 0], a
-	ld [hMultiplicand + 0], a
-	ld [hMultiplicand + 1], a
+	ld [hProduct], a
+	ld [hMultiplicand], a
 	call Multiply
-	pop bc
+	pop hl
+	
+.divisorCheck
+	ld a, h
+	and a
+	jr z, .realDivide
+	
+	srl h
+	rr l
+	srl h
+	rr l
 
-	ld a, b
-	ld [hDivisor], a
+	push hl
+	ld a, $4
+	ld [hMultiplier], a
 	ld b, $4
 	call Divide
-
+	pop hl
+	jr .divisorCheck
+	
+.realDivide
+	ld a, l
+	ld [hMultiplier], a
+	ld b, $4
+	call Divide
+; modifications done
 	ld a, [hQuotient + 2]
 	and a
 	jr nz, .statuscheck
 	ld a, 1
 .statuscheck
-; This routine is buggy. It was intended that SLP and FRZ provide a higher
-; catch rate than BRN/PSN/PAR, which in turn provide a higher catch rate than
-; no status effect at all. But instead, it makes BRN/PSN/PAR provide no
-; benefit.
+; fixed
 	ld b, a
 	ld a, [EnemyMonStatus]
-	and 1 << FRZ | SLP
-	ld c, 10
-	jr nz, .addstatus
 	and a
-	ld c, 5
-	jr nz, .addstatus
 	ld c, 0
+	jr z, .addstatus
+	and 1 << FRZ | SLP
+	ld c, 5
+	jr z, .addstatus
+	ld c, 10
 .addstatus
 	ld a, b
 	add c

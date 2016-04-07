@@ -75,6 +75,7 @@ _Serve2bppRequest::
 	cp 4
 	jr z, .next
 	dec b
+	jr z, .handlequarters
 	
 .next
 
@@ -92,11 +93,11 @@ rept 4
 endr
 	dec b
 	jr nz, .next
-	
+
 	ld a, [Requested2bppQuarters]
 	cp 4
 	jr z, .done
-	
+.handlequarters	
 	ld b, a
 .finalizeloop
 	pop de

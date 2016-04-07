@@ -61,6 +61,13 @@ PrintPermaOptionsToScreen::
 	ld de, NerfedHMsText
 .placeHMSetting
 	call PlaceStringIncHL
+; encs
+	bit BETTER_ENC_SLOTS, b
+	ld de, NormalEncountersText
+	jr z, .placeEncSetting
+	ld de, BetterEncountersText
+.placeEncSetting
+	call PlaceStringIncHL
 ; checkvalue stuff
 	coord hl, 1, 11
 	ld [hl], "C"
@@ -119,7 +126,7 @@ PrintHexValueXoredWithOptions::
 	jr c, .printNumber
 	jr .printHex
 .printNumber
-	add "0"
+	add "G"
 .doPrint
 	ld [hli], a
 	ret
@@ -149,6 +156,10 @@ NormalHMsText::
 	db "NORMAL HMs@"
 NerfedHMsText::
 	db "NERFED HMs@"
+NormalEncountersText::
+	db "NORMAL ENC SLOTS@"
+BetterEncountersText::
+	db "BETTER ENC SLOTS@"
 
 
 PleaseSetOptions::

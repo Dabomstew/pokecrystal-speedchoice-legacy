@@ -488,12 +488,17 @@ WaitBGMap:: ; 31f6
 	ld a, [hCGB]
 	and a
 	jr z, WaitBGMapSlow
+	
+	
 WaitBGMap1Fast::
 ; Tell VBlank to update BG Map
 	ld a, 1 ; BG Map 0 tiles
 	ld [hBGMapMode], a
 WaitBGMapFast::
 ; Wait for it to do its magic
+	ld a, [hBGMapAddress]
+	and a
+	jr nz, WaitBGMapSlowInner
 	ld a, [rLY]
 	cp $7E
 	call nc, DelayFrame
@@ -513,6 +518,7 @@ WaitBGMap2:: ; 0x3200
 WaitBGMapSlow::
 	ld a, 1
 	ld [hBGMapMode], a
+WaitBGMapSlowInner::
 	ld c, 4
 	call DelayFrames
 	ret

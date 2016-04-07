@@ -1,6 +1,6 @@
 PermaOptionsMenu:
 	push de
-	ld a, 4
+	ld a, 5
 	ld hl, PermaOptionsString
 	ld de, PermaOptionsPointers
 	call StoreOptionsMenuConfig

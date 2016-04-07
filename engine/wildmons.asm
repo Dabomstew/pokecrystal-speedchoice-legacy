@@ -280,7 +280,11 @@ endr
 	ld a, [TimeOfDay]
 	ld bc, $e
 	call AddNTimes
+	ld a, [PermanentOptions]
+	bit BETTER_ENC_SLOTS, a
 	ld de, .GrassMonTable
+	jr z, .watermon
+	ld de, .BetterGrassMonTable
 
 .watermon
 ; hl contains the pointer to the wild mon data, let's save that to the stack
@@ -367,6 +371,15 @@ endr
 	db 95,  $8 ;  5% chance
 	db 99,  $a ;  4% chance
 	db 100, $c ;  1% chance
+	
+.BetterGrassMonTable: ; 2a1cb
+	db 20,  $0 ; 20% chance
+	db 40,  $2 ; 20% chance
+	db 55,  $4 ; 15% chance
+	db 70,  $6 ; 15% chance
+	db 80,  $8 ; 10% chance
+	db 90,  $a ; 10% chance
+	db 100, $c ; 10% chance
 ; 2a1d9
 
 .WaterMonTable: ; 2a1d9

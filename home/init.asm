@@ -164,7 +164,7 @@ Init:: ; 17d
 	and a
 	ld a, %1111 ; VBlank, LCDStat, Timer, Serial interrupts
 	jr nz, .writeIE
-	ld a, %0001 ; Everything but LCDStat
+	ld a, %0001 ; Only VBlank
 .writeIE
 	ld [rIE], a
 	ei
