@@ -27,6 +27,8 @@ SPINNERHELL EQU 2 ; this isn't actually just a bit, but both spinner hell modes 
 MAX_RANGE EQU 3
 NERF_HMS EQU 4
 BETTER_ENC_SLOTS EQU 5
+DISABLE_GENDER EQU 6
+;FAST_HP_BARS EQU 7
 
 ; GBPrinter:
 PRINT_LIGHTEST EQU $00

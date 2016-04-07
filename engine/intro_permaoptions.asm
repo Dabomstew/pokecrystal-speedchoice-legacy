@@ -68,6 +68,13 @@ PrintPermaOptionsToScreen::
 	ld de, BetterEncountersText
 .placeEncSetting
 	call PlaceStringIncHL
+; gender
+	bit DISABLE_GENDER, b
+	ld de, ShowGenderText
+	jr z, .placeGenderSetting
+	ld de, HideGenderText
+.placeGenderSetting
+	call PlaceStringIncHL
 ; checkvalue stuff
 	coord hl, 1, 11
 	ld [hl], "C"
@@ -160,6 +167,10 @@ NormalEncountersText::
 	db "NORMAL ENC SLOTS@"
 BetterEncountersText::
 	db "BETTER ENC SLOTS@"
+ShowGenderText::
+	db "SHOW GENDER@"
+HideGenderText::
+	db "HIDE GENDER@"
 
 
 PleaseSetOptions::

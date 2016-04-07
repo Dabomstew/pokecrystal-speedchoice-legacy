@@ -251,19 +251,22 @@ WaitSFX:: ; 3c55
 .wait
 	ld hl, Channel5Flags
 	bit 0, [hl]
-	jr nz, .wait
+	jr nz, .dframe
 	ld hl, Channel6Flags
 	bit 0, [hl]
-	jr nz, .wait
+	jr nz, .dframe
 	ld hl, Channel7Flags
 	bit 0, [hl]
-	jr nz, .wait
+	jr nz, .dframe
 	ld hl, Channel8Flags
 	bit 0, [hl]
-	jr nz, .wait
+	jr nz, .dframe
 	
 	pop hl
 	ret
+.dframe
+	call DelayFrame
+	jr .wait
 ; 3c74
 
 IsSFXPlaying:: ; 3c74
@@ -311,12 +314,6 @@ VolumeOff:: ; 3ca3
 	ld [Volume], a
 	ret
 ; 3ca8
-
-Unused_FadeOutMusic:: ; 3ca8
-	ld a, 4
-	ld [MusicFade], a
-	ret
-; 3cae
 
 FadeInMusic:: ; 3cae
 	ld a, 4 | 1 << 7
@@ -501,43 +498,6 @@ GetMapMusic:: ; 3d97
 	call GetMapHeaderMusic
 	ret
 ; 3d9f
-
-Function3d9f:: ; 3d9f
-; Places a BCD number at the
-; upper center of the screen.
-; Unreferenced.
-	ld a, 4 * 8
-	ld [Sprites + 38 * 4], a
-	ld [Sprites + 39 * 4], a
-	ld a, 10 * 8
-	ld [Sprites + 38 * 4 + 1], a
-	ld a, 11 * 8
-	ld [Sprites + 39 * 4 + 1], a
-	xor a
-	ld [Sprites + 38 * 4 + 3], a
-	ld [Sprites + 39 * 4 + 3], a
-	ld a, [wc296]
-	cp 100
-	jr nc, .max
-	add 1
-	daa
-	ld b, a
-	swap a
-	and $f
-	add "0"
-	ld [Sprites + 38 * 4 + 2], a
-	ld a, b
-	and $f
-	add "0"
-	ld [Sprites + 39 * 4 + 2], a
-	ret
-
-.max
-	ld a, "9"
-	ld [Sprites + 38 * 4 + 2], a
-	ld [Sprites + 39 * 4 + 2], a
-	ret
-; 3dde
 
 CheckSFX:: ; 3dde
 ; Return carry if any SFX channels are active.

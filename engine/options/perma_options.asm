@@ -9,6 +9,8 @@ PermaOptionsString:: ; e4241
 	db "        :<LNBRK>"
 	db "BETTER ENC. SLOTS<LNBRK>"
 	db "        :<LNBRK>"
+	db "#MON GENDER<LNBRK>"
+	db "        :<LNBRK>"
 	db "DONE@"
 ; e42d6
 
@@ -18,6 +20,7 @@ PermaOptionsPointers::
 	dw Options_TrainerVision
 	dw Options_NerfHMs
 	dw Options_BetterEncSlots
+	dw Options_Gender
 	dw Options_Cancel
 
 Options_Rocketless:
@@ -215,4 +218,37 @@ Options_BetterEncSlots:
 	db "OFF@"
 .On
 	db "ON @"
+	
+Options_Gender:
+	ld hl, PermanentOptions
+	ld a, [hJoyPressed]
+	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
+	jr nz, .ButtonPressed
+	bit DISABLE_GENDER, [hl]
+	jr z, .ToggleOff
+	jr nz, .ToggleOn
+
+.ButtonPressed
+	bit DISABLE_GENDER, [hl]
+	jr z, .ToggleOn
+
+.ToggleOff
+	res DISABLE_GENDER, [hl]
+	ld de, .Off
+	jr .Display
+
+.ToggleOn
+	set DISABLE_GENDER, [hl]
+	ld de, .On
+
+.Display
+	hlcoord 11, 13
+	call PlaceString
+	and a
+	ret
+	
+.Off
+	db "SHOW@"
+.On
+	db "HIDE@"
 

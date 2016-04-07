@@ -9285,6 +9285,11 @@ GetGender: ; 50bdd
 ; Figure out what type of monster struct we're looking at.
 
 ; 0: PartyMon
+	push af
+	ld a, [PermanentOptions]
+	bit DISABLE_GENDER, a
+	jr nz, .AlwaysGenderless
+	pop af
 	ld hl, PartyMon1DVs
 	ld bc, PARTYMON_STRUCT_LENGTH
 	ld a, [MonType]
@@ -9379,7 +9384,11 @@ GetGender: ; 50bdd
 	ld a, 1
 	and a
 	ret
-
+	
+.AlwaysGenderless
+	pop af
+	ld a, 1
+; fallthrough
 .Genderless
 	scf
 	ret
