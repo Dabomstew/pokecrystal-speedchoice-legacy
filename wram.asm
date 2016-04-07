@@ -3044,6 +3044,10 @@ w3_dd68:: ds SCREEN_WIDTH * SCREEN_HEIGHT
 w3_dfec:: ds $10
 w3_dffc:: ds 4
 
+SECTION "Aligned Tile Map", WRAMX, BANK [4]
+AlignedTileMap:: ds $400
+
+
 SECTION "GBC Video", WRAMX, BANK [5]
 
 ; 8 4-color palettes

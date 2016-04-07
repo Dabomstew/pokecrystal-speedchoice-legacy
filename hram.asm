@@ -119,5 +119,6 @@ hDMATransfer       EQU $ffe8
 hMobile            EQU $ffe9
 hFFEA              EQU $ffea
 hClockResetTrigger EQU $ffeb
+hHasAlignedBGMap   EQU $ffec
 
 HRAM_END EQU $ffff

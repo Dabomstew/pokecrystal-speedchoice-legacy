@@ -233,6 +233,10 @@ WaitTop:: ; 163a
 UpdateBGMap:: ; 164c
 ; Update the BG Map, in thirds, from TileMap and AttrMap.
 
+	ld a, [hHasAlignedBGMap]
+	and a
+	jp nz, UpdateBGMapAligned
+UpdateBGMapUnaligned::
 	ld a, [hBGMapMode]
 	and a
 	ret z
@@ -244,7 +248,6 @@ UpdateBGMap:: ; 164c
 	jr z, .Attr
 
 ; BG Map 1
-	dec a
 
 	ld a, [hBGMapAddress]
 	ld l, a
@@ -390,7 +393,111 @@ endr
 	ret
 ; 170a
 
+UpdateBGMapAligned::
+	xor a
+	ld [hHasAlignedBGMap], a
+	ld a, [hBGMapMode]
+	and a
+	ret z
+	ld b, a
+	cp 3
+	jr nc, .skipAlignmentCheck
+	ld a, [hBGMapAddress]
+	and a
+	jp nz, UpdateBGMapUnaligned
+.skipAlignmentCheck
+	; BG Map 0
+	dec b ; 1
+	jr z, .Tiles
+	dec b ; 2
+	jr z, .Attr
 
+; BG Map 1
+
+	ld a, [hBGMapAddress]
+	ld l, a
+	ld a, [hBGMapAddress + 1]
+	ld h, a
+	push hl
+
+	xor a
+	ld [hBGMapAddress], a
+	ld a, VBGMap1 >> 8
+	ld [hBGMapAddress + 1], a
+
+	dec b
+	jr z, .bgMap1Tiles
+	dec b
+	call z, .Attr
+	jr .doneBGMap1
+.bgMap1Tiles
+	call .Tiles
+.doneBGMap1
+	pop hl
+	ld a, l
+	ld [hBGMapAddress], a
+	ld a, h
+	ld [hBGMapAddress + 1], a
+	ret
+
+
+.Attr
+	ld a, 1
+	ld [rVBK], a
+	call .Tiles
+	xor a
+	ld [rVBK], a
+	ret
+	
+.Tiles
+	ld a, [rSVBK]
+	push af
+	ld a, 4
+	ld [rSVBK], a
+	xor a
+	ld l, a
+	ld h, AlignedTileMap / $100
+	ld a, [hBGMapAddress + 1]
+	ld d, a
+	ld b, 18
+.hdmaLoop
+	ld a, h
+	ld [rHDMA1], a
+	ld a, l
+	ld [rHDMA2], a
+	ld [rHDMA4], a ; e and l are always the same
+	ld a, d
+	ld [rHDMA3], a
+	xor a ; value of 00 = $10 bytes
+	ld [rHDMA5], a
+; copy remaining 4 bytes manually
+	set 4, l ; +$10
+	ld e, l
+rept 3
+	ld a, [hli]
+	ld [de], a
+	inc e
+endr
+	; last tile
+	ld a, [hl]
+	ld [de], a
+	; done?
+	dec b
+	jr z, .done
+	; move to next row
+	ld a, BG_MAP_WIDTH - (SCREEN_WIDTH - 1)
+	add l
+	ld l, a
+	jr nc, .hdmaLoop
+	inc h
+	inc d
+	jr .hdmaLoop
+; done
+.done
+	pop af
+	ld [rSVBK], a
+	ret
+	
 AnimateTileset:: ; 17d3
 ; Only call during the first fifth of VBlank
 

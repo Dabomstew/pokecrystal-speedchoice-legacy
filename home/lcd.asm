@@ -11,6 +11,19 @@ LCD:: ; 552
 	ld a, [Requested1bpp]
 	and a
 	jr nz, _Serve1bppRequestHB
+	ld a, [hBGMapMode]
+	and a
+	jr z, LCDDone
+	ld a, [rLY]
+	cp $80
+	jr nz, LCDDone
+	push hl
+	push de
+	push bc
+	callba AlignTileMap
+	pop bc
+	pop de
+	pop hl
 	jr LCDDone
 
 ; At this point it's assumed we're in WRAM bank 5!
