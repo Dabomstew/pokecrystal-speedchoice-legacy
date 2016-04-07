@@ -107,6 +107,8 @@ Init:: ; 17d
 	rst Bankswitch
 
 	call LoadPushOAM
+	
+	callba Function9890
 
 	xor a
 	ld [hMapAnims], a
@@ -139,7 +141,7 @@ Init:: ; 17d
 	ld a, -1
 	ld [hLinkPlayerNumber], a
 
-	callba Function9890
+	
 
 	ld a, VBGMap1 / $100
 	ld [hBGMapAddress + 1], a

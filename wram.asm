@@ -1509,6 +1509,8 @@ wDaysSince:: ds 1
 wOptionsMenuCount:: ds 1
 wOptionsStringPtr:: ds 2
 wOptionsJumptablePtr:: ds 2
+Requested1bppQuarters:: ds 1
+Requested2bppQuarters:: ds 1
 
 wRAM0End:: ; cfd8
 

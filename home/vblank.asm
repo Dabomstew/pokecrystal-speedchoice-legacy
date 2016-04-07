@@ -105,8 +105,8 @@ VBlank0:: ; 2b1
 
 	; These have their own timing checks.
 
-	call Serve2bppRequest
-	call Serve1bppRequest
+	;call Serve2bppRequest
+	;call Serve1bppRequest
 	call AnimateTileset
 
 .done
@@ -191,7 +191,7 @@ VBlank1:: ; 337
 	jr c, .done
 
 	call UpdateBGMap
-	call Serve2bppRequest@VBlank
+	;call Serve2bppRequest@VBlank
 
 	call hPushOAM
 .done
@@ -281,7 +281,7 @@ VBlank3:: ; 396
 	jr c, .done
 
 	call UpdateBGMap
-	call Serve2bppRequest@VBlank
+	;call Serve2bppRequest@VBlank
 
 	call hPushOAM
 .done
@@ -337,7 +337,7 @@ VBlank4:: ; 3df
 	ld [hROMBankBackup], a
 
 	call UpdateBGMap
-	call Serve2bppRequest
+	;call Serve2bppRequest
 
 	call hPushOAM
 
@@ -376,7 +376,7 @@ VBlank5:: ; 400
 	jr c, .done
 
 	call UpdateBGMap
-	call Serve2bppRequest
+	;call Serve2bppRequest
 .done
 
 	xor a
@@ -424,8 +424,8 @@ VBlank6:: ; 436
 	call UpdateCGBPals
 	jr c, .done
 
-	call Serve2bppRequest
-	call Serve1bppRequest
+	;call Serve2bppRequest
+	;call Serve1bppRequest
 	call DMATransfer
 .done
 

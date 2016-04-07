@@ -231,22 +231,6 @@ Request2bpp:: ; eba
 	push af
 	ld a, b
 	rst Bankswitch
-
-	ld a, [hTilesPerCycle]
-	push af
-	ld a, $8
-	ld [hTilesPerCycle], a
-
-	ld a, [wLinkMode]
-	cp LINK_MOBILE
-	jr nz, .NotMobile
-	ld a, [hMobile]
-	and a
-	jr nz, .NotMobile
-	ld a, $6
-	ld [hTilesPerCycle], a
-
-.NotMobile
 	ld a, e
 	ld [Requested2bppSource], a
 	ld a, d
@@ -255,21 +239,16 @@ Request2bpp:: ; eba
 	ld [Requested2bppDest], a
 	ld a, h
 	ld [Requested2bppDest + 1], a
-.loop
+	ld a, 4
+	ld [Requested2bppQuarters], a
 	ld a, c
-	ld hl, hTilesPerCycle
-	cp [hl]
-	jr nc, .iterate
-
 	ld [Requested2bpp], a
 .wait
-	call DelayFrame
+	halt
+	nop
 	ld a, [Requested2bpp]
 	and a
 	jr nz, .wait
-
-	pop af
-	ld [hTilesPerCycle], a
 
 	pop af
 	rst Bankswitch
@@ -277,26 +256,10 @@ Request2bpp:: ; eba
 	pop af
 	ld [hBGMapMode], a
 	ret
-
-.iterate
-	ld a, [hTilesPerCycle]
-	ld [Requested2bpp], a
-
-.wait2
-	call DelayFrame
-	ld a, [Requested2bpp]
-	and a
-	jr nz, .wait2
-
-	ld a, c
-	ld hl, hTilesPerCycle
-	sub [hl]
-	ld c, a
-	jr .loop
 ; f1e
 
 
-Request1bpp:: ; f1e
+Request1bpp:: ; eba
 ; Load 1bpp at b:de to occupy c tiles of hl.
 	ld a, [hBGMapMode]
 	push af
@@ -307,22 +270,6 @@ Request1bpp:: ; f1e
 	push af
 	ld a, b
 	rst Bankswitch
-
-	ld a, [hTilesPerCycle]
-	push af
-
-	ld a, $8
-	ld [hTilesPerCycle], a
-	ld a, [wLinkMode]
-	cp LINK_MOBILE
-	jr nz, .NotMobile
-	ld a, [hMobile]
-	and a
-	jr nz, .NotMobile
-	ld a, $6
-	ld [hTilesPerCycle], a
-
-.NotMobile
 	ld a, e
 	ld [Requested1bppSource], a
 	ld a, d
@@ -331,21 +278,16 @@ Request1bpp:: ; f1e
 	ld [Requested1bppDest], a
 	ld a, h
 	ld [Requested1bppDest + 1], a
-.loop
+	ld a, 4
+	ld [Requested1bppQuarters], a
 	ld a, c
-	ld hl, hTilesPerCycle
-	cp [hl]
-	jr nc, .iterate
-
 	ld [Requested1bpp], a
 .wait
-	call DelayFrame
+	halt
+	nop
 	ld a, [Requested1bpp]
 	and a
 	jr nz, .wait
-
-	pop af
-	ld [hTilesPerCycle], a
 
 	pop af
 	rst Bankswitch
@@ -353,23 +295,6 @@ Request1bpp:: ; f1e
 	pop af
 	ld [hBGMapMode], a
 	ret
-
-.iterate
-	ld a, [hTilesPerCycle]
-	ld [Requested1bpp], a
-
-.wait2
-	call DelayFrame
-	ld a, [Requested1bpp]
-	and a
-	jr nz, .wait2
-
-	ld a, c
-	ld hl, hTilesPerCycle
-	sub [hl]
-	ld c, a
-	jr .loop
-; f82
 
 
 Get2bpp:: ; f82
