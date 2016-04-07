@@ -317,8 +317,17 @@ Credits_UpdateGFXRequestPath: ; 109964 (42:5964)
 Credits_RequestGFX: ; 10997b (42:597b)
 	xor a
 	ld [hBGMapMode], a
+	ld a, $4
+	ld [Requested2bppQuarters], a
 	ld a, $8
 	ld [Requested2bpp], a
+; force the correct rom bank
+.haltloop
+	halt
+	nop
+	ld a, [Requested2bppSize]
+	and a
+	jr nz, .haltloop
 	jp Credits_Next
 
 Credits_LYOverride: ; 109986 (42:5986)

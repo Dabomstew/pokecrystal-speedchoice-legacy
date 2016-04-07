@@ -18,6 +18,99 @@ DMATransfer:: ; 15d8
 	ret
 ; 15e3
 
+Serve2bppRequest:: ; 1769
+; Only call during the first fifth of VBlank
+
+	ld a, [Requested2bpp]
+	and a
+	ret z
+	
+	ld a, [hFFC6]
+	and a
+	ret z
+
+; Back out if we're too far into VBlank
+	ld a, [rLY]
+	cp 144
+	ret c
+	cp 146
+	ret nc
+	jr _Serve2bppRequest
+
+Serve2bppRequest@VBlank:: ; 1778
+
+	ld a, [Requested2bpp]
+	and a
+	ret z
+	
+	ld a, [hFFC6]
+	and a
+	ret z
+_Serve2bppRequest::
+; Copy [Requested2bpp] 2bpp tiles from [Requested2bppSource] to [Requested2bppDest], but no more than 16
+
+	ld [hSPBuffer], sp
+	
+; Source
+	ld hl, Requested2bppSource
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld sp, hl
+	
+; Destination
+	ld hl, Requested2bppDest
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	
+; # tiles to copy
+	ld a, [Requested2bpp]
+	cp $10 + 1
+	jr nc, .short
+	ld b, a
+
+	xor a
+	ld [Requested2bpp], a
+	jr .next
+.short
+	ld b, 16
+	sub 16
+	ld [Requested2bpp], a
+	
+.next
+
+rept 7
+	pop de
+	ld [hl], e
+	inc l
+	ld [hl], d
+	inc l
+endr
+	pop de
+	ld [hl], e
+	inc l
+	ld [hl], d
+
+	inc hl
+	dec b
+	jr nz, .next
+
+
+	ld a, l
+	ld [Requested2bppDest], a
+	ld a, h
+	ld [Requested2bppDest + 1], a
+
+	ld [Requested2bppSource], sp
+
+	ld a, [hSPBuffer]
+	ld l, a
+	ld a, [hSPBuffer + 1]
+	ld h, a
+	ld sp, hl
+	ret
+
 
 UpdateBGMapBuffer:: ; 15e3
 ; Copy [hFFDC] 16x8 tiles from BGMapBuffer

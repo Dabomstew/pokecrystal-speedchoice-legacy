@@ -123,7 +123,20 @@ _Serve1bppRequestHB:
 	dec [hl]
 	jr RequestDone
 	
-
+Wait2bpp::
+	ld a, [hFFC6]
+	push af
+	xor a
+	ld [hFFC6], a
+.loop
+	halt
+	nop
+	ld a, [Requested2bpp]
+	and a
+	jr nz, .loop
+	pop af
+	ld [hFFC6], a
+	ret
 
 DisableLCD:: ; 568
 ; Turn the LCD off

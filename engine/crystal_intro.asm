@@ -1997,7 +1997,15 @@ Intro_RustleGrass: ; e546d (39:546d)
 	ld a, (VTiles2 tile $09) / $100
 	ld [Requested2bppDest + 1], a
 	ld a, 4
+	ld [Requested2bppQuarters], a
 	ld [Requested2bppSize], a
+; force the correct rom bank
+.haltloop
+	halt
+	nop
+	ld a, [Requested2bppSize]
+	and a
+	jr nz, .haltloop
 	ret
 ; e5496 (39:5496)
 
