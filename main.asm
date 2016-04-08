@@ -11630,3 +11630,6 @@ INCLUDE "engine/align_tile_map.asm"
 SECTION "bwxp", ROMX
 INCLUDE "bwxp/core.asm"
 
+SECTION "rbsfx", ROMX
+INCLUDE "audio/rbsfx/get_item1_1.asm"
+

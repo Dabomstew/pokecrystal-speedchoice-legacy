@@ -209,4 +209,7 @@
 	dba Sfx_TwoPcBeeps
 	dba Sfx_4NoteDitty
 	dba Sfx_Twinkle
+	
+; ported from pokered-crysaudio
+	dba SFX_Get_Item1_1
 ; e94e9

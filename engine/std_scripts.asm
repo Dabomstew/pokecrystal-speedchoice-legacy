@@ -1781,7 +1781,7 @@ GymStatue2Script:
 ReceiveItemScript: ; 0xbcdb9
 	waitsfx
 	farwritetext ReceivedItemText
-	playsound SFX_ITEM
+	playsound SFX_RB_GETITEM_1
 	waitsfx
 	end
 ; 0xbcdc3
