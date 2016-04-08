@@ -1,4 +1,4 @@
-BWXP_EXPAdderHook::
+BWXP_EXPAddition::
 ; copy back yield to multiplier fields
     ld a, [(EnemyMonMoves) + 2]
     ld [hProduct + 3], a
@@ -31,13 +31,11 @@ BWXP_EXPAdderHook::
     ld a, [hProduct + 1]
     adc d
     ld [hl], a
-    jr nc, .done
+    ret nc
 ; maxed exp, set it to FFFFFF
     ld a, $ff
     ld [hli], a
     ld [hli], a
     ld [hl], a
+	ret
 
-.done
-    jp BWXP_EXPAdderReturnPoint
-    

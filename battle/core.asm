@@ -6409,19 +6409,9 @@ LoadEnemyMon: ; 3e8eb
 	jr nz, .GenerateDVs
 	
 	call BattleRandom
-	ld b, $2a ; correct defense + bit turned on for attack
-	bit 5, a
-	jr z, .checkDV2
-	set 4, b
-.checkDV2
-	bit 3, a
-	jr z, .checkDV3
-	set 6, b
-.checkDV3
-	bit 2, a
-	jr z, .doneShiny
-	set 7, b
-.doneShiny
+	and %11010000 ; ATK DV bits we're allowed to change
+	or  %00101010 ; correct defense ($a) + compulsory bit turned on for attack
+	ld b, a
 	ld c, SPDSPCDV_SHINY ; $aa
 	jr .UpdateDVs
 
@@ -7395,17 +7385,17 @@ GiveExperiencePoints: ; 3ee3b
 	bit 0, a
 	ret nz
 
-	call EXPCalcEvenlyDivideExpAmongParticipants
+	call .EvenlyDivideExpAmongParticipants
 	xor a
 	ld [CurPartyMon], a
 	ld bc, PartyMon1Species
 
-EXPCalcloop
+.loop
 	ld hl, MON_HP
 	add hl, bc
 	ld a, [hli]
 	or [hl]
-	jp z, EXPCalcskip_stats ; fainted
+	jp z, .skip_stats ; fainted
 
 	push bc
 	ld hl, wBattleParticipantsNotFainted
@@ -7417,7 +7407,7 @@ EXPCalcloop
 	ld a, c
 	and a
 	pop bc
-	jp z, EXPCalcskip_stats
+	jp z, .skip_stats
 
 ; give stat exp
 	ld hl, MON_STAT_EXP + 1
@@ -7427,20 +7417,20 @@ EXPCalcloop
 	ld hl, EnemyMonBaseStats - 1
 	push bc
 	ld c, $5
-EXPCalcloop1
+.loop1
 	inc hl
 	ld a, [de]
 	add [hl]
 	ld [de], a
-	jr nc, EXPCalcokay1
+	jr nc, .okay1
 	dec de
 	ld a, [de]
 	inc a
-	jr z, EXPCalcnext
+	jr z, .next
 	ld [de], a
 	inc de
 
-EXPCalcokay1
+.okay1
 	push hl
 	push bc
 	ld a, MON_PKRUS
@@ -7449,33 +7439,40 @@ EXPCalcokay1
 	and a
 	pop bc
 	pop hl
-	jr z, EXPCalcskip
+	jr z, .skip
 	ld a, [de]
 	add [hl]
 	ld [de], a
-	jr nc, EXPCalcskip
+	jr nc, .skip
 	dec de
 	ld a, [de]
 	inc a
-	jr z, EXPCalcnext
+	jr z, .next
 	ld [de], a
 	inc de
-	jr EXPCalcskip
+	jr .skip
 
-EXPCalcnext
+.next
 	ld a, $ff
 	ld [de], a
 	inc de
 	ld [de], a
 
-EXPCalcskip
+.skip
 	inc de
 	inc de
 	dec c
-	jr nz, EXPCalcloop1
+	jr nz, .loop1
 	ld a, [PermanentOptions]
 	bit BW_XP, a
-	jp nz, BWXP_Bootstrap
+	jr z, .normalCalc
+	push hl
+    push bc
+	farcall BWXP_EXPCalculation
+    pop bc
+    pop hl
+	jr .BWXPReturnPoint
+.normalCalc
 	xor a
 	ld [hMultiplicand + 0], a
 	ld [hMultiplicand + 1], a
@@ -7494,18 +7491,18 @@ EXPCalcskip
 	add hl, bc
 	ld a, [PlayerID]
 	cp [hl]
-	jr nz, EXPCalcboosted
+	jr nz, .boosted
 	inc hl
 	ld a, [PlayerID + 1]
 	cp [hl]
 	ld a, $0
-	jr z, EXPCalcno_boost
+	jr z, .no_boost
 
-EXPCalcboosted
+.boosted
 	call BoostExp
 	ld a, $1
 
-EXPCalcno_boost
+.no_boost
 ; Boost experience for a Trainer Battle
 	ld [StringBuffer2 + 2], a
 	ld a, [wBattleMode]
@@ -7522,7 +7519,7 @@ EXPCalcno_boost
 	ld [StringBuffer2 + 1], a
 	ld a, [hQuotient + 1]
 	ld [StringBuffer2], a
-BWXP_MainReturnPoint::
+.BWXPReturnPoint
 	ld a, [CurPartyMon]
 	ld hl, PartyMonNicknames
 	call GetNick
@@ -7530,7 +7527,10 @@ BWXP_MainReturnPoint::
 	call BattleTextBox
 	ld a, [PermanentOptions]
 	bit BW_XP, a
-	jp nz, BWXP_EXPAdderHook
+	jr z, .NormalEXPAddition
+	call BWXP_EXPAddition
+	jr .skip2
+.NormalEXPAddition
 	ld a, [StringBuffer2 + 1]
 	ld [hQuotient + 2], a
 	ld a, [StringBuffer2]
@@ -7550,17 +7550,16 @@ BWXP_MainReturnPoint::
 	ld a, [hQuotient + 1]
 	adc d
 	ld [hl], a
-	jr nc, EXPCalcskip2
+	jr nc, .skip2
 	dec hl
 	inc [hl]
-	jr nz, EXPCalcskip2
+	jr nz, .skip2
 	ld a, $ff
 	ld [hli], a
 	ld [hli], a
 	ld [hl], a
 
-EXPCalcskip2
-BWXP_EXPAdderReturnPoint::
+.skip2
 	ld a, [CurPartyMon]
 	ld e, a
 	ld d, $0
@@ -7588,7 +7587,7 @@ BWXP_EXPAdderReturnPoint::
 	sbc c
 	ld a, [hl]
 	sbc b
-	jr c, EXPCalcnot_max_exp
+	jr c, .not_max_exp
 	ld a, b
 	ld [hli], a
 	ld a, c
@@ -7596,7 +7595,7 @@ BWXP_EXPAdderReturnPoint::
 	ld a, d
 	ld [hld], a
 
-EXPCalcnot_max_exp
+.not_max_exp
 	xor a ; PARTYMON
 	ld [MonType], a
 	predef CopyPkmnToTempMon
@@ -7606,9 +7605,9 @@ EXPCalcnot_max_exp
 	add hl, bc
 	ld a, [hl]
 	cp MAX_LEVEL
-	jp nc, EXPCalcskip_stats
+	jp nc, .skip_stats
 	cp d
-	jp z, EXPCalcskip_stats
+	jp z, .skip_stats
 ; <NICKNAME> grew to level ##!
 	ld [wTempLevel], a
 	ld a, [CurPartyLevel]
@@ -7658,7 +7657,7 @@ EXPCalcnot_max_exp
 	ld d, a
 	ld a, [CurPartyMon]
 	cp d
-	jr nz, EXPCalcskip_animation
+	jr nz, .skip_animation
 	ld de, BattleMonHP
 	ld a, [hli]
 	ld [de], a
@@ -7676,14 +7675,14 @@ EXPCalcnot_max_exp
 	ld [BattleMonLevel], a
 	ld a, [PlayerSubStatus5]
 	bit SUBSTATUS_TRANSFORMED, a
-	jr nz, EXPCalctransformed
+	jr nz, .transformed
 	ld hl, MON_ATK
 	add hl, bc
 	ld de, PlayerStats
 	ld bc, PARTYMON_STRUCT_LENGTH - MON_ATK
 	call CopyBytes
 
-EXPCalctransformed
+.transformed
 	xor a
 	ld [wd265], a
 	call ApplyStatLevelMultiplierOnAllStats
@@ -7695,13 +7694,13 @@ EXPCalctransformed
 	ld a, $1
 	ld [hBGMapMode], a
 
-EXPCalcskip_animation
+.skip_animation
 	callba LevelUpHappinessMod
 	ld a, [CurBattleMon]
 	ld b, a
 	ld a, [CurPartyMon]
 	cp b
-	jr z, EXPCalcskip_animation2
+	jr z, .skip_animation2
 	ld de, SFX_HIT_END_OF_EXP_BAR
 	call PlaySFX
 	call WaitSFX
@@ -7709,7 +7708,7 @@ EXPCalcskip_animation
 	call StdBattleTextBox
 	call LoadTileMapToTempTileMap
 
-EXPCalcskip_animation2
+.skip_animation2
 	xor a ; PARTYMON
 	ld [MonType], a
 	predef CopyPkmnToTempMon
@@ -7734,7 +7733,7 @@ EXPCalcskip_animation2
 	ld a, [wTempLevel]
 	ld b, a
 
-EXPCalclevel_loop
+.level_loop
 	inc b
 	ld a, b
 	ld [CurPartyLevel], a
@@ -7743,7 +7742,7 @@ EXPCalclevel_loop
 	pop bc
 	ld a, b
 	cp c
-	jr nz, EXPCalclevel_loop
+	jr nz, .level_loop
 	pop af
 	ld [CurPartyLevel], a
 	ld hl, EvolvableFlags
@@ -7754,37 +7753,37 @@ EXPCalclevel_loop
 	pop af
 	ld [CurPartyLevel], a
 
-EXPCalcskip_stats
+.skip_stats
 	ld a, [PartyCount]
 	ld b, a
 	ld a, [CurPartyMon]
 	inc a
 	cp b
-	jr z, EXPCalcdone
+	jr z, .done
 	ld [CurPartyMon], a
 	ld a, MON_SPECIES
 	call GetPartyParamLocation
 	ld b, h
 	ld c, l
-	jp EXPCalcloop
+	jp .loop
 
-EXPCalcdone
+.done
 	jp ResetBattleParticipants
 ; 3f0d4
 
-EXPCalcEvenlyDivideExpAmongParticipants
+.EvenlyDivideExpAmongParticipants
 ; count number of battle participants
 	ld a, [wBattleParticipantsNotFainted]
 	ld b, a
 	ld c, PARTY_LENGTH
 	ld d, 0
-EXPCalccount_loop
+.count_loop
 	xor a
 	srl b
 	adc d
 	ld d, a
 	dec c
-	jr nz, EXPCalccount_loop
+	jr nz, .count_loop
 	ld [EnemyMonHappiness], a ; needed for bwxp
 	cp 2
 	ret c
@@ -7792,7 +7791,7 @@ EXPCalccount_loop
 	ld [wd265], a
 	ld hl, EnemyMonBaseStats
 	ld c, EnemyMonEnd - EnemyMonBaseStats
-EXPCalccount_loop2
+.count_loop2
 	xor a
 	ld [hDividend + 0], a
 	ld a, [hl]
@@ -7804,7 +7803,7 @@ EXPCalccount_loop2
 	ld a, [hQuotient + 2]
 	ld [hli], a
 	dec c
-	jr nz, EXPCalccount_loop2
+	jr nz, .count_loop2
 	ret
 ; 3f106
 
@@ -9666,5 +9665,4 @@ BattleStartMessage: ; 3fc8b
 	ret
 ; 3fd26
 
-INCLUDE "bwxp/bootstrap.asm"
 INCLUDE "bwxp/expadder.asm"
