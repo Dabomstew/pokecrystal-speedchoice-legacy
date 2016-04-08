@@ -1,15 +1,15 @@
 BWXP_EXPAddition::
 ; copy back yield to multiplier fields
-    ld a, [(EnemyMonMoves) + 2]
+    ld a, [BWXP_SCRATCH5B_1 + 2]
     ld [hProduct + 3], a
-    ld a, [(EnemyMonMoves) + 1]
+    ld a, [BWXP_SCRATCH5B_1 + 1]
     ld [hProduct + 2], a
-    ld a, [(EnemyMonMoves)]
+    ld a, [BWXP_SCRATCH5B_1]
     ld [hProduct + 1], a
     
 ; functions from original code, call them as is
-    pop bc
     call AnimateExpBar
+	
     push bc
     call LoadTileMapToTempTileMap
     pop bc

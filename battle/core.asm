@@ -7528,6 +7528,7 @@ GiveExperiencePoints: ; 3ee3b
 	ld a, [PermanentOptions]
 	bit BW_XP, a
 	jr z, .NormalEXPAddition
+	pop bc ; value needed inside
 	call BWXP_EXPAddition
 	jr .skip2
 .NormalEXPAddition
@@ -7784,7 +7785,7 @@ GiveExperiencePoints: ; 3ee3b
 	ld d, a
 	dec c
 	jr nz, .count_loop
-	ld [EnemyMonHappiness], a ; needed for bwxp
+	ld [BWXP_SCRATCH1B], a ; needed for bwxp
 	cp 2
 	ret c
 
