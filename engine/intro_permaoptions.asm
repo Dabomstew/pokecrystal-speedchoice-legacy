@@ -75,6 +75,13 @@ PrintPermaOptionsToScreen::
 	ld de, HideGenderText
 .placeGenderSetting
 	call PlaceStringIncHL
+; bwxp
+	bit BW_XP, b
+	ld de, NormalEXPText
+	jr z, .placeEXPSetting
+	ld de, BWEXPText
+.placeEXPSetting
+	call PlaceStringIncHL
 ; checkvalue stuff
 	coord hl, 1, 11
 	ld [hl], "C"
@@ -171,6 +178,10 @@ ShowGenderText::
 	db "SHOW GENDER@"
 HideGenderText::
 	db "HIDE GENDER@"
+NormalEXPText::
+	db "NORMAL EXP@"
+BWEXPText::
+	db "B/W EXP@"
 
 
 PleaseSetOptions::
