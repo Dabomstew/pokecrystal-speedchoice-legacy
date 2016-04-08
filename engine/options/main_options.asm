@@ -125,26 +125,16 @@ GetTextSpeed: ; e4346
 
 Options_BattleScene: ; e4365
 	ld hl, Options
-	ld a, [hJoyPressed]
 	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
-	jr nz, .ButtonPressed
-	bit BATTLE_SCENE, [hl]
-	jr z, .ToggleOn
-	jr .ToggleOff
-
-.ButtonPressed
-	bit BATTLE_SCENE, [hl]
-	jr z, .ToggleOff
-	
-.ToggleOn
-	res BATTLE_SCENE, [hl]
+	ld a, [hl]
+	jr z, .GetText
+	xor (1 << BATTLE_SCENE)
+	ld [hl], a
+.GetText
+	bit BATTLE_SCENE, a
 	ld de, .On
-	jr .Display
-
-.ToggleOff
-	set BATTLE_SCENE, [hl]
+	jr z, .Display
 	ld de, .Off
-
 .Display
 	hlcoord 11, 7
 	call PlaceString
@@ -161,26 +151,16 @@ Options_BattleScene: ; e4365
 
 Options_BattleStyle: ; e43a0
 	ld hl, Options
-	ld a, [hJoyPressed]
 	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
-	jr nz, .ButtonPressed
-	bit BATTLE_SHIFT, [hl]
-	jr nz, .ToggleSet
-	jr .ToggleShift
-
-.ButtonPressed
-	bit BATTLE_SHIFT, [hl]
-	jr z, .ToggleSet
-
-.ToggleShift
-	res BATTLE_SHIFT, [hl]
+	ld a, [hl]
+	jr z, .GetText
+	xor (1 << BATTLE_SHIFT)
+	ld [hl], a
+.GetText
+	bit BATTLE_SHIFT, a
 	ld de, .Shift
-	jr .Display
-
-.ToggleSet
-	set BATTLE_SHIFT, [hl]
+	jr z, .Display
 	ld de, .Set
-
 .Display
 	hlcoord 11, 9
 	call PlaceString
@@ -197,32 +177,17 @@ Options_BattleStyle: ; e43a0
 
 Options_Sound: ; e43dd
 	ld hl, Options
-	ld a, [hJoyPressed]
 	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
-	jr nz, .ButtonPressed
-	bit STEREO, [hl]
-	jr nz, .ToggleStereo
-	jr .ToggleMono
-
-.ButtonPressed
-	bit STEREO, [hl]
-	jr z, .SetStereo
-
-.SetMono
-	res STEREO, [hl]
+	ld a, [hl]
+	jr z, .GetText
+	xor (1 << STEREO)
+	ld [hl], a
 	call RestartMapMusic
-
-.ToggleMono
+.GetText
+	bit STEREO, a
 	ld de, .Mono
-	jr .Display
-
-.SetStereo
-	set STEREO, [hl]
-	call RestartMapMusic
-
-.ToggleStereo
+	jr z, .Display
 	ld de, .Stereo
-
 .Display
 	hlcoord 11, 11
 	call PlaceString
@@ -238,26 +203,16 @@ Options_Sound: ; e43dd
 
 Options_HoldToMash: ; e44c1
 	ld hl, Options2
-	ld a, [hJoyPressed]
 	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
-	jr nz, .ButtonPressed
-	bit HOLD_TO_MASH, [hl]
-	jr z, .ToggleOff
-	jr nz, .ToggleOn
-
-.ButtonPressed
-	bit HOLD_TO_MASH, [hl]
-	jr z, .ToggleOn
-
-.ToggleOff
-	res HOLD_TO_MASH, [hl]
+	ld a, [hl]
+	jr z, .GetText
+	xor (1 << HOLD_TO_MASH)
+	ld [hl], a
+.GetText
+	bit HOLD_TO_MASH, a
 	ld de, .Off
-	jr .Display
-
-.ToggleOn
-	set HOLD_TO_MASH, [hl]
+	jr z, .Display
 	ld de, .On
-
 .Display
 	hlcoord 11, 5
 	call PlaceString
@@ -273,26 +228,16 @@ Options_HoldToMash: ; e44c1
 
 Options_MenuAccount: ; e44c1
 	ld hl, Options2
-	ld a, [hJoyPressed]
 	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
-	jr nz, .ButtonPressed
-	bit MENU_ACCOUNT, [hl]
-	jr nz, .ToggleOn
-	jr .ToggleOff
-
-.ButtonPressed
-	bit MENU_ACCOUNT, [hl]
-	jr z, .ToggleOn
-
-.ToggleOff
-	res MENU_ACCOUNT, [hl]
+	ld a, [hl]
+	jr z, .GetText
+	xor (1 << MENU_ACCOUNT)
+	ld [hl], a
+.GetText
+	bit MENU_ACCOUNT, a
 	ld de, .Off
-	jr .Display
-
-.ToggleOn
-	set MENU_ACCOUNT, [hl]
+	jr z, .Display
 	ld de, .On
-
 .Display
 	hlcoord 11, 13
 	call PlaceString
@@ -309,7 +254,6 @@ Options_MenuAccount: ; e44c1
 
 Options_Frame: ; e44fa
 	ld hl, TextBoxFrame
-	ld a, [hJoyPressed]
 	bit D_LEFT_F, a
 	jr nz, .LeftPressed
 	bit D_RIGHT_F, a

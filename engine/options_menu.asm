@@ -109,11 +109,11 @@ endr
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
+	ld a, [hJoyPressed] ; almost all options use this, so it's easier to just do it here
 	jp [hl] ; jump to the code of the current highlighted item
 ; e42e5
 
 Options_Cancel: ; e4520
-	ld a, [hJoyPressed]
 	and A_BUTTON
 	jr nz, .Exit
 	and a

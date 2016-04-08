@@ -28,26 +28,16 @@ PermaOptionsPointers::
 
 Options_Rocketless:
 	ld hl, PermanentOptions
-	ld a, [hJoyPressed]
 	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
-	jr nz, .ButtonPressed
-	bit ROCKETLESS, [hl]
-	jr z, .ToggleOff
-	jr nz, .ToggleOn
-
-.ButtonPressed
-	bit ROCKETLESS, [hl]
-	jr z, .ToggleOn
-
-.ToggleOff
-	res ROCKETLESS, [hl]
+	ld a, [hl]
+	jr z, .GetText
+	xor (1 << ROCKETLESS)
+	ld [hl], a
+.GetText
+	bit ROCKETLESS, a
 	ld de, .Off
-	jr .Display
-
-.ToggleOn
-	set ROCKETLESS, [hl]
+	jr z, .Display
 	ld de, .On
-
 .Display
 	hlcoord 11, 3
 	call PlaceString
@@ -61,7 +51,6 @@ Options_Rocketless:
 	
 Options_Spinners: ; e44fa
 	ld hl, PermanentOptions
-	ld a, [hJoyPressed]
 	bit D_LEFT_F, a
 	jr nz, .LeftPressed
 	bit D_RIGHT_F, a
@@ -125,26 +114,16 @@ endr
 
 Options_TrainerVision:
 	ld hl, PermanentOptions
-	ld a, [hJoyPressed]
 	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
-	jr nz, .ButtonPressed
-	bit MAX_RANGE, [hl]
-	jr z, .ToggleOff
-	jr nz, .ToggleOn
-
-.ButtonPressed
-	bit MAX_RANGE, [hl]
-	jr z, .ToggleOn
-
-.ToggleOff
-	res MAX_RANGE, [hl]
+	ld a, [hl]
+	jr z, .GetText
+	xor (1 << MAX_RANGE)
+	ld [hl], a
+.GetText
+	bit MAX_RANGE, a
 	ld de, .Off
-	jr .Display
-
-.ToggleOn
-	set MAX_RANGE, [hl]
+	jr z, .Display
 	ld de, .On
-
 .Display
 	hlcoord 11, 7
 	call PlaceString
@@ -158,26 +137,16 @@ Options_TrainerVision:
 	
 Options_NerfHMs:
 	ld hl, PermanentOptions
-	ld a, [hJoyPressed]
 	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
-	jr nz, .ButtonPressed
-	bit NERF_HMS, [hl]
-	jr z, .ToggleOff
-	jr nz, .ToggleOn
-
-.ButtonPressed
-	bit NERF_HMS, [hl]
-	jr z, .ToggleOn
-
-.ToggleOff
-	res NERF_HMS, [hl]
+	ld a, [hl]
+	jr z, .GetText
+	xor (1 << NERF_HMS)
+	ld [hl], a
+.GetText
+	bit NERF_HMS, a
 	ld de, .Off
-	jr .Display
-
-.ToggleOn
-	set NERF_HMS, [hl]
+	jr z, .Display
 	ld de, .On
-
 .Display
 	hlcoord 11, 9
 	call PlaceString
@@ -191,26 +160,16 @@ Options_NerfHMs:
 	
 Options_BetterEncSlots:
 	ld hl, PermanentOptions
-	ld a, [hJoyPressed]
 	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
-	jr nz, .ButtonPressed
-	bit BETTER_ENC_SLOTS, [hl]
-	jr z, .ToggleOff
-	jr nz, .ToggleOn
-
-.ButtonPressed
-	bit BETTER_ENC_SLOTS, [hl]
-	jr z, .ToggleOn
-
-.ToggleOff
-	res BETTER_ENC_SLOTS, [hl]
+	ld a, [hl]
+	jr z, .GetText
+	xor (1 << BETTER_ENC_SLOTS)
+	ld [hl], a
+.GetText
+	bit BETTER_ENC_SLOTS, a
 	ld de, .Off
-	jr .Display
-
-.ToggleOn
-	set BETTER_ENC_SLOTS, [hl]
+	jr z, .Display
 	ld de, .On
-
 .Display
 	hlcoord 11, 11
 	call PlaceString
@@ -224,26 +183,16 @@ Options_BetterEncSlots:
 	
 Options_Gender:
 	ld hl, PermanentOptions
-	ld a, [hJoyPressed]
 	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
-	jr nz, .ButtonPressed
-	bit DISABLE_GENDER, [hl]
-	jr z, .ToggleOff
-	jr nz, .ToggleOn
-
-.ButtonPressed
-	bit DISABLE_GENDER, [hl]
-	jr z, .ToggleOn
-
-.ToggleOff
-	res DISABLE_GENDER, [hl]
+	ld a, [hl]
+	jr z, .GetText
+	xor (1 << DISABLE_GENDER)
+	ld [hl], a
+.GetText
+	bit DISABLE_GENDER, a
 	ld de, .Off
-	jr .Display
-
-.ToggleOn
-	set DISABLE_GENDER, [hl]
+	jr z, .Display
 	ld de, .On
-
 .Display
 	hlcoord 11, 13
 	call PlaceString
@@ -257,26 +206,16 @@ Options_Gender:
 
 Options_BWXP:
 	ld hl, PermanentOptions
-	ld a, [hJoyPressed]
 	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
-	jr nz, .ButtonPressed
-	bit BW_XP, [hl]
-	jr z, .ToggleOff
-	jr nz, .ToggleOn
-
-.ButtonPressed
-	bit BW_XP, [hl]
-	jr z, .ToggleOn
-
-.ToggleOff
-	res BW_XP, [hl]
+	ld a, [hl]
+	jr z, .GetText
+	xor (1 << BW_XP)
+	ld [hl], a
+.GetText
+	bit BW_XP, a
 	ld de, .Off
-	jr .Display
-
-.ToggleOn
-	set BW_XP, [hl]
+	jr z, .Display
 	ld de, .On
-
 .Display
 	hlcoord 11, 15
 	call PlaceString
