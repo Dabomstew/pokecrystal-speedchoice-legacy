@@ -112,6 +112,21 @@ Text_StringBuffer2ExpPoints::
 	deciram StringBuffer2, 2, 4
 	text " EXP. Points!"
 	prompt
+	
+Text_BWXPBoostedGain::
+	text ""
+	line "a boosted"
+	cont "@"
+	deciram EnemyMonMoves, 3, 8
+	text " EXP!"
+	prompt
+
+Text_BWXPNormalGain::
+	text ""
+	line "@"
+	deciram EnemyMonMoves, 3, 8
+	text " EXP!"
+	prompt
 
 Text_GoPkmn::
 	text "Go! @@"

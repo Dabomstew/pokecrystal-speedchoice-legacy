@@ -47,14 +47,18 @@ hPastLeadingZeroes EQU $ffb3
 hStringCmpString1  EQU $ffb1
 hStringCmpString2  EQU $ffb5
 
+hBigDividend       EQU $ffb2
 hDividend          EQU $ffb3 ; length in b register, before 'call Divide' (max 4 bytes)
 hDivisor           EQU $ffb7 ; 1 byte long
 hQuotient          EQU $ffb4 ; result (3 bytes long)
 hRemainder         EQU $ffb7
 
+hBigMultiplicand   EQU $ffb2
 hMultiplicand      EQU $ffb4 ; 3 bytes long
 hMultiplier        EQU $ffb7 ; 1 byte long
 hProduct           EQU $ffb3 ; result (4 bytes long)
+
+hMultiplierStor    EQU $ffb9
 
 hMathBuffer        EQU $ffb8
 

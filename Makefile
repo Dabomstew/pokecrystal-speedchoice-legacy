@@ -27,38 +27,27 @@ misc/crystal_misc.o \
 text/common_text.o \
 gfx/pics.o
 
-crystal11_obj := $(crystal_obj:.o=11.o)
 
-
-roms := pokecrystal.gbc
+roms := crystal-speedchoice.gbc
 
 all: $(roms)
-crystal: pokecrystal.gbc
-crystal11: pokecrystal11.gbc
+crystal: crystal-speedchoice.gbc
 
 clean:
 	rm -f $(roms) $(crystal_obj) $(crystal11_obj) $(roms:.gbc=.map) $(roms:.gbc=.sym)
 
-compare: pokecrystal.gbc pokecrystal11.gbc
+compare: crystal-speedchoice.gbc
 	@$(MD5) roms.md5
 
 %.asm: ;
-
-%11.o: dep = $(shell $(includes) $(@D)/$*.asm)
-%11.o: %.asm $$(dep)
-	rgbasm -D CRYSTAL11 -o $@ $<
 
 %.o: dep = $(shell $(includes) $(@D)/$*.asm)
 %.o: %.asm $$(dep)
 	rgbasm -o $@ $<
 
-pokecrystal11.gbc: $(crystal11_obj)
-	rgblink -n pokecrystal11.sym -m pokecrystal11.map -o $@ $^
-	rgbfix -Cjv -i BYTE -k 01 -l 0x33 -m 0x10 -n 1 -p 0 -r 3 -t PM_CRYSTAL $@
-
-pokecrystal.gbc: $(crystal_obj)
-	rgblink -n pokecrystal.sym -m pokecrystal.map -o $@ $^
-	rgbfix -Cjv -i BYTE -k 01 -l 0x33 -m 0x10 -p 0 -r 3 -t PM_CRYSTAL $@
+crystal-speedchoice.gbc: $(crystal_obj)
+	rgblink -n crystal-speedchoice.sym -m crystal-speedchoice.map -o $@ $^
+	rgbfix -Cjv -i KAPB -k 01 -l 0x33 -m 0x10 -p 0 -n 0 -r 3 -t PM_CRYSTAL $@
 
 %.png: ;
 %.2bpp: %.png ; $(gfx) 2bpp $<

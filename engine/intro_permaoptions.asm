@@ -133,7 +133,7 @@ PrintHexValueXoredWithOptions::
 	jr c, .printNumber
 	jr .printHex
 .printNumber
-	add "G"
+	add "0"
 .doPrint
 	ld [hli], a
 	ret
