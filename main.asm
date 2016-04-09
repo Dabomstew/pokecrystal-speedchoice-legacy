@@ -11624,9 +11624,6 @@ SECTION "movenamesnerfed", ROMX
 MoveNamesNerfedHMs::
 INCLUDE "battle/move_names_nerfed.asm"
 
-SECTION "aligntilemap", ROMX
-INCLUDE "engine/align_tile_map.asm"
-
 SECTION "bwxp", ROMX
 INCLUDE "bwxp/core.asm"
 

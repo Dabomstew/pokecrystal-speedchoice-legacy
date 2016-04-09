@@ -20,7 +20,7 @@ LCD:: ; 552
 	push hl
 	push de
 	push bc
-	callba AlignTileMap
+	call AlignTileMap
 	pop bc
 	pop de
 	pop hl
