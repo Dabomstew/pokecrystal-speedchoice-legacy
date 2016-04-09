@@ -791,3 +791,13 @@ UnknownText_0x1c60d1::
 	para "Come back again in"
 	line "a while."
 	prompt
+
+_CantEscapeMenuText::
+	text "You can't do"
+	line "that here."
+	prompt
+
+_DoYouWantToEscapeMenuText::
+	text "Escape from"
+	cont "this location?"
+	done

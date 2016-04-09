@@ -182,6 +182,7 @@ StartMenu:: ; 125cd
 	dw StartMenu_Exit,     .ExitString,     .ExitDesc
 	dw StartMenu_Pokegear, .PokegearString, .PokegearDesc
 	dw StartMenu_Quit,     .QuitString,     .QuitDesc
+	dw StartMenu_Escape,   .EscapeString,   .EscapeDesc
 
 .PokedexString 	db "#DEX@"
 .PartyString   	db "#MON@"
@@ -192,6 +193,7 @@ StartMenu:: ; 125cd
 .ExitString    	db "EXIT@"
 .PokegearString	db $24, "GEAR@"
 .QuitString    	db "QUIT@"
+.EscapeString   db "ESCAPE@"
 
 .PokedexDesc  db   "#MON"
               next "database@"
@@ -219,6 +221,9 @@ StartMenu:: ; 125cd
 
 .QuitDesc     db   "Quit and"
               next "be judged.@"
+			  
+.EscapeDesc   db   "Escape from"
+			  next "trouble.@"
 
 
 .OpenMenu ; 127e5
@@ -332,7 +337,12 @@ endr
 
 	ld a, 5 ; option
 	call .AppendMenuList
+	ld a, [wPermanentOptions2]
+	bit ESCAPE_OPTION_F, a
 	ld a, 6 ; exit
+	jr z, .writeLastOption
+	ld a, 9 ; escape
+.writeLastOption
 	call .AppendMenuList
 	ld a, c
 	ld [MenuItemsList], a
@@ -406,6 +416,38 @@ endr
 	callba StartMenu_PrintBugContestStatus
 	ret
 ; 128ed
+
+StartMenu_Escape:
+	call GetMapPermission
+	call CheckIndoorMap
+	jr nz, .cantEscape
+	callba CheckForRangedTrainerOnMap
+	jr nc, .cantEscape
+	ld hl, .doYouWantToEscapeText
+	call StartMenuYesNo
+	jr c, .dontEscape
+	ld hl, wDigWarp
+	ld de, wNextWarp
+	ld bc, 3
+	call CopyBytes
+	ld a, BANK(digUsedEscapeRopeScript)
+	ld hl, digUsedEscapeRopeScript
+	call FarQueueScript
+	ld a, 4
+	ret
+.cantEscape
+	ld hl, .cantEscapeText
+	call MenuTextBox
+	call ExitMenu
+.dontEscape
+	ld a, 0
+	ret
+.cantEscapeText
+	text_jump _CantEscapeMenuText
+	db "@"
+.doYouWantToEscapeText
+	text_jump _DoYouWantToEscapeMenuText
+	db "@"
 
 
 StartMenu_Exit: ; 128ed

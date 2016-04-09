@@ -2889,35 +2889,35 @@ dig_incave
 	ret
 
 .DigTable: ; cbb2
-	dw .CheckCanDig
-	dw .DoDig
-	dw .FailDig
+	dw digCheckCanDig
+	dw digDoDig
+	dw digFailDig
 
-.CheckCanDig: ; cbb8
+digCheckCanDig: ; cbb8
 	call GetMapPermission
 	cp CAVE
-	jr z, .incave
+	jr z, digincave
 	cp DUNGEON
-	jr z, .incave
-.fail
+	jr z, digincave
+digfail
 	ld a, $2
 	ret
 
-.incave
+digincave
 	ld hl, wDigWarp
 	ld a, [hli]
 	and a
-	jr z, .fail
+	jr z, digfail
 	ld a, [hli]
 	and a
-	jr z, .fail
+	jr z, digfail
 	ld a, [hl]
 	and a
-	jr z, .fail
+	jr z, digfail
 	ld a, $1
 	ret
 
-.DoDig: ; cbd8
+digDoDig: ; cbd8
 	ld hl, wDigWarp
 	ld de, wNextWarp
 	ld bc, 3
@@ -2925,59 +2925,59 @@ dig_incave
 	call GetPartyNick
 	ld a, [Buffer2]
 	cp $2
-	jr nz, .escaperope
-	ld hl, .UsedDigScript
+	jr nz, digescaperope
+	ld hl, digUsedDigScript
 	call QueueScript
 	ld a, $81
 	ret
 
-.escaperope
+digescaperope
 	callba SpecialKabutoChamber
-	ld hl, .UsedEscapeRopeScript
+	ld hl, digUsedEscapeRopeScript
 	call QueueScript
 	ld a, $81
 	ret
 
-.FailDig: ; cc06
+digFailDig: ; cc06
 	ld a, [Buffer2]
 	cp $2
-	jr nz, .failescaperope
-	ld hl, .Text_CantUseHere
+	jr nz, digfailescaperope
+	ld hl, digText_CantUseHere
 	call MenuTextBox
 	call WaitPressAorB_BlinkCursor
 	call CloseWindow
 
-.failescaperope
+digfailescaperope
 	ld a, $80
 	ret
 
-.Text_UsedDig: ; 0xcc1c
+digText_UsedDig: ; 0xcc1c
 	; used DIG!
 	text_jump UnknownText_0x1c06de
 	db "@"
 
-.Text_UsedEscapeRope: ; 0xcc21
+digText_UsedEscapeRope: ; 0xcc21
 	; used an ESCAPE ROPE.
 	text_jump UnknownText_0x1c06ed
 	db "@"
 
-.Text_CantUseHere: ; 0xcc26
+digText_CantUseHere: ; 0xcc26
 	; Can't use that here.
 	text_jump UnknownText_0x1c0705
 	db "@"
 
-.UsedEscapeRopeScript: ; 0xcc2b
+digUsedEscapeRopeScript: ; 0xcc2b
 	reloadmappart
 	special UpdateTimePals
-	writetext .Text_UsedEscapeRope
-	jump .UsedDigOrEscapeRopeScript
+	writetext digText_UsedEscapeRope
+	jump digUsedDigOrEscapeRopeScript
 
-.UsedDigScript: ; 0xcc35
+digUsedDigScript: ; 0xcc35
 	reloadmappart
 	special UpdateTimePals
-	writetext .Text_UsedDig
+	writetext digText_UsedDig
 
-.UsedDigOrEscapeRopeScript: ; 0xcc3c
+digUsedDigOrEscapeRopeScript: ; 0xcc3c
 	waitbutton
 	closetext
 	playsound SFX_WARP_TO
@@ -11629,4 +11629,7 @@ INCLUDE "bwxp/core.asm"
 
 SECTION "rbsfx", ROMX
 INCLUDE "audio/rbsfx/get_item1_1.asm"
+
+SECTION "lrtrainercheck", ROMX
+INCLUDE "engine/check_for_trainer.asm"
 
