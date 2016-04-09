@@ -1173,8 +1173,7 @@ UnknownText_0x1c1cf3::
 	
 _PleaseSetOptions::
 	text "Please set the"
-	line "permanent options"
-	cont "for this game."
+	line "game settings."
 	
 	para "Press START when"
 	line "you're finished."

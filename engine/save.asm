@@ -704,14 +704,14 @@ TryLoadSaveData: ; 14f1c
 ; 14f7c
 
 DefaultOptions: ; 14f7c
-	db $03 ; mid text speed
+	db $c0 ; insta text speed, set, no animations
 	db $00 ; wSaveFileExists
 	db $00 ; frame 0
 	db $01 ; TextBoxFlags
-	db $40 ; gb printer: normal brightness
-	db $01 ; menu account on
-	db $00 ; ??
-	db $00 ; ??
+	db $03 ; menu account & hold to mash on
+	db $00 ; Perma1
+	db $00 ; Perma2
+	db $00 ; Perma3
 ; 14f84
 
 CheckPrimarySaveFile: ; 14f84

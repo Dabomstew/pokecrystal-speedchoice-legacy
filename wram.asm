@@ -1475,15 +1475,6 @@ TextBoxFrame:: ; cfce
 TextBoxFlags::
 	ds 1
 
-GBPrinter:: ; cfd0
-; bit 0-6: brightness
-;   lightest: $00
-;   lighter:  $20
-;   normal:   $40 (default)
-;   darker:   $60
-;   darkest:  $7F
-	ds 1
-
 Options2:: ; cfd1
 ; bit 0: menu account off/on
 ; bit 1: hold to mash off/on
@@ -1494,8 +1485,16 @@ wPermanentOptions::
 ;   %00 = normal, %01 = spinnerless, %10 = spinnerhell, %11 = super spinnerhell
 ; bit 3: max range all trainers (off/on)
 ; bit 4: nerf surf+strength (off/on)
+; bit 5: better enc slots (off/on)
+; bit 6: enable/disable gender
+; bit 7: bw xp system (off/on)
 	ds 1
 wPermanentOptions2::
+; bit 0: escape option off/on
+; bits 1-7 unused so far
+	ds 1
+wPermanentOptions3::
+; unused so far
 	ds 1
 OptionsEnd::
 

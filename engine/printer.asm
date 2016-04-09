@@ -9,7 +9,7 @@ Function84000: ; 84000
 	ld [wc2d5], a
 	ld hl, wc2d4
 	set 0, [hl]
-	ld a, [GBPrinter]
+	ld a, $40 ; normal brightness
 	ld [wcbfb], a
 	xor a
 	ld [wJumptableIndex], a
