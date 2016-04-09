@@ -799,5 +799,5 @@ _CantEscapeMenuText::
 
 _DoYouWantToEscapeMenuText::
 	text "Escape from"
-	cont "this location?"
+	line "this location?"
 	done
