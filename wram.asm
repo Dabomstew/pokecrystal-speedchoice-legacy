@@ -1511,7 +1511,6 @@ wOptionsMenuCount:: ds 1
 wOptionsStringPtr:: ds 2
 wOptionsJumptablePtr:: ds 2
 wOptionsExitButtons:: ds 1
-wOptionsPage:: ds 1
 wOptionsNextMenuID:: ds 1
 wOptionsMenuID:: ds 1
 wStoredJumptableIndex:: ds 1

@@ -102,17 +102,16 @@ options_menu: MACRO
 	dw (\2) ; template string
 	dw (\3) ; jumptable for options
 	db (\4) ; buttons that can be pressed to exit
-	db (\5 - 1) ; page num, not used if page system not active
-	db (\6) ; next options ID to show if this one is closed with an exit button or Cancel ($FF for none)
+	db (\5) ; next options ID to show if this one is closed with an exit button or Cancel ($FF for none)
 ENDM
 
 OptionsMenuScreens:
 	; default options
-	options_menu 7, MainOptionsString, MainOptionsPointers, (START | B_BUTTON), 1, $FF
+	options_menu 7, MainOptionsString, MainOptionsPointers, (START | B_BUTTON), $FF
 	; permaoptions page 1
-	options_menu 7, PermaOptionsString, PermaOptionsPointers, START, 1, 2
+	options_menu 7, PermaOptionsString, PermaOptionsPointers, START, 2
 	; permaoptions page 2
-	options_menu 1, PermaOptionsP2String, PermaOptionsP2Pointers, (START | B_BUTTON), 2, $FF
+	options_menu 1, PermaOptionsP2String, PermaOptionsP2Pointers, (START | B_BUTTON), $FF
 
 GetOptionPointer: ; e42d6
 	ld a, [wOptionsMenuCount]
@@ -150,27 +149,33 @@ Options_Exit:
 	ret
 ; e452a
 
+FIRST_PERMAOPTIONS_PAGEID EQU 1
 NUM_PERMAOPTIONS_PAGES EQU 2
+
 Options_PermaOptionsPage:
-	lb bc, 1, NUM_PERMAOPTIONS_PAGES - 1 ; MenuID of perma page 1 is 1
+	lb bc, FIRST_PERMAOPTIONS_PAGEID, FIRST_PERMAOPTIONS_PAGEID + NUM_PERMAOPTIONS_PAGES - 1
 Options_Page:
-; assumes b = MenuID of first page, c = highest page index (NumPages - 1)
+; assumes b = MenuID of first page, c = MenuID of last page
+; also assumes all pages use sequential MenuIDs
 	bit D_LEFT_F, a
 	jr nz, .Decrease
 	bit D_RIGHT_F, a
 	jr nz, .Increase
 	coord hl, 2, 16
 	ld de, .PageString
+	push bc
 	call PlaceString
-	ld a, [wOptionsPage]
+	pop bc
+	ld a, [wOptionsMenuID]
+	sub b
 	add "1"
 	coord hl, 8, 16
 	ld [hl], a
 	and a
 	ret
 .Decrease
-	ld a, [wOptionsPage]
-	and a
+	ld a, [wOptionsMenuID]
+	cp b
 	jr nz, .actuallyDecrease
 	ld a, c
 	jr .SaveAndChangePage
@@ -178,16 +183,14 @@ Options_Page:
 	dec a
 	jr .SaveAndChangePage
 .Increase
-	ld a, [wOptionsPage]
+	ld a, [wOptionsMenuID]
 	cp c
 	jr nz, .actuallyIncrease
-	xor a
+	ld a, b
 	jr .SaveAndChangePage
 .actuallyIncrease
 	inc a
 .SaveAndChangePage
-	ld [wOptionsPage], a
-	add b
 	ld [wOptionsNextMenuID], a
 	ld a, 7
 	ld [wStoredJumptableIndex], a
