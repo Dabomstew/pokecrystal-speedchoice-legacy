@@ -280,7 +280,7 @@ endr
 	ld a, [TimeOfDay]
 	ld bc, $e
 	call AddNTimes
-	ld a, [PermanentOptions]
+	ld a, [wPermanentOptions]
 	bit BETTER_ENC_SLOTS, a
 	ld de, .GrassMonTable
 	jr z, .watermon

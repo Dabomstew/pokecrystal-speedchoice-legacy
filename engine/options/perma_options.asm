@@ -12,8 +12,7 @@ PermaOptionsString:: ; e4241
 	db "#MON GENDER<LNBRK>"
 	db "        :<LNBRK>"
 	db "B/W EXP SYSTEM<LNBRK>"
-	db "        :<LNBRK>"
-	db "DONE@"
+	db "        :@"
 ; e42d6
 
 PermaOptionsPointers::
@@ -24,10 +23,10 @@ PermaOptionsPointers::
 	dw Options_BetterEncSlots
 	dw Options_Gender
 	dw Options_BWXP
-	dw Options_Cancel
+	dw Options_PermaOptionsPage
 
 Options_Rocketless:
-	ld hl, PermanentOptions
+	ld hl, wPermanentOptions
 	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
 	ld a, [hl]
 	jr z, .GetText
@@ -50,7 +49,7 @@ Options_Rocketless:
 	db "PURGE @"
 	
 Options_Spinners: ; e44fa
-	ld hl, PermanentOptions
+	ld hl, wPermanentOptions
 	bit D_LEFT_F, a
 	jr nz, .LeftPressed
 	bit D_RIGHT_F, a
@@ -113,7 +112,7 @@ endr
 	db "WHY   @"
 
 Options_TrainerVision:
-	ld hl, PermanentOptions
+	ld hl, wPermanentOptions
 	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
 	ld a, [hl]
 	jr z, .GetText
@@ -136,7 +135,7 @@ Options_TrainerVision:
 	db "MAX   @"
 	
 Options_NerfHMs:
-	ld hl, PermanentOptions
+	ld hl, wPermanentOptions
 	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
 	ld a, [hl]
 	jr z, .GetText
@@ -159,7 +158,7 @@ Options_NerfHMs:
 	db "YES@"
 	
 Options_BetterEncSlots:
-	ld hl, PermanentOptions
+	ld hl, wPermanentOptions
 	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
 	ld a, [hl]
 	jr z, .GetText
@@ -182,7 +181,7 @@ Options_BetterEncSlots:
 	db "ON @"
 	
 Options_Gender:
-	ld hl, PermanentOptions
+	ld hl, wPermanentOptions
 	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
 	ld a, [hl]
 	jr z, .GetText
@@ -205,7 +204,7 @@ Options_Gender:
 	db "HIDE@"
 
 Options_BWXP:
-	ld hl, PermanentOptions
+	ld hl, wPermanentOptions
 	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
 	ld a, [hl]
 	jr z, .GetText

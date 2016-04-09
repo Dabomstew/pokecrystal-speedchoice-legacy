@@ -9293,7 +9293,7 @@ GetGender: ; 50bdd
 
 ; 0: PartyMon
 	push af
-	ld a, [PermanentOptions]
+	ld a, [wPermanentOptions]
 	bit DISABLE_GENDER, a
 	jr nz, .AlwaysGenderless
 	pop af

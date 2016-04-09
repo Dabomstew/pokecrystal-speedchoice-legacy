@@ -21,7 +21,7 @@ BATTLE_SCENE   EQU 7
 MENU_ACCOUNT EQU 0
 HOLD_TO_MASH EQU 1
 
-; PermanentOptions:
+; wPermanentOptions:
 ROCKETLESS EQU 0
 SPINNERHELL EQU 2 ; this isn't actually just a bit, but both spinner hell modes have bit 2 set
 MAX_RANGE EQU 3
@@ -29,6 +29,10 @@ NERF_HMS EQU 4
 BETTER_ENC_SLOTS EQU 5
 DISABLE_GENDER EQU 6
 BW_XP EQU 7
+
+; wPermanentOptions2:
+ESCAPE_OPTION EQU 8
+ESCAPE_OPTION_F EQU 0
 
 ; GBPrinter:
 PRINT_LIGHTEST EQU $00

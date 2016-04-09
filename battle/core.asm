@@ -7463,7 +7463,7 @@ GiveExperiencePoints: ; 3ee3b
 	inc de
 	dec c
 	jr nz, .loop1
-	ld a, [PermanentOptions]
+	ld a, [wPermanentOptions]
 	bit BW_XP, a
 	jr z, .normalCalc
 	push hl
@@ -7525,7 +7525,7 @@ GiveExperiencePoints: ; 3ee3b
 	call GetNick
 	ld hl, Text_PkmnGainedExpPoint
 	call BattleTextBox
-	ld a, [PermanentOptions]
+	ld a, [wPermanentOptions]
 	bit BW_XP, a
 	jr z, .NormalEXPAddition
 	pop bc ; value needed inside
@@ -7833,7 +7833,7 @@ Text_PkmnGainedExpPoint: ; 3f11b
 	text_jump Text_Gained
 	start_asm
 	
-	ld a, [PermanentOptions]
+	ld a, [wPermanentOptions]
 	bit BW_XP, a
 	jr nz, BWXPExpGainStrings
 	

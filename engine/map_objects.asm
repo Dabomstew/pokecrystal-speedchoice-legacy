@@ -1068,13 +1068,13 @@ RandomStepDuration_Fast: ; 4b26
 	call Random
 	ld a, [hRandomAdd]
 	ld h, a
-	ld a, [PermanentOptions]
+	ld a, [wPermanentOptions]
 	bit SPINNERHELL, a
 	jr z, .normalBehavior
 	bit 1, a ; superfast?
 	ld l, %00001111
 	jr z, .normalSpinnerHell
-	ld l, %00000111
+	ld l, %00000011
 .normalSpinnerHell
 	ld a, h
 	and l

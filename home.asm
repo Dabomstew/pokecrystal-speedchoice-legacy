@@ -730,7 +730,7 @@ GetName:: ; 33c3
 .NotPokeName
 	cp MOVE_NAME
 	jr nz, .loadName
-	ld a, [PermanentOptions]
+	ld a, [wPermanentOptions]
 	bit NERF_HMS, a
 	ld a, MOVE_NAME
 	jr z, .loadName

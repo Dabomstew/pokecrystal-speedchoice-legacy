@@ -243,21 +243,12 @@ _SavingDontTurnOffThePower: ; 14be3
 	call SavingDontTurnOffThePower
 SavedTheGame: ; 14be6
 	call SaveGameData_
-	; wait 32 frames
-	ld c, $20
+	; wait 5 frames
+	ld c, $5
 	call DelayFrames
-	; copy the original text speed setting to the stack
-	ld a, [Options]
-	push af
-	; set text speed super slow
-	ld a, 3
-	ld [Options], a
 	; <PLAYER> saved the game!
 	ld hl, UnknownText_0x1528d
 	call PrintText
-	; restore the original text speed setting
-	pop af
-	ld [Options], a
 	ld de, SFX_SAVE
 	call WaitPlaySFX
 	call WaitSFX
@@ -348,20 +339,11 @@ SavingDontTurnOffThePower: ; 14c99
 	ld [hJoypadPressed], a
 	ld [hJoypadSum], a
 	ld [hJoypadDown], a
-	; Save the text speed setting to the stack
-	ld a, [Options]
-	push af
-	; Set the text speed to super slow
-	ld a, $3
-	ld [Options], a
 	; SAVING... DON'T TURN OFF THE POWER.
 	ld hl, UnknownText_0x15288
 	call PrintText
-	; Restore the text speed setting
-	pop af
-	ld [Options], a
-	; Wait for 16 frames
-	ld c, $10
+	; Wait for 5 frames
+	ld c, $5
 	call DelayFrames
 	ret
 ; 14cbb

@@ -668,7 +668,7 @@ CopyMapObjectHeaders:: ; 2457
 ; 2471
 
 CheckSpinnerSettings::
-	ld a, [PermanentOptions]
+	ld a, [wPermanentOptions]
 	and %1110 ; spinner + range settings
 	ret z ; normal behavior
 	push hl
@@ -678,13 +678,13 @@ CheckSpinnerSettings::
 	ld a, [hl]
 	and a
 	jr z, .done ; we only care if they have range
-	ld a, [PermanentOptions]
+	ld a, [wPermanentOptions]
 	bit MAX_RANGE, a
 	jr z, .spinnerCheck
 	ld b, 5
 	ld [hl], b
 .spinnerCheck
-	; a is still PermanentOptions from above
+	; a is still wPermanentOptions from above
 	and %0110 ; now we want only spinner settings, not range settings
 	jr z, .done ; no change to spinning behavior
 	ld bc, MAPOBJECT_MOVEMENT - MAPOBJECT_RANGE
@@ -693,11 +693,16 @@ CheckSpinnerSettings::
 	jr z, .RemoveSpinners
 	; make everyone a spinner (%100 or %110)
 	ld a, [hl]
-	; only change WANDER-SPRITEMOVEDATA_STANDING_RIGHT
+	; only change WANDER-SPRITEMOVEDATA_STANDING_RIGHT + rotators
 	cp SPRITEMOVEDATA_WANDER
 	jr c, .done
+	cp SPRITEMOVEDATA_SPINCOUNTERCLOCKWISE
+	jr z, .spin
+	cp SPRITEMOVEDATA_SPINCLOCKWISE
+	jr z, .spin
 	cp SPRITEMOVEDATA_SPINRANDOM_FAST
 	jr nc, .done
+.spin
 	ld a, SPRITEMOVEDATA_SPINRANDOM_FAST
 .changeBehavior
 	ld [hl], a
@@ -714,7 +719,7 @@ CheckSpinnerSettings::
 .spinFastCheck
 	cp SPRITEMOVEDATA_SPINRANDOM_FAST
 	jr nz, .done
-	ld a, SPRITEMOVEDATA_SPINCLOCKWISE
+	ld a, SPRITEMOVEDATA_SPINCOUNTERCLOCKWISE
 	jr .changeBehavior
 	
 

@@ -23,7 +23,7 @@ LoadHLMoves::
 	ld bc, 0
 LoadHLMovesCommon::
 	push af
-	ld a, [PermanentOptions]
+	ld a, [wPermanentOptions]
 	bit NERF_HMS, a
 	ld hl, Moves
 	jr z, .done

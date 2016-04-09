@@ -67,10 +67,6 @@ rept 3
 endr
 	ld a, [hli]
 	ld [de], a
-	ld a, [rSTAT]
-	and a
-	cp 3
-	jr z, RequestDone
 	inc de
 	ld a, e
 	ld [Requested2bppDest], a

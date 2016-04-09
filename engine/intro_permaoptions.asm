@@ -1,6 +1,6 @@
 IntroPermaOptions::
 	xor a
-	ld hl, PermanentOptions
+	ld hl, wPermanentOptions
 	ld [hli], a
 	ld [hl], a
 	ld hl, PleaseSetOptions
@@ -22,7 +22,7 @@ PrintPermaOptionsToScreen::
 	ld de, SelectedOptionsText
 	coord hl, 2, 0
 	call PlaceString
-	ld a, [PermanentOptions]
+	ld a, [wPermanentOptions]
 	ld b, a
 ; rocketless
 	coord hl, 1, 2
@@ -116,30 +116,22 @@ PlaceStringIncHL::
 	
 PrintHexValueXoredWithOptions::
 ; a contains the value to be displayed
+	push hl
+	ld hl, wPermanentOptions
+	xor [hl]
+	inc hl
+	xor [hl]
 	ld b, a
-	ld a, [PermanentOptions]
-	xor b
-	ld b, a
-	ld a, [PermanentOptions+1]
-	xor b
-	ld b, a
+	pop hl
 ; upper nibble
-	swap a
-	and $0F
-	cp $A
-	jr nc, .printHexInstead
-	call .printNumber
-	jr .lowerNibble
-.printHexInstead
-	call .printHex
-.lowerNibble
-; lower nibble
+	swap b
+	call .printNibble
+	swap b
+.printNibble
 	ld a, b
 	and $0F
 	cp $A
-	jr c, .printNumber
-	jr .printHex
-.printNumber
+	jr nc, .printHex
 	add "0"
 .doPrint
 	ld [hli], a

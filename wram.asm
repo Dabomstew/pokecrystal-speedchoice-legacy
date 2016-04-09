@@ -1488,13 +1488,14 @@ Options2:: ; cfd1
 ; bit 0: menu account off/on
 ; bit 1: hold to mash off/on
 	ds 1
-PermanentOptions::
+wPermanentOptions::
 ; bit 0: rocketless
 ; bit 1-2: spinner behavior
 ;   %00 = normal, %01 = spinnerless, %10 = spinnerhell, %11 = super spinnerhell
 ; bit 3: max range all trainers (off/on)
 ; bit 4: nerf surf+strength (off/on)
 	ds 1
+wPermanentOptions2::
 	ds 1
 OptionsEnd::
 
@@ -1509,6 +1510,11 @@ wDaysSince:: ds 1
 wOptionsMenuCount:: ds 1
 wOptionsStringPtr:: ds 2
 wOptionsJumptablePtr:: ds 2
+wOptionsExitButtons:: ds 1
+wOptionsPage:: ds 1
+wOptionsNextMenuID:: ds 1
+wOptionsMenuID:: ds 1
+wStoredJumptableIndex:: ds 1
 Requested1bppQuarters:: ds 1
 Requested2bppQuarters:: ds 1
 

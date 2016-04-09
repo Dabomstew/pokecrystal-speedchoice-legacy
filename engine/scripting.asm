@@ -3257,12 +3257,12 @@ Script_check_permaoptions:
 	jr c, .firstByte
 	sub 8
 	ld c, a
-	ld a, [PermanentOptions+1]
+	ld a, [wPermanentOptions+1]
 	ld b, a
 	jr .continue
 .firstByte
 	ld c, a
-	ld a, [PermanentOptions]
+	ld a, [wPermanentOptions]
 	ld b, a
 .continue
 	ld a, c
