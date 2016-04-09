@@ -1175,6 +1175,9 @@ _PleaseSetOptions::
 	text "Please set the"
 	line "permanent options"
 	cont "for this game."
+	
+	para "Press START when"
+	line "you're finished."
 	prompt
 	
 _AreOptionsAcceptable::

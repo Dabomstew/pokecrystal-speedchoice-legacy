@@ -29,6 +29,8 @@ OptionsMenuCommon:: ; e41d0
 	call PlaceString
 	xor a
 	ld [wJumptableIndex], a
+	dec a
+	ld [wOptionsNextMenuID], a
 	ld a, [wOptionsMenuCount]
 	inc a
 	ld c, a ; number of items on the menu
@@ -92,7 +94,7 @@ OptionsMenuCommon:: ; e41d0
 RetrieveOptionsMenuConfig::
 	ld a, [wOptionsMenuID]
 	ld hl, OptionsMenuScreens
-	ld bc, wOptionsMenuID - wOptionsMenuCount
+	ld bc, wOptionsNextMenuID - wOptionsMenuCount
 	call AddNTimes
 	ld de, wOptionsMenuCount
 	jp CopyBytes
@@ -102,16 +104,15 @@ options_menu: MACRO
 	dw (\2) ; template string
 	dw (\3) ; jumptable for options
 	db (\4) ; buttons that can be pressed to exit
-	db (\5) ; next options ID to show if this one is closed with an exit button or Cancel ($FF for none)
 ENDM
 
 OptionsMenuScreens:
 	; default options
-	options_menu 7, MainOptionsString, MainOptionsPointers, (START | B_BUTTON), $FF
+	options_menu 7, MainOptionsString, MainOptionsPointers, (START | B_BUTTON)
 	; permaoptions page 1
-	options_menu 7, PermaOptionsString, PermaOptionsPointers, START, 2
+	options_menu 7, PermaOptionsString, PermaOptionsPointers, START
 	; permaoptions page 2
-	options_menu 1, PermaOptionsP2String, PermaOptionsP2Pointers, (START | B_BUTTON), $FF
+	options_menu 1, PermaOptionsP2String, PermaOptionsP2Pointers, START
 
 GetOptionPointer: ; e42d6
 	ld a, [wOptionsMenuCount]
