@@ -1490,7 +1490,7 @@ wPermanentOptions::
 ; bit 7: bw xp system (off/on)
 	ds 1
 wPermanentOptions2::
-; bit 0: escape option off/on
+; bit 0: better [early] marts off/on
 ; bits 1-7 unused so far
 	ds 1
 wPermanentOptions3::

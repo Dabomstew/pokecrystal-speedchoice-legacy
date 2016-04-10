@@ -1,21 +1,21 @@
 PermaOptionsP2String:: ; e4241
-	db "ESCAPE OPTION<LNBRK>"
+	db "BETTER MARTS<LNBRK>"
 	db "        :@"
 ; e42d6
 
 PermaOptionsP2Pointers::
-	dw Options_EscapeOption
+	dw Options_BetterMartsOption
 	dw Options_PermaOptionsPage
 	
-Options_EscapeOption:
+Options_BetterMartsOption:
 	ld hl, wPermanentOptions2
 	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
 	ld a, [hl]
 	jr z, .GetText
-	xor (1 << ESCAPE_OPTION_F)
+	xor (1 << BETTER_MARTS_F)
 	ld [hl], a
 .GetText
-	bit ESCAPE_OPTION_F, a
+	bit BETTER_MARTS_F, a
 	ld de, .Off
 	jr z, .Display
 	ld de, .On

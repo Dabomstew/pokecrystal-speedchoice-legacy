@@ -12,7 +12,14 @@ AzaleaMart_MapScriptHeader:
 
 ClerkScript_0x18e040:
 	opentext
+	check_permaoptions BETTER_MARTS
+	iftrue AzaleaBetterMartScript
 	pokemart MARTTYPE_STANDARD, MART_AZALEA
+	closetext
+	end
+	
+AzaleaBetterMartScript:
+	pokemart MARTTYPE_STANDARD, MART_AZALEA_BETTER
 	closetext
 	end
 

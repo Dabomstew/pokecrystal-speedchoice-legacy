@@ -12,7 +12,14 @@ VioletMart_MapScriptHeader:
 
 ClerkScript_0x68295:
 	opentext
+	check_permaoptions BETTER_MARTS
+	iftrue VioletBetterMartScript
 	pokemart MARTTYPE_STANDARD, MART_VIOLET
+	closetext
+	end
+	
+VioletBetterMartScript:
+	pokemart MARTTYPE_STANDARD, MART_VIOLET_BETTER
 	closetext
 	end
 

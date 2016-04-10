@@ -337,8 +337,8 @@ endr
 
 	ld a, 5 ; option
 	call .AppendMenuList
-	ld a, [wPermanentOptions2]
-	bit ESCAPE_OPTION_F, a
+	ld a, [wPermanentOptions]
+	and (1 << SPINNERHELL) | (1 << MAX_RANGE)
 	ld a, 6 ; exit
 	jr z, .writeLastOption
 	ld a, 9 ; escape

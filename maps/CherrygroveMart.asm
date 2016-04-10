@@ -12,6 +12,8 @@ CherrygroveMart_MapScriptHeader:
 
 ClerkScript_0x19680a:
 	opentext
+	check_permaoptions BETTER_MARTS
+	iftrue CherrygroveBetterMartScript
 	checkevent EVENT_GAVE_MYSTERY_EGG_TO_ELM
 	iftrue UnknownScript_0x196817
 	pokemart MARTTYPE_STANDARD, MART_CHERRYGROVE
@@ -20,6 +22,11 @@ ClerkScript_0x19680a:
 
 UnknownScript_0x196817:
 	pokemart MARTTYPE_STANDARD, MART_CHERRYGROVE_DEX
+	closetext
+	end
+	
+CherrygroveBetterMartScript:
+	pokemart MARTTYPE_STANDARD, MART_CHERRYGROVE_BETTER
 	closetext
 	end
 

@@ -33,6 +33,9 @@ Marts: ; 160a9
 	dw Mart31
 	dw Mart32
 	dw Mart33
+	dw MartCherrygroveBetter
+	dw MartVioletBetter
+	dw MartAzaleaBetter
 MartsEnd
 ; 160ed
 
@@ -433,6 +436,47 @@ Mart33: ; 1620e
 	db REVIVAL_HERB
 	db $ff
 ; 16214
+
+MartCherrygroveBetter: ; 160f3
+	db 7 ; # items
+	db POKE_BALL
+	db POTION
+	db REPEL
+	db ANTIDOTE
+	db PARLYZ_HEAL
+	db AWAKENING
+	db ICE_HEAL
+	db $ff
+	
+MartVioletBetter: ; 160fa
+	db 11 ; # items
+	db POKE_BALL
+	db POTION
+	db ESCAPE_ROPE
+	db REPEL
+	db ANTIDOTE
+	db PARLYZ_HEAL
+	db AWAKENING
+	db ICE_HEAL
+	db X_DEFEND
+	db X_ATTACK
+	db X_SPEED
+	db $ff
+; 16106
+
+MartAzaleaBetter: ; 16106
+	db 9 ; # items
+	db CHARCOAL
+	db POKE_BALL
+	db POTION
+	db SUPER_POTION
+	db ESCAPE_ROPE
+	db REPEL
+	db ANTIDOTE
+	db PARLYZ_HEAL
+	db ICE_HEAL
+	db $ff
+; 16111
 
 DefaultMart: ; 16214
 	db 2 ; # items

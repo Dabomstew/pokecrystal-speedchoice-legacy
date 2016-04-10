@@ -413,6 +413,9 @@ ITEMMENU_CLOSE              EQU 6
 	const MART_MT_MOON
 	const MART_INDIGO_PLATEAU
 	const MART_UNDERGROUND
+	const MART_CHERRYGROVE_BETTER
+	const MART_VIOLET_BETTER
+	const MART_AZALEA_BETTER
 
 ; PartyMenuActionText
 	const_def
