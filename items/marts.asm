@@ -36,6 +36,7 @@ Marts: ; 160a9
 	dw MartCherrygroveBetter
 	dw MartVioletBetter
 	dw MartAzaleaBetter
+	dw MartGoldenrod4FBetter
 MartsEnd
 ; 160ed
 
@@ -477,6 +478,21 @@ MartAzaleaBetter: ; 16106
 	db ICE_HEAL
 	db $ff
 ; 16111
+
+MartGoldenrod4FBetter: ; 16134
+	db 11 ; # items
+	db FIRE_STONE
+	db WATER_STONE
+	db LEAF_STONE
+	db THUNDERSTONE
+	db SUN_STONE
+	db MOON_STONE
+	db PROTEIN
+	db IRON
+	db CARBOS
+	db CALCIUM
+	db HP_UP
+	db $ff
 
 DefaultMart: ; 16214
 	db 2 ; # items

@@ -416,6 +416,7 @@ ITEMMENU_CLOSE              EQU 6
 	const MART_CHERRYGROVE_BETTER
 	const MART_VIOLET_BETTER
 	const MART_AZALEA_BETTER
+	const MART_GOLDENROD_4F_BETTER
 
 ; PartyMenuActionText
 	const_def
