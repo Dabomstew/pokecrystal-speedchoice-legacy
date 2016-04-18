@@ -1886,3 +1886,7 @@ INCLUDE "home/audio.asm"
 INCLUDE "home/mobile.asm"
 INCLUDE "home/hlmoves.asm"
 INCLUDE "home/align_tile_map.asm"
+
+CheckValue:: ; to be filled in by the randomizer
+	ds 4
+CheckValueEnd::

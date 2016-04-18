@@ -334,11 +334,20 @@ endr
 	ld a, b
 	ld [CurPartyLevel], a
 	ld b, [hl]
-	; ld a, b
+	cp 10
+	jr nc, .notEvolvingMon
+	ld a, [wPermanentOptions2]
+	bit EVOLVED_EARLY_WILDS_F, a
+	jr z, .notEvolvingMon
+	push hl
+	farcall FullyEvolveMonInB
+	pop hl
+.notEvolvingMon
+	
+	ld a, b
 	call ValidateTempWildMonSpecies
 	jr c, .nowildbattle
 
-	ld a, b ; This is in the wrong place.
 	cp UNOWN
 	jr nz, .done
 

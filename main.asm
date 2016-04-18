@@ -11633,3 +11633,6 @@ INCLUDE "audio/rbsfx/get_item1_1.asm"
 SECTION "lrtrainercheck", ROMX
 INCLUDE "engine/check_for_trainer.asm"
 
+SECTION "femon", ROMX
+INCLUDE "engine/fully_evolve_mon.asm"
+

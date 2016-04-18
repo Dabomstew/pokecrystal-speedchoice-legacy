@@ -112,7 +112,7 @@ OptionsMenuScreens:
 	; permaoptions page 1
 	options_menu 7, PermaOptionsString, PermaOptionsPointers, START
 	; permaoptions page 2
-	options_menu 1, PermaOptionsP2String, PermaOptionsP2Pointers, START
+	options_menu 2, PermaOptionsP2String, PermaOptionsP2Pointers, START
 
 GetOptionPointer: ; e42d6
 	ld a, [wOptionsMenuCount]

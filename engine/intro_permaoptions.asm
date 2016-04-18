@@ -89,6 +89,22 @@ PrintPermaOptionsToScreen::
 	ld de, BWEXPText
 .placeEXPSetting
 	call PlaceStringIncHL
+	ld a, [wPermanentOptions2]
+	ld b, a
+; marts
+	bit BETTER_MARTS_F, b
+	ld de, NormalMartsText
+	jr z, .placeMartSetting
+	ld de, BetterMartsText
+.placeMartSetting
+	call PlaceStringIncHL
+; wilds
+	bit EVOLVED_EARLY_WILDS_F, b
+	ld de, NormalWildsText
+	jr z, .placeWildsSetting
+	ld de, BetterWildsText
+.placeWildsSetting
+	call PlaceStringIncHL
 ; checkvalue stuff
 	coord hl, 1, 11
 	ld [hl], "C"
@@ -181,6 +197,14 @@ NormalEXPText::
 	db "NORMAL EXP@"
 BWEXPText::
 	db "B/W EXP@"
+NormalMartsText::
+	db "NORM MARTS@"
+BetterMartsText::
+	db "GOOD MARTS@"
+NormalWildsText::
+	db "NORM WILDS@"
+BetterWildsText::
+	db "GOOD WILDS@"
 
 
 PleaseSetOptions::
@@ -190,8 +214,4 @@ PleaseSetOptions::
 AreOptionsAcceptable::
 	text_jump _AreOptionsAcceptable
 	db "@"
-
-CheckValue:: ; to be filled in by the randomizer
-	ds 4
-CheckValueEnd::
 
