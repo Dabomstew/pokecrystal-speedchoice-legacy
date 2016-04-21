@@ -18,7 +18,6 @@ FullyEvolveMonInB:
 	jr z, .Slow
 	cp $FF
 	jr z, .Gloom
-.copyBAndDone
 	ld b, a
 	ret
 .Eeveelutions
@@ -33,7 +32,8 @@ FullyEvolveMonInB:
 	add hl, bc
 	pop bc
 	ld a, [hl]
-	jr .copyBAndDone
+	ld b, a
+	ret
 .Tyrogue
 	ld a, [CheckValue]
 	and $3
