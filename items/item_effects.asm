@@ -226,10 +226,16 @@ ParkBall: ; e8a2
 .room_in_party
 	xor a
 	ld [wWildMon], a
+
+	ld a, [Options2]
+	bit PARKBALL_EFFECT, a
+	jr nz, .skipBallMenuClose
+	
 	ld a, [CurItem]
 	cp PARK_BALL
 	call nz, ReturnToBattle_UseBall
 
+.skipBallMenuClose
 	ld hl, Options
 	res NO_TEXT_SCROLL, [hl]
 	ld hl, UsedItemText

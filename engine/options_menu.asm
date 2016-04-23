@@ -1,5 +1,11 @@
+FIRST_OPTIONS_PAGEID EQU 0
+NUM_OPTIONS_PAGES EQU 2
+
+FIRST_PERMAOPTIONS_PAGEID EQU 2
+NUM_PERMAOPTIONS_PAGES EQU 2
+
 PermaOptionsMenu:
-	ld a, 1
+	ld a, FIRST_PERMAOPTIONS_PAGEID
 	jr OptionsMenuCommon
 	
 OptionsMenu:
@@ -107,8 +113,10 @@ options_menu: MACRO
 ENDM
 
 OptionsMenuScreens:
-	; default options
+	; default options page 1
 	options_menu 7, MainOptionsString, MainOptionsPointers, (START | B_BUTTON)
+	; default options page 2
+	options_menu 1, MainOptionsP2String, MainOptionsP2Pointers, (START | B_BUTTON)
 	; permaoptions page 1
 	options_menu 7, PermaOptionsString, PermaOptionsPointers, START
 	; permaoptions page 2
@@ -150,8 +158,9 @@ Options_Exit:
 	ret
 ; e452a
 
-FIRST_PERMAOPTIONS_PAGEID EQU 1
-NUM_PERMAOPTIONS_PAGES EQU 2
+Options_OptionsPage:
+	lb bc, FIRST_OPTIONS_PAGEID, FIRST_OPTIONS_PAGEID + NUM_OPTIONS_PAGES - 1
+	jr Options_Page
 
 Options_PermaOptionsPage:
 	lb bc, FIRST_PERMAOPTIONS_PAGEID, FIRST_PERMAOPTIONS_PAGEID + NUM_PERMAOPTIONS_PAGES - 1
@@ -271,5 +280,6 @@ Options_UpdateCursorPosition: ; e455c
 ; e4579
 
 INCLUDE "engine/options/main_options.asm"
+INCLUDE "engine/options/main_options_2.asm"
 INCLUDE "engine/options/perma_options.asm"
 INCLUDE "engine/options/perma_options_2.asm"
