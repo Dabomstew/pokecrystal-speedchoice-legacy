@@ -13,7 +13,7 @@ MainOptionsString:: ; e4241
 	db "        :<LNBRK>"
 	db "FRAME<LNBRK>"
 	db "        :TYPE<LNBRK>"
-	db "CANCEL@"
+	db "		:@"
 ; e42d6
 
 MainOptionsPointers::
@@ -24,7 +24,7 @@ MainOptionsPointers::
 	dw Options_Sound
 	dw Options_MenuAccount
 	dw Options_Frame
-	dw Options_Cancel
+	dw Options_OptionsPage
 ; e42f5
 
 Options_TextSpeed: ; e42f5
