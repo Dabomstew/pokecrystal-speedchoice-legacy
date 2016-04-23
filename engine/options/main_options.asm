@@ -12,8 +12,7 @@ MainOptionsString:: ; e4241
 	db "MENU ACCOUNT<LNBRK>"
 	db "        :<LNBRK>"
 	db "FRAME<LNBRK>"
-	db "        :TYPE<LNBRK>"
-	db "		:@"
+	db "        :TYPE@"
 ; e42d6
 
 MainOptionsPointers::
