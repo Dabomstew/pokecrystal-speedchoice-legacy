@@ -136,6 +136,29 @@ Options_TrainerVision:
 	
 Options_NerfHMs:
 	ld hl, wPermanentOptions
+	ld a, [RandomizedMovesStatus]
+	dec a
+	jr z, .normalCase
+	dec a
+	jr z, .randomizedMoves
+; must check whether move data is randomized
+	ld hl, MovesHMNerfs
+	ld a, BANK(MovesHMNerfs)
+	ld bc, 7
+	ld de, StringBuffer5
+	call FarCopyBytes
+	ld hl, .PoundUnchanged
+	ld de, StringBuffer5
+	ld c, 7
+	call StringCmp
+	ld a, 1
+	jr z, .write
+	inc a
+.write
+	ld [RandomizedMovesStatus], a
+	jr Options_NerfHMs
+.normalCase
+	ld a, [hJoyPressed]
 	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
 	ld a, [hl]
 	jr z, .GetText
@@ -148,14 +171,23 @@ Options_NerfHMs:
 	ld de, .On
 .Display
 	hlcoord 11, 9
+.doDisplay
 	call PlaceString
 	and a
 	ret
-	
+.randomizedMoves
+	set NERF_HMS, [hl]
+	ld de, .Randomized
+	hlcoord 2, 9
+	jr .doDisplay
 .Off
 	db "NO @"
 .On
 	db "YES@"
+.Randomized
+	db "RANDOMIZED MOVES!@"
+.PoundUnchanged
+	move POUND,        EFFECT_NORMAL_HIT,         40, NORMAL,   100, 35,   0
 	
 Options_BetterEncSlots:
 	ld hl, wPermanentOptions

@@ -1730,6 +1730,7 @@ StringBuffer2:: ; d086
 StringBuffer3:: ; d099
 	ds 19
 
+RandomizedMovesStatus::
 StringBuffer4:: ; d0ac
 	ds 19
 

@@ -12,6 +12,8 @@ IntroPermaOptions::
 	call PrintText
 	pop af
 	ld [Options2], a
+	xor a
+	ld [RandomizedMovesStatus], a
 .setOptions
 	callba PermaOptionsMenu
 	call ClearTileMap
@@ -62,6 +64,12 @@ PrintPermaOptionsToScreen::
 .placeVisionSetting
 	call PlaceStringIncHL
 ; hms
+	ld a, [RandomizedMovesStatus]
+	cp 2 ; randomized
+	jr nz, .normalTreatment
+	ld de, RandomizedMovesText
+	jr .placeHMSetting
+.normalTreatment
 	bit NERF_HMS, b
 	ld de, NormalHMsText
 	jr z, .placeHMSetting
@@ -185,6 +193,8 @@ NormalHMsText::
 	db "NORMAL HMs@"
 NerfedHMsText::
 	db "NERFED HMs@"
+RandomizedMovesText::
+	db "RANDOMIZED MOVES@"
 NormalEncountersText::
 	db "NORMAL ENC SLOTS@"
 BetterEncountersText::

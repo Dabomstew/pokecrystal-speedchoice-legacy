@@ -1,3 +1,13 @@
+move: MACRO
+	db \1 ; animation
+	db \2 ; effect
+	db \3 ; power
+	db \4 ; type
+	db \5 percent ; accuracy
+	db \6 ; pp
+	db \7 percent ; effect chance
+ENDM
+
 command: macro
 	enum \1_command
 \1 equs "db \1_command"
