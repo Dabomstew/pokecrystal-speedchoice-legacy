@@ -877,18 +877,21 @@ LabWhereGoingText:
 
 TakeCyndaquilText:
 	text "ELM: You'll take"
+Randomizer_StarterCyndaquilTextOffset::
 	line "CYNDAQUIL, the"
 	cont "fire #MON?"
 	done
 
 TakeTotodileText:
 	text "ELM: Do you want"
+Randomizer_StarterTotodileTextOffset::
 	line "TOTODILE, the"
 	cont "water #MON?"
 	done
 
 TakeChikoritaText:
 	text "ELM: So, you like"
+Randomizer_StarterChikoritaTextOffset::
 	line "CHIKORITA, the"
 	cont "grass #MON?"
 	done
