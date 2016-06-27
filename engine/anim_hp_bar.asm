@@ -187,10 +187,10 @@ Functiond6f5: ; d6f5
 	ld a, [hli]
 	ld b, a
 	call ComputeHPBarPixels
+	ld a, e
 	pop bc
 	pop de
 	pop hl
-	ld a, e
 	ld hl, wd1f1
 	cp [hl]
 	jr z, .asm_d6f5
