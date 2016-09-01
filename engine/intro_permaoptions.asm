@@ -6,7 +6,7 @@ IntroPermaOptions::
 	ld [hl], a
 	ld a, [Options2]
 	push af
-	and ~(1 << HOLD_TO_MASH)
+	and $ff ^ (1 << HOLD_TO_MASH)
 	ld [Options2], a
 	ld hl, PleaseSetOptions
 	call PrintText
