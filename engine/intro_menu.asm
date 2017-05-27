@@ -198,6 +198,13 @@ ENDC
 	ld [Money + 1], a
 	ld a, START_MONEY % $100
 	ld [Money + 2], a
+    
+    ld a, DONE_BUTTON
+    ld [CurItem], a
+    ld a, 1
+	ld [wItemQuantityChangeBuffer], a
+	ld hl, NumItems
+	call ReceiveItem
 
 	xor a
 	ld [wWhichMomItem], a

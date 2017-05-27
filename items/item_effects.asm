@@ -38,7 +38,7 @@ ItemEffects: ; e73c
 	dw FireStone
 	dw Thunderstone
 	dw WaterStone
-	dw Item19
+	dw DoneButton
 	dw HPUp
 	dw Protein
 	dw Iron
@@ -2873,6 +2873,14 @@ OpenBox: ; f769
 	db "@"
 ; 0xf77d
 
+DoneButton:
+    ld hl, Text_AskReallyDone
+    call PrintText
+    call YesNoBox
+    ret c
+    callba PlaythroughStatsScreen
+    ret
+
 Brightpowder:
 Item19:
 LuckyPunch:
@@ -3358,3 +3366,7 @@ GetMthMoveOfCurrentMon: ; f969
 	add hl, bc
 	ret
 ; f971
+
+Text_AskReallyDone
+    text_jump _Text_ReallyDone
+    db "@"
