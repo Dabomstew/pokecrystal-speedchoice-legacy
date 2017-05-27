@@ -65,6 +65,8 @@ PlaythroughStatsScreen::
 	call GetSGBLayout
 	call SetPalettes
 .joypad_loop
+    ld c, 3
+    call DelayFrames
     call JoyTextDelay
     ld a, [hJoyPressed]
     ld b, a
@@ -505,34 +507,35 @@ PlaythroughStatsScreensEnd::
     
 PSTimersConfig::
     stat_screen_entry PSTimersOverallString, STATTYPE_TIMER, sStatsFrameCount
-    stat_screen_entry PSTimersOverworldString, STATTYPE_TIMER, sStatsOWFrameCount, 
+    stat_screen_entry PSTimersOverworldString, STATTYPE_TIMER, sStatsOWFrameCount 
     stat_screen_entry PSTimersBattleString, STATTYPE_TIMER, sStatsBattleFrameCount
     stat_screen_entry PSTimersMenuString, STATTYPE_TIMER, sStatsMenuFrameCount
     stat_screen_entry PSTimersIntroString, STATTYPE_TIMER, sStatsIntrosFrameCount
     dw 0 ; end
     
 PSMovementConfig::
-    stat_screen_entry PSMovementTotalStepsString, STATTYPE_4BYTE, sStatsStepCount, STATTYPE_4BYTE
-    stat_screen_entry PSMovementStepsWalkedString, STATTYPE_4BYTE, sStatsStepCountWalk, STATTYPE_4BYTE
-    stat_screen_entry PSMovementStepsBikedString, STATTYPE_4BYTE, sStatsStepCountBike, STATTYPE_4BYTE
-    stat_screen_entry PSMovementStepsSurfedString, STATTYPE_4BYTE, sStatsStepCountSurf, STATTYPE_4BYTE
-    stat_screen_entry PSMovementBonksString, STATTYPE_2BYTE, sStatsBonks, STATTYPE_2BYTE
+    stat_screen_entry PSMovementTotalStepsString, STATTYPE_4BYTE, sStatsStepCount
+    stat_screen_entry PSMovementStepsWalkedString, STATTYPE_4BYTE, sStatsStepCountWalk
+    stat_screen_entry PSMovementStepsBikedString, STATTYPE_4BYTE, sStatsStepCountBike
+    stat_screen_entry PSMovementStepsSurfedString, STATTYPE_4BYTE, sStatsStepCountSurf
+    stat_screen_entry PSMovementBonksString, STATTYPE_2BYTE, sStatsBonks
     dw 0 ; end
     
 PSBattle1Config::
-    stat_screen_entry PSBattle1TotalBattlesString, STATTYPE_2BYTE, sStatsBattles, STATTYPE_2BYTE
-    stat_screen_entry PSBattle1WildBattlesString, STATTYPE_2BYTE, sStatsWildBattles, STATTYPE_2BYTE
-    stat_screen_entry PSBattle1TrainerBattlesString, STATTYPE_2BYTE, sStatsTrainerBattles, STATTYPE_2BYTE
-    stat_screen_entry PSBattle1BattlesFledFromString, STATTYPE_2BYTE, sStatsBattlesFled, STATTYPE_2BYTE
-    stat_screen_entry PSBattle1FailedEscapesString, STATTYPE_2BYTE, sStatsFailedRuns, STATTYPE_2BYTE
+    stat_screen_entry PSBattle1TotalBattlesString, STATTYPE_2BYTE, sStatsBattles
+    stat_screen_entry PSBattle1WildBattlesString, STATTYPE_2BYTE, sStatsWildBattles
+    stat_screen_entry PSBattle1TrainerBattlesString, STATTYPE_2BYTE, sStatsTrainerBattles
+    stat_screen_entry PSBattle1BattlesFledFromString, STATTYPE_2BYTE, sStatsBattlesFled
+    stat_screen_entry PSBattle1FailedEscapesString, STATTYPE_2BYTE, sStatsFailedRuns
     dw 0 ; end
     
 PSBattle2Config::
-    stat_screen_entry PSBattle2EnemyPKMNFaintedString, STATTYPE_2BYTE, sStatsEnemyPokemonFainted, STATTYPE_2BYTE
-    stat_screen_entry PSBattle2OwnPKMNFaintedString, STATTYPE_2BYTE, sStatsPlayerPokemonFainted, STATTYPE_2BYTE
-    stat_screen_entry PSBattle2SwitchoutsString, STATTYPE_2BYTE, sStatsSwitchouts, STATTYPE_2BYTE
-    stat_screen_entry PSBattle2BallsThrownString, STATTYPE_2BYTE, sStatsBallsThrown, STATTYPE_2BYTE
-    stat_screen_entry PSBattle2PokemonCaughtString, STATTYPE_2BYTE, sStatsPokemonCaughtInBalls, STATTYPE_2BYTE
+    stat_screen_entry PSBattle2EnemyPKMNFaintedString, STATTYPE_2BYTE, sStatsEnemyPokemonFainted
+    stat_screen_entry PSBattle2EXPGainedString, STATTYPE_4BYTE, sStatsExperienceGained
+    stat_screen_entry PSBattle2OwnPKMNFaintedString, STATTYPE_2BYTE, sStatsPlayerPokemonFainted
+    stat_screen_entry PSBattle2SwitchoutsString, STATTYPE_2BYTE, sStatsSwitchouts
+    stat_screen_entry PSBattle2BallsThrownString, STATTYPE_2BYTE, sStatsBallsThrown
+    stat_screen_entry PSBattle2PokemonCaughtString, STATTYPE_2BYTE, sStatsPokemonCaughtInBalls
     dw 0 ; end
     
 PSBattle3Config::
@@ -550,18 +553,18 @@ PSBattle4Config::
     dw 0
     
 PSMoneyItemsConfig::
-    stat_screen_entry PSMIMoneyMadeString, STATTYPE_MONEY, sStatsMoneyMade, STATTYPE_MONEY
-    stat_screen_entry PSMIMoneySpentString, STATTYPE_MONEY, sStatsMoneySpent, STATTYPE_MONEY
-    stat_screen_entry PSMIMoneyLostString, STATTYPE_MONEY, sStatsMoneyLost, STATTYPE_MONEY
-    stat_screen_entry PSMIItemsPickedUpString, STATTYPE_2BYTE, sStatsItemsPickedUp, STATTYPE_2BYTE
-    stat_screen_entry PSMIItemsBoughtString, STATTYPE_2BYTE, sStatsItemsBought, STATTYPE_2BYTE
-    stat_screen_entry PSMIItemsSoldString, STATTYPE_2BYTE, sStatsItemsSold, STATTYPE_2BYTE
+    stat_screen_entry PSMIMoneyMadeString, STATTYPE_MONEY, sStatsMoneyMade
+    stat_screen_entry PSMIMoneySpentString, STATTYPE_MONEY, sStatsMoneySpent
+    stat_screen_entry PSMIMoneyLostString, STATTYPE_MONEY, sStatsMoneyLost
+    stat_screen_entry PSMIItemsPickedUpString, STATTYPE_2BYTE, sStatsItemsPickedUp
+    stat_screen_entry PSMIItemsBoughtString, STATTYPE_2BYTE, sStatsItemsBought
+    stat_screen_entry PSMIItemsSoldString, STATTYPE_2BYTE, sStatsItemsSold
     dw 0
     
 PSMiscConfig::
-    stat_screen_entry PSMiscSavesString, STATTYPE_2BYTE, sStatsSaveCount, STATTYPE_2BYTE
-    stat_screen_entry PSMiscReloadsString, STATTYPE_2BYTE, sStatsReloadCount, STATTYPE_2BYTE
-    stat_screen_entry PSMiscClockResetsString, STATTYPE_2BYTE, sStatsClockResetCount, STATTYPE_2BYTE
+    stat_screen_entry PSMiscSavesString, STATTYPE_2BYTE, sStatsSaveCount
+    stat_screen_entry PSMiscReloadsString, STATTYPE_2BYTE, sStatsReloadCount
+    stat_screen_entry PSMiscClockResetsString, STATTYPE_2BYTE, sStatsClockResetCount
     dw 0
     
 PlayerStatsString:
@@ -610,6 +613,8 @@ PSBattle2TitleString:
     db "     BATTLE 2@"
 PSBattle2EnemyPKMNFaintedString:
     db "ENEMY <PK><MN> FAINTED:@"
+PSBattle2EXPGainedString:
+    db "EXP. GAINED:@"
 PSBattle2OwnPKMNFaintedString:
     db "OWN <PK><MN> FAINTED:@"
 PSBattle2SwitchoutsString:

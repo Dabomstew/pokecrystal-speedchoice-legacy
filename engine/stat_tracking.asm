@@ -290,6 +290,39 @@ SRAMStatsRecordMoveEffectiveness_::
     add hl, bc
     call TwoByteIncrement
     jp SRAMStatsEnd
+    
+    sramstatmethod SRAMStatsRecordNormalEXPGain
+    
+SRAMStatsRecordNormalEXPGain_::
+; exp at StringBuffer2, 2 bytes
+    ld hl, sStatsExperienceGained
+    ld a, [StringBuffer2 + 1]
+    add [hl]
+    ld [hli], a
+    ld a, [StringBuffer2]
+    adc [hl]
+    ld [hli], a
+    jp nc, SRAMStatsEnd
+    call TwoByteIncrement
+    jp SRAMStatsEnd
+    
+    sramstatmethod SRAMStatsRecordBWEXPGain
+    
+SRAMStatsRecordBWEXPGain_::
+; exp at BWXP_SCRATCH5B_1, 3 bytes
+    ld hl, sStatsExperienceGained
+    ld a, [BWXP_SCRATCH5B_1 + 2]
+    add [hl]
+    ld [hli], a
+    ld a, [BWXP_SCRATCH5B_1 + 1]
+    adc [hl]
+    ld [hli], a
+    ld a, [BWXP_SCRATCH5B_1]
+    adc [hl]
+    ld [hli], a
+    jp nc, SRAMStatsEnd
+    inc [hl]
+    jp SRAMStatsEnd
 
     
     

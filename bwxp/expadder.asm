@@ -1,4 +1,6 @@
 BWXP_EXPAddition::
+    callba SRAMStatsRecordBWEXPGain
+    
 ; copy back yield to multiplier fields
     ld a, [BWXP_SCRATCH5B_1 + 2]
     ld [hProduct + 3], a

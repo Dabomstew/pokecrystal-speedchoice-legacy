@@ -7560,6 +7560,7 @@ GiveExperiencePoints: ; 3ee3b
 	call BWXP_EXPAddition
 	jr .skip2
 .NormalEXPAddition
+    callba SRAMStatsRecordNormalEXPGain
 	ld a, [StringBuffer2 + 1]
 	ld [hQuotient + 2], a
 	ld a, [StringBuffer2]

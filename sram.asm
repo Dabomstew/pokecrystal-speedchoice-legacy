@@ -256,6 +256,7 @@ sStatsPlayerHPHealed:: ds 4
 sStatsEnemyHPHealed:: ds 4
 sStatsPlayerPokemonFainted:: ds 2
 sStatsEnemyPokemonFainted:: ds 2
+sStatsExperienceGained:: ds 4
 sStatsSwitchouts:: ds 2
 sStatsBattles:: ds 2
 sStatsTrainerBattles:: ds 2
