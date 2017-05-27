@@ -91,7 +91,7 @@ Options_RaceGoalOption: ; e44fa
     sla a
 	ld b, a
 	ld a, [hl]
-	and (~GOAL_MASK) & $FF
+	and GOAL_MASK ^ $FF
 	or b
 	ld [hl], a
 	
