@@ -228,6 +228,71 @@ SRAMStatsIncreaseItemsSold_::
     inc [hl]
     jp SRAMStatsEnd
     
+    sramstatmethod SRAMStatsRecordCriticalHit
+    
+SRAMStatsRecordCriticalHit_::
+    ld a, [CriticalHit]
+	and a
+    jp z, SRAMStatsEnd
+    dec a
+    ld c, a
+    ld a, [hBattleTurn]
+    sla a
+    or c
+    sla a
+; add sStatsCriticalsDealt to (battleturn << 1 | hittype)*2 to get the correct field
+    ld c, a
+    ld b, 0
+    ld hl, sStatsCriticalsDealt
+    add hl, bc
+    call TwoByteIncrement
+    jp SRAMStatsEnd
+    
+    sramstatmethod SRAMStatsRecordMoveHitOrMiss
+    
+SRAMStatsRecordMoveHitOrMiss_::
+    ld a, [AttackMissed]
+    and a
+    jr z, .sideCheck
+    ld a, 1
+.sideCheck
+    ld c, a
+    ld a, [hBattleTurn]
+    sla a
+    or c
+    sla a
+    ld c, a
+    ld b, 0
+    ld hl, sStatsOwnMovesHit
+    add hl, bc
+    call TwoByteIncrement
+    jp SRAMStatsEnd
+    
+    sramstatmethod SRAMStatsRecordMoveEffectiveness
+    
+SRAMStatsRecordMoveEffectiveness_::
+    ld a, [TypeModifier]
+	and $7f
+	cp 10 ; 1.0
+	jp z, SRAMStatsEnd
+    ld a, 1 ; not very effective
+    jr c, .sideCheck
+    xor a ; super effective
+.sideCheck
+    ld c, a
+    ld a, [hBattleTurn]
+    sla a
+    or c
+    sla a
+    ld c, a
+    ld b, 0
+    ld hl, sStatsOwnMovesSE
+    add hl, bc
+    call TwoByteIncrement
+    jp SRAMStatsEnd
+
+    
+    
 SRAMStatsStart::
 ; takes return address in hl
 ; check enable

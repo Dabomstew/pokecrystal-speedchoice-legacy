@@ -2,9 +2,13 @@ STATTYPE_2BYTE EQU $1
 STATTYPE_4BYTE EQU $2
 STATTYPE_MONEY EQU $3
 STATTYPE_TIMER EQU $4
-NUM_STAT_SCREENS EQU 7
+STATTYPE_2BYTE_COMPARE EQU $5
+STATTYPE_4BYTE_COMPARE EQU $6
+NUM_STAT_SCREENS EQUS "(PlaythroughStatsScreensEnd - PlaythroughStatsScreens)/4"
 
 PlaythroughStatsScreen::
+    ld de, MUSIC_MOBILE_CENTER
+    call PlayMusic
     xor a
     ld [wOptionsMenuID], a
 ; stop stats (mainly frame counter) actually being counted
@@ -74,6 +78,8 @@ PlaythroughStatsScreen::
     jr z, .joypad_loop
 	pop af
 	ld [hInMenu], a
+    xor a
+    ld [hStatsDisabled], a
 	ld de, SFX_TRANSACTION
 	call PlaySFX
 	call WaitSFX
@@ -129,69 +135,146 @@ RenderStats::
     pop hl
     ld a, [hli]
     ld [wStoredJumptableIndex], a
-    cp STATTYPE_2BYTE
+    
     push hl
-    call z, Copy2ByteValueIntoPrintScratch
-    call nz, Copy4ByteValueIntoPrintScratch
-    pop hl
+    cp STATTYPE_2BYTE
+    jr nz, .test2bcompare
+    call Copy2ByteValueIntoPrintScratch
+    jr .donecopying
+.test2bcompare
+    cp STATTYPE_2BYTE_COMPARE
+    jr nz, .test4bcompare
+    call Copy2ByteComparesIntoPrintScratch
+    jr .donecopying
+.test4bcompare
+    cp STATTYPE_4BYTE_COMPARE
+    jr nz, .do4bcopy
+    call Copy4ByteComparesIntoPrintScratch
+    jr .donecopying
+.do4bcopy
+    call Copy4ByteValueIntoPrintScratch
+.donecopying
+    ld h, d
+    ld l, e
     ld a, [wStoredJumptableIndex]
     cp STATTYPE_2BYTE
     jr nz, .check_4byte
 ; print 2byte
-    push hl
-    ld h, d
-    ld l, e
     ld bc, (SCREEN_WIDTH - 1 - 5 - 1)
     add hl, bc
     lb bc, 2, 5
     ld de, Buffer3
     call PrintNum
-    pop hl
     jr .next_loop
 .check_4byte
     cp STATTYPE_4BYTE
     jr nz, .check_money
 ; print 4byte
-    push hl
-    ld h, d
-    ld l, e
     ld bc, (SCREEN_WIDTH - 1 - 7 - 1)
     add hl, bc
     lb bc, 3, 7
     ld de, Buffer2
     call PrintNum
-    pop hl
     jr .next_loop
 .check_money
     cp STATTYPE_MONEY
-    jr nz, .print_timer
+    jr nz, .check_2bytecompare
 ; print money (if only)
-    push hl
-    ld h, d
-    ld l, e
     ld bc, (SCREEN_WIDTH - 1 - 8 - 1)
     add hl, bc
     lb bc, (PRINTNUM_MONEY | 3), 7
     ld de, Buffer2
     call PrintNum
-    pop hl
     jr .next_loop
+.check_2bytecompare
+    cp STATTYPE_2BYTE_COMPARE
+    jr nz, .check_4bytecompare
+    call Print2ByteCompare
+    jr .advance_extra_then_next_loop
+.check_4bytecompare
+    cp STATTYPE_4BYTE_COMPARE
+    jr nz, .print_timer
+    call Print4ByteCompare
+    jr .advance_extra_then_next_loop
 .print_timer
 ; print timer
     call PrintTimer
 .next_loop
+    pop hl
+.next_loop_nopop
     inc hl
     inc hl
     ld a, [wPlayStatsStatNum]
     inc a
     ld [wPlayStatsStatNum], a
     jp .loop
+.advance_extra_then_next_loop
+    pop hl
+    inc hl
+    inc hl
+    jr .next_loop_nopop
+    
+Print2ByteCompare:
+    ld bc, SCREEN_WIDTH - 3
+    add hl, bc
+    ld [hl], ")"
+    ld bc, -5
+    add hl, bc
+    lb bc, 2, 5
+    ld de, Buffer3
+    call PrintNum
+.find_blank
+    ld a, [hld]
+    cp " "
+    jr nz, .find_blank
+    inc hl
+    ld [hl], "("
+    ld bc, -6
+    add hl, bc
+    lb bc, 2, 5
+    ld de, Buffer1
+    call PrintNum
+    ret
+    
+Print4ByteCompare:
+    ld bc, SCREEN_WIDTH - 3
+    add hl, bc
+    ld [hl], ")"
+    ld bc, -7
+    add hl, bc
+    lb bc, 3, 7
+    ld de, Buffer6
+    call PrintNum
+.find_blank
+    ld a, [hld]
+    cp " "
+    jr nz, .find_blank
+    inc hl
+    ld [hl], "("
+    ld bc, -8
+    add hl, bc
+    lb bc, 3, 7
+    ld de, Buffer2
+    call PrintNum
+    ret
     
 PrintTimer:
-    push hl
-    ld h, d
-    ld l, e
 ; frames/milliseconds part
+; use 4/239 as an approximation for gbc framerate
+rept 2
+    ld a, [Buffer4]
+    sla a
+    ld [Buffer4], a
+    ld a, [Buffer3]
+    rl a
+    ld [Buffer3], a
+    ld a, [Buffer2]
+    rl a
+    ld [Buffer2], a
+    ld a, [Buffer1]
+    rl a
+    ld [Buffer1], a
+endr
 ; copy buffer1-4 into dividend
     ld a, [Buffer1]
     ld [hDividend], a
@@ -201,8 +284,8 @@ PrintTimer:
     ld [hDividend+2], a
     ld a, [Buffer4]
     ld [hDividend+3], a
-; divide by 60
-    ld a, 60
+; divide by 239
+    ld a, 239
     ld [hDivisor], a
     ld b, 4
     call Divide
@@ -215,7 +298,7 @@ PrintTimer:
     push af
     ld a, [hQuotient+2]
     push af
-; multiply remainder (frames) by 100
+; multiply remainder (1/239ths of a second) by 100 then divide by 239 to approximate centiseconds
 ; hRemainder == hMultiplier so skip copying that
     xor a
     ld [hMultiplicand], a
@@ -223,8 +306,8 @@ PrintTimer:
     ld a, 100
     ld [hMultiplicand+2], a
     call Multiply
-; divide by 60 to get a rough ms value
-    ld a, 60
+; divide by 239 to get a rough cs value
+    ld a, 239
     ld [hDivisor], a
     ld b, 4
     call Divide
@@ -305,7 +388,6 @@ PrintTimer:
     ld de, Buffer2
     call PrintNum
     ld [hl], ":"
-    pop hl
     ret
     
     
@@ -336,6 +418,56 @@ Copy4ByteValueIntoPrintScratch:
     ld [Buffer1], a
     ret
     
+Copy2ByteComparesIntoPrintScratch:
+    push hl
+    ld a, [hli]
+    ld h, [hl]
+    ld l, a
+    ld a, [hli]
+    ld [Buffer2], a
+    ld a, [hl]
+    ld [Buffer1], a
+    pop hl
+    inc hl
+    inc hl
+    ld a, [hli]
+    ld h, [hl]
+    ld l, a
+    ld a, [hli]
+    ld [Buffer4], a
+    ld a, [hl]
+    ld [Buffer3], a
+    ret
+    
+Copy4ByteComparesIntoPrintScratch:
+    push hl
+    ld a, [hli]
+    ld h, [hl]
+    ld l, a
+    ld a, [hli]
+    ld [Buffer4], a
+    ld a, [hli]
+    ld [Buffer3], a
+    ld a, [hli]
+    ld [Buffer2], a
+    ld a, [hl]
+    ld [Buffer1], a
+    pop hl
+    inc hl
+    inc hl
+    ld a, [hli]
+    ld h, [hl]
+    ld l, a
+    ld a, [hli]
+    ld [Buffer8], a
+    ld a, [hli]
+    ld [Buffer7], a
+    ld a, [hli]
+    ld [Buffer6], a
+    ld a, [hl]
+    ld [Buffer5], a
+    ret
+    
     
     
 RetrievePlaythroughStatsConfig::
@@ -353,8 +485,11 @@ ENDM
 
 stat_screen_entry: MACRO
     dw (\1) ; description string
-    db (\3) ; data type
-    dw (\2) ; sram address
+    db (\2) ; data type
+    dw (\3) ; sram address
+if \2 >= STATTYPE_2BYTE_COMPARE
+    dw (\4) ; second sram address
+endc
 ENDM
     
 PlaythroughStatsScreens::
@@ -363,61 +498,70 @@ PlaythroughStatsScreens::
     stat_screen PSBattle1TitleString, PSBattle1Config
     stat_screen PSBattle2TitleString, PSBattle2Config
     stat_screen PSBattle3TitleString, PSBattle3Config
+    stat_screen PSBattle4TitleString, PSBattle4Config
     stat_screen PSMoneyItemsTitleString, PSMoneyItemsConfig
     stat_screen PSMiscTitleString, PSMiscConfig
+PlaythroughStatsScreensEnd::
     
 PSTimersConfig::
-    stat_screen_entry PSTimersOverallString, sStatsFrameCount, STATTYPE_TIMER
-    stat_screen_entry PSTimersOverworldString, sStatsOWFrameCount, STATTYPE_TIMER
-    stat_screen_entry PSTimersBattleString, sStatsBattleFrameCount, STATTYPE_TIMER
-    stat_screen_entry PSTimersMenuString, sStatsMenuFrameCount, STATTYPE_TIMER
-    stat_screen_entry PSTimersIntroString, sStatsIntrosFrameCount, STATTYPE_TIMER
+    stat_screen_entry PSTimersOverallString, STATTYPE_TIMER, sStatsFrameCount
+    stat_screen_entry PSTimersOverworldString, STATTYPE_TIMER, sStatsOWFrameCount, 
+    stat_screen_entry PSTimersBattleString, STATTYPE_TIMER, sStatsBattleFrameCount
+    stat_screen_entry PSTimersMenuString, STATTYPE_TIMER, sStatsMenuFrameCount
+    stat_screen_entry PSTimersIntroString, STATTYPE_TIMER, sStatsIntrosFrameCount
     dw 0 ; end
     
 PSMovementConfig::
-    stat_screen_entry PSMovementTotalStepsString, sStatsStepCount, STATTYPE_4BYTE
-    stat_screen_entry PSMovementStepsWalkedString, sStatsStepCountWalk, STATTYPE_4BYTE
-    stat_screen_entry PSMovementStepsBikedString, sStatsStepCountBike, STATTYPE_4BYTE
-    stat_screen_entry PSMovementStepsSurfedString, sStatsStepCountSurf, STATTYPE_4BYTE
-    stat_screen_entry PSMovementBonksString, sStatsBonks, STATTYPE_2BYTE
+    stat_screen_entry PSMovementTotalStepsString, STATTYPE_4BYTE, sStatsStepCount, STATTYPE_4BYTE
+    stat_screen_entry PSMovementStepsWalkedString, STATTYPE_4BYTE, sStatsStepCountWalk, STATTYPE_4BYTE
+    stat_screen_entry PSMovementStepsBikedString, STATTYPE_4BYTE, sStatsStepCountBike, STATTYPE_4BYTE
+    stat_screen_entry PSMovementStepsSurfedString, STATTYPE_4BYTE, sStatsStepCountSurf, STATTYPE_4BYTE
+    stat_screen_entry PSMovementBonksString, STATTYPE_2BYTE, sStatsBonks, STATTYPE_2BYTE
     dw 0 ; end
     
 PSBattle1Config::
-    stat_screen_entry PSBattle1TotalBattlesString, sStatsBattles, STATTYPE_2BYTE
-    stat_screen_entry PSBattle1WildBattlesString, sStatsWildBattles, STATTYPE_2BYTE
-    stat_screen_entry PSBattle1TrainerBattlesString, sStatsTrainerBattles, STATTYPE_2BYTE
-    stat_screen_entry PSBattle1BattlesFledFromString, sStatsBattlesFled, STATTYPE_2BYTE
-    stat_screen_entry PSBattle1FailedEscapesString, sStatsFailedRuns, STATTYPE_2BYTE
+    stat_screen_entry PSBattle1TotalBattlesString, STATTYPE_2BYTE, sStatsBattles, STATTYPE_2BYTE
+    stat_screen_entry PSBattle1WildBattlesString, STATTYPE_2BYTE, sStatsWildBattles, STATTYPE_2BYTE
+    stat_screen_entry PSBattle1TrainerBattlesString, STATTYPE_2BYTE, sStatsTrainerBattles, STATTYPE_2BYTE
+    stat_screen_entry PSBattle1BattlesFledFromString, STATTYPE_2BYTE, sStatsBattlesFled, STATTYPE_2BYTE
+    stat_screen_entry PSBattle1FailedEscapesString, STATTYPE_2BYTE, sStatsFailedRuns, STATTYPE_2BYTE
     dw 0 ; end
     
 PSBattle2Config::
-    stat_screen_entry PSBattle2EnemyPKMNFaintedString, sStatsEnemyPokemonFainted, STATTYPE_2BYTE
-    stat_screen_entry PSBattle2OwnPKMNFaintedString, sStatsPlayerPokemonFainted, STATTYPE_2BYTE
-    stat_screen_entry PSBattle2SwitchoutsString, sStatsSwitchouts, STATTYPE_2BYTE
-    stat_screen_entry PSBattle2BallsThrownString, sStatsBallsThrown, STATTYPE_2BYTE
-    stat_screen_entry PSBattle2PokemonCaughtString, sStatsPokemonCaughtInBalls, STATTYPE_2BYTE
+    stat_screen_entry PSBattle2EnemyPKMNFaintedString, STATTYPE_2BYTE, sStatsEnemyPokemonFainted, STATTYPE_2BYTE
+    stat_screen_entry PSBattle2OwnPKMNFaintedString, STATTYPE_2BYTE, sStatsPlayerPokemonFainted, STATTYPE_2BYTE
+    stat_screen_entry PSBattle2SwitchoutsString, STATTYPE_2BYTE, sStatsSwitchouts, STATTYPE_2BYTE
+    stat_screen_entry PSBattle2BallsThrownString, STATTYPE_2BYTE, sStatsBallsThrown, STATTYPE_2BYTE
+    stat_screen_entry PSBattle2PokemonCaughtString, STATTYPE_2BYTE, sStatsPokemonCaughtInBalls, STATTYPE_2BYTE
     dw 0 ; end
     
 PSBattle3Config::
-    stat_screen_entry PSBattle3TotalDmgDealtString, sStatsTotalDamageDealt, STATTYPE_4BYTE
-    stat_screen_entry PSBattle3RealDmgDealtString, sStatsActualDamageDealt, STATTYPE_4BYTE
-    stat_screen_entry PSBattle3TotalDmgTakenString, sStatsTotalDamageTaken, STATTYPE_4BYTE
-    stat_screen_entry PSBattle3RealDmgTakenString, sStatsActualDamageTaken, STATTYPE_4BYTE
+    stat_screen_entry PSBattle3MovesHitString, STATTYPE_2BYTE_COMPARE, sStatsOwnMovesHit, sStatsEnemyMovesHit
+    stat_screen_entry PSBattle3MovesMissedString, STATTYPE_2BYTE_COMPARE, sStatsOwnMovesMissed, sStatsEnemyMovesMissed
+    stat_screen_entry PSBattle3SEMovesString, STATTYPE_2BYTE_COMPARE, sStatsOwnMovesSE, sStatsEnemyMovesSE
+    stat_screen_entry PSBattle3NVEMovesString, STATTYPE_2BYTE_COMPARE, sStatsOwnMovesNVE, sStatsEnemyMovesNVE
+    stat_screen_entry PSBattle3CriticalsDealtString, STATTYPE_2BYTE_COMPARE, sStatsCriticalsDealt, sStatsCriticalsTaken
+    stat_screen_entry PSBattle3OHKOsDealtString, STATTYPE_2BYTE_COMPARE, sStatsOHKOsDealt, sStatsOHKOsTaken
+    dw 0
+    
+PSBattle4Config::
+    stat_screen_entry PSBattle4TotalDmgDealtString, STATTYPE_4BYTE_COMPARE, sStatsTotalDamageDealt, sStatsActualDamageDealt
+    stat_screen_entry PSBattle4TotalDmgTakenString, STATTYPE_4BYTE_COMPARE, sStatsTotalDamageTaken, sStatsActualDamageTaken
     dw 0
     
 PSMoneyItemsConfig::
-    stat_screen_entry PSMIMoneyMadeString, sStatsMoneyMade, STATTYPE_MONEY
-    stat_screen_entry PSMIMoneySpentString, sStatsMoneySpent, STATTYPE_MONEY
-    stat_screen_entry PSMIMoneyLostString, sStatsMoneyLost, STATTYPE_MONEY
-    stat_screen_entry PSMIItemsPickedUpString, sStatsItemsPickedUp, STATTYPE_2BYTE
-    stat_screen_entry PSMIItemsBoughtString, sStatsItemsBought, STATTYPE_2BYTE
-    stat_screen_entry PSMIItemsSoldString, sStatsItemsSold, STATTYPE_2BYTE
+    stat_screen_entry PSMIMoneyMadeString, STATTYPE_MONEY, sStatsMoneyMade, STATTYPE_MONEY
+    stat_screen_entry PSMIMoneySpentString, STATTYPE_MONEY, sStatsMoneySpent, STATTYPE_MONEY
+    stat_screen_entry PSMIMoneyLostString, STATTYPE_MONEY, sStatsMoneyLost, STATTYPE_MONEY
+    stat_screen_entry PSMIItemsPickedUpString, STATTYPE_2BYTE, sStatsItemsPickedUp, STATTYPE_2BYTE
+    stat_screen_entry PSMIItemsBoughtString, STATTYPE_2BYTE, sStatsItemsBought, STATTYPE_2BYTE
+    stat_screen_entry PSMIItemsSoldString, STATTYPE_2BYTE, sStatsItemsSold, STATTYPE_2BYTE
     dw 0
     
 PSMiscConfig::
-    stat_screen_entry PSMiscSavesString, sStatsSaveCount, STATTYPE_2BYTE
-    stat_screen_entry PSMiscReloadsString, sStatsReloadCount, STATTYPE_2BYTE
-    stat_screen_entry PSMiscClockResetsString, sStatsClockResetCount, STATTYPE_2BYTE
+    stat_screen_entry PSMiscSavesString, STATTYPE_2BYTE, sStatsSaveCount, STATTYPE_2BYTE
+    stat_screen_entry PSMiscReloadsString, STATTYPE_2BYTE, sStatsReloadCount, STATTYPE_2BYTE
+    stat_screen_entry PSMiscClockResetsString, STATTYPE_2BYTE, sStatsClockResetCount, STATTYPE_2BYTE
     dw 0
     
 PlayerStatsString:
@@ -477,14 +621,26 @@ PSBattle2PokemonCaughtString:
     
 PSBattle3TitleString:
     db "     BATTLE 3@"
-PSBattle3TotalDmgDealtString:
-    db "TOTAL DMG. DEALT:@"
-PSBattle3RealDmgDealtString:
-    db "REAL DMG. DEALT:@"
-PSBattle3TotalDmgTakenString:
-    db "TOTAL DMG. TAKEN:@"
-PSBattle3RealDmgTakenString:
-    db "REAL DMG. TAKEN:@"
+
+PSBattle3MovesHitString:
+    db "MOVES HIT (BY):@"
+PSBattle3MovesMissedString:
+    db "MOVES MISSED:@"
+PSBattle3SEMovesString:
+    db "S.E. MOVES USED:@"
+PSBattle3NVEMovesString:
+    db "N.V.E. MOVES USED:@"
+PSBattle3CriticalsDealtString:
+    db "CRITICAL HITS:@"
+PSBattle3OHKOsDealtString:
+    db "OHKOs:@"
+    
+PSBattle4TitleString:
+    db "     BATTLE 4@"
+PSBattle4TotalDmgDealtString:
+    db "DAMAGE DEALT:@"
+PSBattle4TotalDmgTakenString:
+    db "DAMAGE TAKEN:@"
     
 PSMoneyItemsTitleString:
     db "  MONEY & ITEMS@"

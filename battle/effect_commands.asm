@@ -2293,6 +2293,8 @@ BattleCommand_FailureText: ; 35023
 ; If the move missed or failed, load the appropriate
 ; text, and end the effects of multi-turn or multi-
 ; hit moves.
+    callba SRAMStatsRecordMoveHitOrMiss
+    
 	ld a, [AttackMissed]
 	and a
 	ret z
@@ -2514,11 +2516,13 @@ BattleCommand_CriticalText: ; 35175
 ; Prints the message for critical hits or one-hit KOs.
 
 ; If there is no message to be printed, wait 20 frames.
+    callba SRAMStatsRecordCriticalHit
 	ld a, [CriticalHit]
 	and a
 	jr z, .wait
 
 	dec a
+    
 	add a
 	ld hl, .texts
 	ld b, 0
@@ -2572,7 +2576,7 @@ BattleCommand_SuperEffectiveLoopText: ; 351a5
 
 BattleCommand_SuperEffectiveText: ; 351ad
 ; supereffectivetext
-
+    callba SRAMStatsRecordMoveEffectiveness
 	ld a, [TypeModifier]
 	and $7f
 	cp 10 ; 1.0

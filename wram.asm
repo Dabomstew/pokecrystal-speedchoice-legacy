@@ -2048,7 +2048,9 @@ Buffer5::
 wd1ee:: ds 1
 Buffer6::
 wd1ef:: ds 1
+Buffer7::
 wd1f0:: ds 1
+Buffer8::
 wd1f1:: ds 1
 wd1f2:: ds 1
 wd1f3:: ds 1
