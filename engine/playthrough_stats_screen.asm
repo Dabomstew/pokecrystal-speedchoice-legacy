@@ -262,7 +262,7 @@ Print4ByteCompare:
     
 PrintTimer:
 ; frames/milliseconds part
-; use 4/239 as an approximation for gbc framerate
+; use 4/239 as a better approximation for gbc framerate than 1/60
 rept 2
     ld a, [Buffer4]
     sla a
