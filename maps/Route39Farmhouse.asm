@@ -31,6 +31,7 @@ UnknownScript_0x9cec5:
 	if_equal $2, UnknownScript_0x9cef6
 	giveitem MOOMOO_MILK
 	iffalse UnknownScript_0x9cefc
+    increment_2byte_stat sStatsItemsBought
 	takemoney $0, 500
 	special PlaceMoneyTopRight
 	waitsfx

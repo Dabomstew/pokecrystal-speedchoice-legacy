@@ -5183,6 +5183,7 @@ HiddenItemScript:: ; 0x13625
 	writetext .found_text
 	giveitem ITEM_FROM_MEM
 	iffalse .bag_full
+    increment_2byte_stat sStatsItemsPickedUp
 	callasm SetMemEvent
 	specialsound
 	itemnotify
@@ -7557,6 +7558,8 @@ _ResetClock: ; 4d3b1
 	ret z
 	call ClockResetPassword
 	jr c, .wrongpassword
+    ld de, sStatsClockResetCount
+    callba SRAMStatsIncrement2Byte
 	ld a, BANK(sRTCStatusFlags)
 	call GetSRAMBank
 	ld a, $80

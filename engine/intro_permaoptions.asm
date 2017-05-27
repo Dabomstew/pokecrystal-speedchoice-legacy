@@ -28,11 +28,11 @@ IntroPermaOptions::
 ; setup stats now
     ld a, 1
     ld [hStatsDisabled], a
-    ld a, BANK(sSpeedchoiceStatsStart)
+    ld a, BANK(sStatsStart)
     call OpenSRAM
     xor a
-    ld hl, sSpeedchoiceStatsStart
-    ld bc, sSpeedchoiceStatsEnd - sSpeedchoiceStatsStart
+    ld hl, sStatsStart
+    ld bc, sStatsEnd - sStatsStart
     call ByteFill
     call CloseSRAM
     ld [hStatsDisabled], a ; still 0 from above

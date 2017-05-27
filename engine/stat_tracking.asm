@@ -1,11 +1,15 @@
-SRAMStatsFrameCount::
-    ld hl, SRAMStatsFrameCount_
+sramstatmethod: MACRO
+\1::
+    ld hl, \1_
     jp SRAMStatsStart
+    ENDM
+    
+    sramstatmethod SRAMStatsFrameCount
 
 SRAMStatsFrameCount_::
-    ld hl, sSpeedchoiceFrameCount
-    call FourBitIncrement
-    ld hl, sSpeedchoiceOWFrameCount
+    ld hl, sStatsFrameCount
+    call FourByteIncrement
+    ld hl, sStatsOWFrameCount
     ld a, [hTimerType]
     sla a
     sla a
@@ -14,30 +18,215 @@ SRAMStatsFrameCount_::
     jr nc, .noOverflow
     inc h
 .noOverflow
-    call FourBitIncrement
-    jp SRAMStatsEnd
-    
-SRAMStatsIncrement2Bit::
-    ld hl, SRAMStatsIncrement2Bit_
-    jp SRAMStatsStart
-    
-SRAMStatsIncrement2Bit_::
-    ld h, d
-    ld l, e
-    call TwoBitIncrement
-    jp SRAMStatsEnd
-    
-SRAMStatsIncrement4Bit::
-    ld hl, SRAMStatsIncrement4Bit_
-    jp SRAMStatsStart
-    
-SRAMStatsIncrement4Bit_::
-    ld h, d
-    ld l, e
-    call FourBitIncrement
+    call FourByteIncrement
     jp SRAMStatsEnd
 
+    sramstatmethod SRAMStatsIncrement2Byte
     
+SRAMStatsIncrement2Byte_::
+    ld h, d
+    ld l, e
+    call TwoByteIncrement
+    jp SRAMStatsEnd
+    
+    sramstatmethod SRAMStatsIncrement4Byte
+    
+SRAMStatsIncrement4Byte_::
+    ld h, d
+    ld l, e
+    call FourByteIncrement
+    jp SRAMStatsEnd
+    
+    sramstatmethod SRAMStatsTotalDamageTaken
+
+SRAMStatsTotalDamageTaken_::
+; curdamage is big endian
+    ld hl, sStatsTotalDamageTaken
+    ld a, [CurDamage+1]
+    add [hl]
+    ld [hli], a
+    ld a, [CurDamage]
+    adc [hl]
+    ld [hli], a
+    jp nc, SRAMStatsEnd
+    call TwoByteIncrement
+    jp SRAMStatsEnd
+    
+    sramstatmethod SRAMStatsActualDamageTaken
+
+SRAMStatsActualDamageTaken_::
+; lower of CurDamage and BattleMonHP
+    ld hl, CurDamage
+    ld a, [BattleMonHP]
+    cp [hl]
+    jr c, .useMonHP
+    jr nz, .useDamage
+    inc hl
+    ld a, [BattleMonHP+1]
+    cp [hl]
+    jr nc, .useDamagePostIncrement
+.useMonHP
+    ld hl, BattleMonHP
+.useDamage
+    inc hl
+.useDamagePostIncrement
+    ld a, [sStatsActualDamageTaken]
+    add [hl]
+    ld [sStatsActualDamageTaken], a
+    dec hl
+    ld a, [sStatsActualDamageTaken+1]
+    adc [hl]
+    ld [sStatsActualDamageTaken+1], a
+    jp nc, SRAMStatsEnd
+    ld hl, sStatsActualDamageTaken+2
+    call TwoByteIncrement
+    jp SRAMStatsEnd
+    
+    sramstatmethod SRAMStatsTotalDamageDealt
+
+SRAMStatsTotalDamageDealt_::
+; curdamage is big endian
+    ld hl, sStatsTotalDamageDealt
+    ld a, [CurDamage+1]
+    add [hl]
+    ld [hli], a
+    ld a, [CurDamage]
+    adc [hl]
+    ld [hli], a
+    jp nc, SRAMStatsEnd
+    call TwoByteIncrement
+    jp SRAMStatsEnd
+    
+    sramstatmethod SRAMStatsActualDamageDealt
+
+SRAMStatsActualDamageDealt_::
+; lower of CurDamage and EnemyMonHP
+    ld hl, CurDamage
+    ld a, [EnemyMonHP]
+    cp [hl]
+    jr c, .useMonHP
+    jr nz, .useDamage
+    inc hl
+    ld a, [EnemyMonHP+1]
+    cp [hl]
+    jr nc, .useDamagePostIncrement
+.useMonHP
+    ld hl, EnemyMonHP
+.useDamage
+    inc hl
+.useDamagePostIncrement
+    ld a, [sStatsActualDamageDealt]
+    add [hl]
+    ld [sStatsActualDamageDealt], a
+    dec hl
+    ld a, [sStatsActualDamageDealt+1]
+    adc [hl]
+    ld [sStatsActualDamageDealt+1], a
+    jp nc, SRAMStatsEnd
+    ld hl, sStatsActualDamageDealt+2
+    call TwoByteIncrement
+    jp SRAMStatsEnd
+    
+    sramstatmethod SRAMStatsStepCount
+
+SRAMStatsStepCount_::
+    ld hl, sStatsStepCount
+    call FourByteIncrement
+    ld a, [PlayerState]
+    ld hl, sStatsStepCountSurf
+    cp PLAYER_SURF
+    jr z, .increment
+    cp PLAYER_SURF_PIKA
+    jr z, .increment
+    ld hl, sStatsStepCountBike
+    cp PLAYER_BIKE
+    jr z, .increment
+    ld hl, sStatsStepCountWalk
+.increment
+    call FourByteIncrement
+    jp SRAMStatsEnd
+    
+    sramstatmethod SRAMStatsBlackoutMoneyLoss
+    
+SRAMStatsBlackoutMoneyLoss_::
+; add Buffer1-Buffer3 (big endian) to little endian money loss
+    ld hl, sStatsMoneyLost
+    ld a, [Buffer3]
+    add [hl]
+    ld [hli], a
+    ld a, [Buffer2]
+    adc [hl]
+    ld [hli], a
+    ld a, [Buffer1]
+    adc [hl]
+    ld [hli], a
+    jp nc, SRAMStatsEnd
+    inc [hl]
+    jp SRAMStatsEnd
+    
+    sramstatmethod SRAMStatsAddMoneyGain
+    
+SRAMStatsAddMoneyGain_::
+; add [de] through [de-2] to little endian money gain
+    ld hl, sStatsMoneyMade
+    ld a, [de]
+    add [hl]
+    ld [hli], a
+    dec de
+    ld a, [de]
+    adc [hl]
+    ld [hli], a
+    dec de
+    ld a, [de]
+    adc [hl]
+    ld [hli], a
+    jp nc, SRAMStatsEnd
+    inc [hl]
+    jp SRAMStatsEnd
+    
+    sramstatmethod SRAMStatsAddMoneySpent
+    
+SRAMStatsAddMoneySpent_::
+; add [de] through [de-2] to little endian money spent
+    ld hl, sStatsMoneySpent
+    ld a, [de]
+    add [hl]
+    ld [hli], a
+    dec de
+    ld a, [de]
+    adc [hl]
+    ld [hli], a
+    dec de
+    ld a, [de]
+    adc [hl]
+    ld [hli], a
+    jp nc, SRAMStatsEnd
+    inc [hl]
+    jp SRAMStatsEnd
+    
+    sramstatmethod SRAMStatsIncreaseItemsBought
+    
+SRAMStatsIncreaseItemsBought_::
+; add [wItemQuantityChangeBuffer] to items bought
+    ld hl, sStatsItemsBought
+    ld a, [wItemQuantityChangeBuffer]
+    add [hl]
+    ld [hli], a
+    jp nc, SRAMStatsEnd
+    inc [hl]
+    jp SRAMStatsEnd
+    
+    sramstatmethod SRAMStatsIncreaseItemsSold
+    
+SRAMStatsIncreaseItemsSold_::
+; add [wItemQuantityChangeBuffer] to items sold
+    ld hl, sStatsItemsSold
+    ld a, [wItemQuantityChangeBuffer]
+    add [hl]
+    ld [hli], a
+    jp nc, SRAMStatsEnd
+    inc [hl]
+    jp SRAMStatsEnd
     
 SRAMStatsStart::
 ; takes return address in hl
@@ -52,12 +241,11 @@ SRAMStatsStart::
     ld a, [hSRAMBank]
     push af
 ; switch to correct bank
-    ld a, BANK(sSpeedchoiceStatsStart)
+    ld a, BANK(sStatsStart)
     ld [hSRAMBank], a
     ld [MBC3SRamBank], a
 ; done, move to actual code
-    push hl
-    ret
+    jp hl
     
 SRAMStatsEnd::
 ; restore old sram bank
@@ -66,7 +254,7 @@ SRAMStatsEnd::
     ld [MBC3SRamBank], a
     ret
     
-FourBitIncrement::
+FourByteIncrement::
 ; address in hl
     inc [hl]
     ret nz
@@ -74,7 +262,7 @@ FourBitIncrement::
     inc [hl]
     ret nz
     inc hl
-TwoBitIncrement::
+TwoByteIncrement::
     inc [hl]
     ret nz
     inc hl

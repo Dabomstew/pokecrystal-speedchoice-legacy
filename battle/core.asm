@@ -2368,6 +2368,8 @@ FaintYourPokemon: ; 3cef1
 	hlcoord 9, 7
 	lb bc, 5, 11
 	call ClearBox
+    ld de, sStatsPlayerPokemonFainted
+    callba SRAMStatsIncrement2Byte
 	ld hl, BattleText_PkmnFainted
 	jp StdBattleTextBox
 ; 3cf14
@@ -2382,6 +2384,8 @@ FaintEnemyPokemon: ; 3cf14
 	hlcoord 1, 0
 	lb bc, 4, 10
 	call ClearBox
+    ld de, sStatsEnemyPokemonFainted
+    callba SRAMStatsIncrement2Byte
 	ld hl, BattleText_EnemyPkmnFainted
 	jp StdBattleTextBox
 ; 3cf35
@@ -2636,6 +2640,14 @@ HandleBattleReward: ; 3d02b
 ; 3d0be
 
 AddBattleMoneyToAccount: ; 3d0be
+; log money gain
+    push de
+    push hl
+    pop de
+    push hl
+    callba SRAMStatsAddMoneyGain
+    pop hl
+    pop de
 	ld c, $3
 	and a
 	push de
@@ -3994,10 +4006,18 @@ TryToRunAwayFromBattle: ; 3d8b3
 	jr nc, .can_escape
 	ld a, $1
 	ld [wPlayerAction], a
+    push de
+    ld de, sStatsFailedRuns
+    callba SRAMStatsIncrement2Byte
+    pop de
 	ld hl, BattleText_CantEscape2
 	jr .print_inescapable_text
 
 .cant_escape
+    push de
+    ld de, sStatsFailedRuns
+    callba SRAMStatsIncrement2Byte
+    pop de
 	ld hl, BattleText_CantEscape
 	jr .print_inescapable_text
 
@@ -4013,6 +4033,10 @@ TryToRunAwayFromBattle: ; 3d8b3
 	ret
 
 .can_escape
+    push de
+    ld de, sStatsBattlesFled
+    callba SRAMStatsIncrement2Byte
+    pop de
 	ld a, [wLinkMode]
 	and a
 	ld a, DRAW
@@ -4377,7 +4401,7 @@ PursuitSwitch: ; 3dc5b
 	call GetMoveEffect
 	ld a, b
 	cp EFFECT_PURSUIT
-	jr nz, .done
+	jp nz, .done
 
 	ld a, [CurBattleMon]
 	push af
@@ -4422,6 +4446,8 @@ PursuitSwitch: ; 3dc5b
 	ld b, RESET_FLAG
 	predef FlagPredef
 	call PlayerMonFaintedAnimation
+    ld de, sStatsPlayerPokemonFainted
+    callba SRAMStatsIncrement2Byte
 	ld hl, BattleText_PkmnFainted
 	jr .done_fainted
 
@@ -4438,6 +4464,8 @@ PursuitSwitch: ; 3dc5b
 	call PlaySFX
 	call WaitSFX
 	call EnemyMonFaintedAnimation
+    ld de, sStatsEnemyPokemonFainted
+    callba SRAMStatsIncrement2Byte
 	ld hl, BattleText_EnemyPkmnFainted
 
 .done_fainted
@@ -8165,6 +8193,8 @@ WithdrawPkmnText: ; 3f2f4
 ; depending on HP the message is different
 	push de
 	push bc
+    ld de, sStatsSwitchouts
+    callba SRAMStatsIncrement2Byte
 	ld hl, EnemyMonHP + 1
 	ld de, wEnemyHPAtTimeOfPlayerSwitch + 1
 	ld b, [hl]
@@ -9584,9 +9614,15 @@ CopyBackpic: ; 3fc30
 
 
 BattleStartMessage: ; 3fc8b
+    ld de, sStatsBattles
+    callba SRAMStatsIncrement2Byte
+    
 	ld a, [wBattleMode]
 	dec a
 	jr z, .wild
+    
+    ld de, sStatsTrainerBattles
+    callba SRAMStatsIncrement2Byte
 
 	ld de, SFX_SHINE
 	call PlaySFX
@@ -9601,6 +9637,9 @@ BattleStartMessage: ; 3fc8b
 	jr .PlaceBattleStartText
 
 .wild
+    ld de, sStatsWildBattles
+    callba SRAMStatsIncrement2Byte
+    
 	call BattleCheckEnemyShininess
 	jr nc, .not_shiny
 

@@ -500,6 +500,7 @@ BuyMenuLoop: ; 15cef
 	ld a, $3 ; useless load
 	call CompareMoney
 	jr c, .insufficient_funds
+    callba SRAMStatsIncreaseItemsBought
 	ld hl, NumItems
 	call ReceiveItem
 	jr nc, .insufficient_bag_space
@@ -885,9 +886,13 @@ SellMenu: ; 15eb3
 	call PrintTextBoxText
 	call YesNoBox
 	jr c, .declined
+; log money made from sale
+    ld de, hMoneyTemp + 2
+    callba SRAMStatsAddMoneyGain
 	ld de, Money
 	ld bc, hMoneyTemp
 	call GiveMoney
+    callba SRAMStatsIncreaseItemsSold
 	ld a, [wMartItemID]
 	ld hl, NumItems
 	call TossItem

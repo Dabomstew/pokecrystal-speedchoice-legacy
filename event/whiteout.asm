@@ -50,11 +50,19 @@ BattleBGMap: ; 1250a
 
 HalveMoney: ; 12513
 
-; Empty function...
-	callba MobileFn_1060c7
-
 ; Halve the player's money.
-	ld hl, Money
+; log old money
+    ld hl, Money + 2
+    ld de, Buffer3
+    ld a, [hld]
+    ld [de], a
+    dec de
+    ld a, [hld]
+    ld [de], a
+    dec de
+    ld a, [hl]
+    ld [de], a
+; actually take the money - hl = Money right now
 	ld a, [hl]
 	srl a
 	ld [hli], a
@@ -64,6 +72,20 @@ HalveMoney: ; 12513
 	ld a, [hl]
 	rra
 	ld [hl], a
+; calculate difference
+; hl = Money+2 again
+    ld a, [Buffer3]
+    sub [hl]
+    ld [Buffer3], a
+    dec hl
+    ld a, [Buffer2]
+    sbc [hl]
+    ld [Buffer2], a
+    dec hl
+    ld a, [Buffer1]
+    sbc [hl]
+    ld [Buffer1], a
+    callba SRAMStatsBlackoutMoneyLoss
 	ret
 ; 12527
 

@@ -4750,6 +4750,7 @@ PlayFXAnimID: ; 35d08
 
 
 EnemyHurtItself: ; 35d1c
+    callba SRAMStatsTotalDamageDealt
 	ld hl, CurDamage
 	ld a, [hli]
 	ld b, a
@@ -4766,6 +4767,9 @@ EnemyHurtItself: ; 35d1c
 	jp nz, SelfInflictDamageToSubstitute
 
 .mimic_sub_check
+    push hl
+    callba SRAMStatsActualDamageDealt
+    pop hl
 	ld a, [hld]
 	ld b, a
 	ld a, [EnemyMonHP + 1]
@@ -4812,6 +4816,7 @@ EnemyHurtItself: ; 35d1c
 
 
 PlayerHurtItself: ; 35d7e
+    callba SRAMStatsTotalDamageTaken
 	ld hl, CurDamage
 	ld a, [hli]
 	ld b, a
@@ -4827,6 +4832,9 @@ PlayerHurtItself: ; 35d7e
 	bit SUBSTATUS_SUBSTITUTE, a
 	jp nz, SelfInflictDamageToSubstitute
 .mimic_sub_check
+    push hl
+    callba SRAMStatsActualDamageTaken
+    pop hl
 	ld a, [hld]
 	ld b, a
 	ld a, [BattleMonHP + 1]

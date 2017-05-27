@@ -222,15 +222,44 @@ sBTPkmnPrevPrevTrainer2:: ds 1
 sBTPkmnPrevPrevTrainer3:: ds 1
 
 SECTION "SRAM Speedchoice Stats", SRAM, BANK [1]
-sSpeedchoiceStatsStart::
-sSpeedchoiceFrameCount:: ds 4
-sSpeedchoiceOWFrameCount:: ds 4
-sSpeedchoiceBattleFrameCount:: ds 4
-sSpeedchoiceMenuFrameCount:: ds 4
-sSpeedchoiceIntrosFrameCount:: ds 4
-sSpeedchoiceSaveCount:: ds 2
-sSpeedchoiceReloadCount:: ds 2
-sSpeedchoiceStatsEnd::
+sStatsStart::
+sStatsFrameCount:: ds 4
+sStatsOWFrameCount:: ds 4
+sStatsBattleFrameCount:: ds 4
+sStatsMenuFrameCount:: ds 4
+sStatsIntrosFrameCount:: ds 4
+sStatsSaveCount:: ds 2
+sStatsReloadCount:: ds 2
+sStatsClockResetCount:: ds 2
+sStatsStepCount:: ds 4
+sStatsStepCountWalk:: ds 4
+sStatsStepCountSurf:: ds 4
+sStatsStepCountBike:: ds 4
+sStatsBonks:: ds 2
+sStatsTotalDamageDealt:: ds 4
+sStatsActualDamageDealt:: ds 4
+sStatsTotalDamageTaken:: ds 4
+sStatsActualDamageTaken:: ds 4
+sStatsPlayerHPHealed:: ds 4
+sStatsEnemyHPHealed:: ds 4
+sStatsPlayerPokemonFainted:: ds 2
+sStatsEnemyPokemonFainted:: ds 2
+sStatsSwitchouts:: ds 2
+sStatsBattles:: ds 2
+sStatsTrainerBattles:: ds 2
+sStatsWildBattles:: ds 2
+sStatsBattlesFled:: ds 2
+sStatsFailedRuns:: ds 2
+sStatsMoneyMade:: ds 4
+sStatsMoneySpent:: ds 4
+sStatsMoneyLost:: ds 4
+sStatsItemsPickedUp:: ds 2
+sStatsItemsBought:: ds 2
+sStatsItemsSold:: ds 2
+sStatsMovesLearnt:: ds 2
+sStatsBallsThrown:: ds 2
+sStatsPokemonCaughtInBalls:: ds 2
+sStatsEnd::
 
 
 SECTION "Boxes 1-7",  SRAM, BANK [2]

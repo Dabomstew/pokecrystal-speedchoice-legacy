@@ -930,6 +930,8 @@ SelectMenuCallback: ; 96b66
 ; 96b79
 
 CountStep: ; 96b79
+    callba SRAMStatsStepCount
+    
 	; Don't count steps in link communication rooms.
 	ld a, [wLinkMode]
 	and a

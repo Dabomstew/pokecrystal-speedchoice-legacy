@@ -243,6 +243,8 @@ ENDC
 	dw Script_wait                       ; a8
 	dw Script_check_save                 ; a9
 	dw Script_check_permaoptions         ; aa
+    dw Script_increment_2byte_stat       ; ab
+    dw Script_increment_4byte_stat       ; ac
 ; 96e05
 
 StartScript: ; 96e05
@@ -3280,5 +3282,27 @@ Script_check_permaoptions:
 .writeResult
 	ld [ScriptVar], a
 	ret
+    
+Script_increment_2byte_stat:
+; script command 0xab
+; parameters:
+;     pointer (MultiByteParam)
+    call GetScriptByte
+    ld e, a
+    call GetScriptByte
+    ld d, a
+    callba SRAMStatsIncrement2Byte
+    ret
+    
+Script_increment_4byte_stat:
+; script command 0xac
+; parameters:
+;     pointer (MultiByteParam)
+    call GetScriptByte
+    ld e, a
+    call GetScriptByte
+    ld d, a
+    callba SRAMStatsIncrement4Byte
+    ret
 	
 ; 97c28

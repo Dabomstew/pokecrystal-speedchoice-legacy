@@ -224,6 +224,9 @@ ParkBall: ; e8a2
 	jp z, Ball_BoxIsFullMessage
 
 .room_in_party
+    ld de, sStatsBallsThrown
+    callba SRAMStatsIncrement2Byte
+    
 	xor a
 	ld [wWildMon], a
 
@@ -470,7 +473,8 @@ endr
 	ld hl, Text_ThreeShakes
 	jp z, .shake_and_break_free
 .caught
-
+    ld de, sStatsPokemonCaughtInBalls
+    callba SRAMStatsIncrement2Byte
 	ld hl, EnemyMonStatus
 	ld a, [hli]
 	push af
@@ -2985,6 +2989,8 @@ UseDisposableItem: ; f795
 ; f7a0
 
 UseBallInTrainerBattle: ; f7a0
+    ld de, sStatsBallsThrown
+    callba SRAMStatsIncrement2Byte
 	call ReturnToBattle_UseBall
 	ld de, ANIM_THROW_POKE_BALL
 	ld a, e

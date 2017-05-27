@@ -361,8 +361,8 @@ Continue: ; 5d65
 	jr .FailToLoad
 
 .Check2Pass
-    ld de, sSpeedchoiceReloadCount
-    callba SRAMStatsIncrement2Bit
+    ld de, sStatsReloadCount
+    callba SRAMStatsIncrement2Byte
 	ld a, $8
 	ld [MusicFade], a
 	ld a, MUSIC_NONE % $100

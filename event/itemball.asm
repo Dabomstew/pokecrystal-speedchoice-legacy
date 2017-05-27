@@ -1,6 +1,7 @@
 FindItemInBallScript:: ; 0x122ce
 	callasm .TryReceiveItem
 	iffalse .no_room
+    increment_2byte_stat sStatsItemsPickedUp
 	disappear LAST_TALKED
 	opentext
 	writetext .text_found

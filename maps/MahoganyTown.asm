@@ -64,6 +64,7 @@ UnknownScript_0x190040:
 	if_equal $2, UnknownScript_0x19006c
 	giveitem RAGECANDYBAR
 	iffalse UnknownScript_0x190078
+    increment_2byte_stat sStatsItemsBought
 	waitsfx
 	playsound SFX_TRANSACTION
 	takemoney $0, 300
