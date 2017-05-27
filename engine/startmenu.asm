@@ -500,7 +500,8 @@ StartMenu_Option: ; 1291c
 ; Game options.
 
 	call FadeToMenu
-	callba OptionsMenu
+    callba PlaythroughStatsScreen
+	;callba OptionsMenu
 	ld a, 6
 	ret
 ; 12928

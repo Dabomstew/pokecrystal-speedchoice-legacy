@@ -1507,9 +1507,13 @@ wHoursSince:: ds 1
 wDaysSince:: ds 1
 
 wOptionsMenuCount:: ds 1
+wPlayStatsStringPtr:: 
 wOptionsStringPtr:: ds 2
+wPlayStatsConfigPtr:: 
 wOptionsJumptablePtr:: ds 2
+wPlayStatsConfigEnds:: 
 wOptionsExitButtons:: ds 1
+wPlayStatsStatNum:: 
 wOptionsNextMenuID:: ds 1
 wOptionsMenuID:: ds 1
 wStoredJumptableIndex:: ds 1
