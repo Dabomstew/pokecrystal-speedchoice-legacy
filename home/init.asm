@@ -115,6 +115,9 @@ Init:: ; 17d
 	ld [hSCX], a
 	ld [hSCY], a
 	ld [rJOYP], a
+    
+    ld a, TIMER_INTROS
+    ld [hTimerType], a
 
 	ld a, $8 ; HBlank int enable
 	ld [rSTAT], a

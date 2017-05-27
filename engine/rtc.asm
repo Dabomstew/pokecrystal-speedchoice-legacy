@@ -3,6 +3,7 @@ StopRTC: ; Unreferenced???
 	ld [MBC3SRamEnable], a
 	call LatchClock
 	ld a, RTC_DH
+    ld [hSRAMBank], a
 	ld [MBC3SRamBank], a
 	ld a, [MBC3RTC]
 	set 6, a ; halt
@@ -16,6 +17,7 @@ StartRTC: ; 14019
 	ld [MBC3SRamEnable], a
 	call LatchClock
 	ld a, RTC_DH
+    ld [hSRAMBank], a
 	ld [MBC3SRamBank], a
 	ld a, [MBC3RTC]
 	res 6, a ; halt
@@ -86,9 +88,11 @@ SaveRTC: ; 1406a
 	call LatchClock
 	ld hl, MBC3RTC
 	ld a, $c
+    ld [hSRAMBank], a
 	ld [MBC3SRamBank], a
 	res 7, [hl]
 	ld a, BANK(sRTCStatusFlags)
+    ld [hSRAMBank], a
 	ld [MBC3SRamBank], a
 	xor a
 	ld [sRTCStatusFlags], a

@@ -1,4 +1,6 @@
 StartMenu:: ; 125cd
+    ld a, TIMER_MENUS
+    ld [hTimerType], a
 
 	call ClearWindowData
 

@@ -1,4 +1,7 @@
 Predef_StartBattle: ; 8c20f
+    ld a, TIMER_BATTLE
+    ld [hTimerType], a
+    
 	call Function8c26d
 	ld a, [rBGP]
 	ld [wBGP], a

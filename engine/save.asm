@@ -260,6 +260,8 @@ SavedTheGame: ; 14be6
 
 
 SaveGameData_: ; 14c10
+    ld de, sSpeedchoiceSaveCount
+    callba SRAMStatsIncrement2Bit
 	ld a, 1
 	ld [wSaveFileExists], a
 	callba StageRTCTimeForSave

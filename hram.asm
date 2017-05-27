@@ -124,5 +124,8 @@ hMobile            EQU $ffe9
 hFFEA              EQU $ffea
 hClockResetTrigger EQU $ffeb
 hHasAlignedBGMap   EQU $ffec
+hSRAMBank          EQU $ffed
+hStatsDisabled     EQU $ffee
+hTimerType         EQU $ffef
 
 HRAM_END EQU $ffff

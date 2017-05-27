@@ -11636,3 +11636,6 @@ INCLUDE "engine/check_for_trainer.asm"
 SECTION "femon", ROMX
 INCLUDE "engine/fully_evolve_mon.asm"
 
+SECTION "stats", ROMX
+INCLUDE "engine/stat_tracking.asm"
+

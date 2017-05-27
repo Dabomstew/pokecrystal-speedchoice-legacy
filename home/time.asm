@@ -46,26 +46,36 @@ GetClock:: ; 5b7
 	ld hl, MBC3SRamBank
 	ld de, MBC3RTC
 
-	ld [hl], RTC_S
+    ld a, RTC_S
+    ld [hSRAMBank], a
+	ld [hl], a
 	ld a, [de]
 	and $3f
 	ld [hRTCSeconds], a
 
-	ld [hl], RTC_M
+	ld a, RTC_M
+    ld [hSRAMBank], a
+    ld [hl], a
 	ld a, [de]
 	and $3f
 	ld [hRTCMinutes], a
 
-	ld [hl], RTC_H
+	ld a, RTC_H
+    ld [hSRAMBank], a
+    ld [hl], a
 	ld a, [de]
 	and $1f
 	ld [hRTCHours], a
 
-	ld [hl], RTC_DL
+	ld a, RTC_DL
+    ld [hSRAMBank], a
+    ld [hl], a
 	ld a, [de]
 	ld [hRTCDayLo], a
 
-	ld [hl], RTC_DH
+	ld a, RTC_DH
+    ld [hSRAMBank], a
+    ld [hl], a
 	ld a, [de]
 	ld [hRTCDayHi], a
 
@@ -242,31 +252,34 @@ SetClock:: ; 691
 	ld hl, MBC3SRamBank
 	ld de, MBC3RTC
 	
-; seems to be a halt check that got partially commented out
-; this block is totally pointless
-	ld [hl], RTC_DH
-	ld a, [de]
-	bit 6, a ; halt
-	ld [de], a
-	
 ; seconds
-	ld [hl], RTC_S
+	ld a, RTC_S
+    ld [hSRAMBank], a
+    ld [hl], a
 	ld a, [hRTCSeconds]
 	ld [de], a
 ; minutes
-	ld [hl], RTC_M
+	ld a, RTC_M
+    ld [hSRAMBank], a
+    ld [hl], a
 	ld a, [hRTCMinutes]
 	ld [de], a
 ; hours
-	ld [hl], RTC_H
+	ld a, RTC_H
+    ld [hSRAMBank], a
+    ld [hl], a
 	ld a, [hRTCHours]
 	ld [de], a
 ; day lo
-	ld [hl], RTC_DL
+	ld a, RTC_DL
+    ld [hSRAMBank], a
+    ld [hl], a
 	ld a, [hRTCDayLo]
 	ld [de], a
 ; day hi
-	ld [hl], RTC_DH
+	ld a, RTC_DH
+    ld [hSRAMBank], a
+    ld [hl], a
 	ld a, [hRTCDayHi]
 	res 6, a ; make sure timer is active
 	ld [de], a

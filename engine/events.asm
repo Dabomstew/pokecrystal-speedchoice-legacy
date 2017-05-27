@@ -6,6 +6,8 @@ OverworldLoop:: ; 966b0
 	xor a
 	ld [MapStatus], a
 .loop
+    ld a, TIMER_OVERWORLD
+    ld [hTimerType], a
 	ld a, [MapStatus]
 	ld hl, .jumps
 	rst JumpTable

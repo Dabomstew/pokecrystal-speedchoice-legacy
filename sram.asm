@@ -221,6 +221,17 @@ sBTPkmnPrevPrevTrainer1:: ds 1
 sBTPkmnPrevPrevTrainer2:: ds 1
 sBTPkmnPrevPrevTrainer3:: ds 1
 
+SECTION "SRAM Speedchoice Stats", SRAM, BANK [1]
+sSpeedchoiceStatsStart::
+sSpeedchoiceFrameCount:: ds 4
+sSpeedchoiceOWFrameCount:: ds 4
+sSpeedchoiceBattleFrameCount:: ds 4
+sSpeedchoiceMenuFrameCount:: ds 4
+sSpeedchoiceIntrosFrameCount:: ds 4
+sSpeedchoiceSaveCount:: ds 2
+sSpeedchoiceReloadCount:: ds 2
+sSpeedchoiceStatsEnd::
+
 
 SECTION "Boxes 1-7",  SRAM, BANK [2]
 	box sBox1

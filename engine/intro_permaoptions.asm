@@ -25,6 +25,17 @@ IntroPermaOptions::
 	ld a, [wMenuCursorY]
 	dec a
 	jr nz, .setOptions
+; setup stats now
+    ld a, 1
+    ld [hStatsDisabled], a
+    ld a, BANK(sSpeedchoiceStatsStart)
+    call OpenSRAM
+    xor a
+    ld hl, sSpeedchoiceStatsStart
+    ld bc, sSpeedchoiceStatsEnd - sSpeedchoiceStatsStart
+    call ByteFill
+    call CloseSRAM
+    ld [hStatsDisabled], a ; still 0 from above
 	ret
 	
 PrintPermaOptionsToScreen::

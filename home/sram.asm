@@ -17,6 +17,7 @@ OpenSRAM:: ; 2fd1
 	ld [MBC3SRamEnable], a
 ; select sram bank
 	pop af
+    ld [hSRAMBank], a
 	ld [MBC3SRamBank], a
 	ret
 ; 2fe1
