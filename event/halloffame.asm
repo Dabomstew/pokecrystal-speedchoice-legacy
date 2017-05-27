@@ -27,6 +27,12 @@ HallOfFame:: ; 0x8640e
 	xor a
 	ld [wc2cd], a
 	call AnimateHallOfFame
+    ld a, [wPermanentOptions2]
+    and GOAL_MASK
+    cp GOAL_ELITEFOUR
+    jr nz, .done
+    callba PlaythroughStatsScreen
+.done
 	pop af
 	ld b, a
 	callba Credits
@@ -50,6 +56,12 @@ RedCredits:: ; 86455
 	call DisableSpriteUpdates
 	ld a, SPAWN_RED
 	ld [wSpawnAfterChampion], a
+    ld a, [wPermanentOptions2]
+    and GOAL_MASK
+    cp GOAL_RED
+    jr nz, .done
+    callba PlaythroughStatsScreen
+.done
 	ld a, [StatusFlags]
 	ld b, a
 	callba Credits

@@ -29,8 +29,11 @@ PlaythroughStatsScreen::
 	ld a, [hli]
 	ld e, a
 	ld d, [hl]
-	hlcoord 2, 2
+	hlcoord 1, 2
 	call PlaceString
+    hlcoord 1, 1
+    ld de, PlayerStatsString
+    call PlaceString
     call RenderStats
 ; render page display
     hlcoord 1, 16
@@ -417,8 +420,11 @@ PSMiscConfig::
     stat_screen_entry PSMiscClockResetsString, sStatsClockResetCount, STATTYPE_2BYTE
     dw 0
     
+PlayerStatsString:
+    db "   PLAYER STATS@"
+    
 PSTimersTitleString:
-    db "TIMERS@"
+    db "      TIMERS@"
 PSTimersOverallString:
     db "TOTAL TIME:@"
 PSTimersOverworldString:
@@ -431,7 +437,7 @@ PSTimersIntroString:
     db "TIME IN INTROS:@"
     
 PSMovementTitleString:
-    db "MOVEMENT@"
+    db "     MOVEMENT@"
 PSMovementTotalStepsString:
     db "TOTAL STEPS:@"
 PSMovementStepsWalkedString:
@@ -444,7 +450,7 @@ PSMovementBonksString:
     db "BONKS:@"
     
 PSBattle1TitleString:
-    db "BATTLE 1@"
+    db "     BATTLE 1@"
 PSBattle1TotalBattlesString:
     db "TOTAL BATTLES:@"
 PSBattle1WildBattlesString:
@@ -457,7 +463,7 @@ PSBattle1FailedEscapesString:
     db "FAILED ESCAPES:@"
     
 PSBattle2TitleString:
-    db "BATTLE 2@"
+    db "     BATTLE 2@"
 PSBattle2EnemyPKMNFaintedString:
     db "ENEMY <PK><MN> FAINTED:@"
 PSBattle2OwnPKMNFaintedString:
@@ -470,7 +476,7 @@ PSBattle2PokemonCaughtString:
     db "<PK><MN> CAPTURED:@"
     
 PSBattle3TitleString:
-    db "BATTLE 3@"
+    db "     BATTLE 3@"
 PSBattle3TotalDmgDealtString:
     db "TOTAL DMG. DEALT:@"
 PSBattle3RealDmgDealtString:
@@ -481,7 +487,7 @@ PSBattle3RealDmgTakenString:
     db "REAL DMG. TAKEN:@"
     
 PSMoneyItemsTitleString:
-    db "MONEY & ITEMS@"
+    db "  MONEY & ITEMS@"
 PSMIMoneyMadeString:
     db "MONEY MADE:@"
 PSMIMoneySpentString:
@@ -497,7 +503,7 @@ PSMIItemsSoldString:
     
     
 PSMiscTitleString:
-    db "MISC.@"
+    db "      MISC.@"
 PSMiscSavesString:
     db "TIMES SAVED:@"
 PSMiscReloadsString:
