@@ -354,6 +354,14 @@ IlexForestCharcoalMasterScript:
 	iftrue .AlreadyGotCut
 	writetext Text_CharcoalMasterIntro
 	buttonsound
+    givepager PAGER_CUT
+    writetext Text_CharcoalMasterDux
+    waitsfx
+    playsound SFX_REGISTER_PHONE_NUMBER
+	waitsfx
+	buttonsound
+    writetext Text_CharcoalMasterAfterDux
+    buttonsound
 	verbosegiveitem TM_CUT
 	setevent EVENT_GOT_TM51_CUT
 	writetext Text_CharcoalMasterOutro
@@ -798,22 +806,32 @@ Text_CharcoalMasterIntro:
 	para "Now, how can I"
 	line "thank you…"
 
-	para "I know! Here, take"
-	line "this."
-	done
-
-Text_CharcoalMasterOutro:
-	text "That's the CUT HM."
-	line "Teach that to a"
-
-	para "#MON to clear"
-	line "small trees."
-
-	para "Of course, you"
+	para "I know! You can"
+    line "use my #MON to"
+    cont "cut trees."
+    
+    para "Of course, you"
 	line "have to have the"
 
 	para "GYM BADGE from"
 	line "AZALEA to use it."
+	done
+    
+Text_CharcoalMasterDux:
+    text "Added DUX"
+    line "to the RIDE PAGER."
+    done
+    
+Text_CharcoalMasterAfterDux:
+    text "Also, take this."
+    done
+
+Text_CharcoalMasterOutro:
+	text "That's the CUT TM."
+	line "Teach that to a"
+
+	para "#MON to deal"
+	line "decent damage."
 	done
 
 Text_CharcoalMasterTalkAfter:
