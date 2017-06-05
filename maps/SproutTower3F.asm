@@ -80,6 +80,14 @@ SageLiScript:
 	opentext
 	writetext UnknownText_0x184cc2
 	buttonsound
+    givepager PAGER_FLASH
+    writetext Text_FlashGuyPager
+    waitsfx
+    playsound SFX_REGISTER_PHONE_NUMBER
+	waitsfx
+	buttonsound
+    writetext Text_FlashGuyInterim
+    buttonsound
 	verbosegiveitem TM_FLASH
 	setevent EVENT_GOT_TM55_FLASH
 	setevent EVENT_BEAT_SAGE_LI
@@ -235,6 +243,14 @@ SageLiBeatenText:
 	done
 
 UnknownText_0x184cc2:
+    text "You seem worthy."
+    
+    para "I'll let you use"
+    line "my #MON to"
+    cont "light dark areas."
+    done
+    
+Text_FlashGuyInterim:
 	text "You and your #-"
 	line "MON should have"
 
@@ -242,19 +258,22 @@ UnknownText_0x184cc2:
 	line "this move."
 
 	para "Take this FLASH"
-	line "HM."
+	line "TM."
 	done
+    
+Text_FlashGuyPager:
+    text "Added PIKACHU"
+    line "to the RIDE PAGER."
+    done
 
 UnknownText_0x184d13:
 	text "FLASH illuminates"
 	line "even the darkest"
 	cont "of all places."
 
-	para "But to use it out"
-	line "of battle, you"
-
-	para "need the BADGE"
-	line "from VIOLET's GYM."
+	para "But to use it, you"
+	line "need the BADGE"
+	cont "from VIOLET's GYM."
 	done
 
 UnknownText_0x184d88:

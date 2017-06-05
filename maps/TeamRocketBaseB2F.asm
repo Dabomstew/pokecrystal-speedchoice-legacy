@@ -298,6 +298,14 @@ UnknownScript_0x6d184:
 	opentext
 	writetext UnknownText_0x6d809
 	buttonsound
+    givepager PAGER_WHIRLPOOL
+    writetext Text_WhirlpoolGuyPager
+    waitsfx
+    playsound SFX_REGISTER_PHONE_NUMBER
+	waitsfx
+	buttonsound
+    writetext Text_WhirlpoolGuyInterim
+    buttonsound
 	verbosegiveitem TM_WHIRLPOOL
 	setevent EVENT_GOT_TM56_WHIRLPOOL
 	writetext UnknownText_0x6d8f8
@@ -740,12 +748,19 @@ UnknownText_0x6d809:
 	line "the #MON."
 
 	para "Oh, yes. You"
-	line "should take this."
-
-	para "I found it here,"
-	line "but I don't have"
-	cont "any need for it."
+	line "should register"
+    cont "this #MON in"
+    cont "your RIDE PAGER."
 	done
+    
+Text_WhirlpoolGuyPager:
+    text "Added SENTRET"
+    line "to the RIDE PAGER."
+    done
+
+Text_WhirlpoolGuyInterim:
+    text "Also, take this."
+    done
 
 UnknownText_0x6d8e6:
 	text "<PLAYER> received"

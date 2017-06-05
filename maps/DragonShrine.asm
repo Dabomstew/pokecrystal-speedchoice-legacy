@@ -166,6 +166,12 @@ DragonShrineTestScript:
 	playsound SFX_GET_BADGE
 	waitsfx
 	special RestartMapMusic
+    givepager PAGER_WATERFALL
+    writetext Text_WaterfallPager
+    waitsfx
+    playsound SFX_REGISTER_PHONE_NUMBER
+	waitsfx
+	buttonsound
 	specialphonecall SPECIALCALL_MASTERBALL
 	dotrigger $1
 	domaptrigger DRAGONS_DEN_B1F, $1
@@ -648,6 +654,11 @@ UnknownText_0x18d9f2:
 	text "<PLAYER> received"
 	line "RISINGBADGE."
 	done
+    
+Text_WaterfallPager:
+    text "Added SEAKING"
+    line "to the RIDE PAGER."
+    done
 
 UnknownText_0x18da0b:
 	text "RISINGBADGE will"

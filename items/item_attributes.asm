@@ -141,8 +141,8 @@ Item2Attributes:
 ; DIRE HIT
 	item_attribute   650, 0,                 0,             CANT_SELECT, ITEM,     ITEMMENU_NOUSE,   ITEMMENU_CLOSE
 
-; TERU-SAMA
-	item_attribute $9999, 0,                 0,                       0, ITEM,     ITEMMENU_NOUSE,   ITEMMENU_NOUSE
+; RIDE PAGER
+	item_attribute     0, 0,                 0,             CANT_TOSS, KEY_ITEM,   ITEMMENU_CLOSE,   ITEMMENU_NOUSE
 
 ; FRESH WATER
 	item_attribute   200, 0,                50,             CANT_SELECT, ITEM,     ITEMMENU_PARTY,   ITEMMENU_PARTY

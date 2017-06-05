@@ -103,6 +103,14 @@ PokefanFScript_0x1a0084:
 UnknownScript_0x1a009c:
 	writetext UnknownText_0x1a01e3
 	buttonsound
+    givepager PAGER_FLY
+    writetext Text_FlyWomanPager
+    waitsfx
+    playsound SFX_REGISTER_PHONE_NUMBER
+	waitsfx
+	buttonsound
+    writetext Text_FlyWomanInterim
+    buttonsound
 	verbosegiveitem TM_FLY
 	iffalse UnknownScript_0x1a00b1
 	setevent EVENT_GOT_TM52_FLY
@@ -216,13 +224,23 @@ UnknownText_0x1a01e3:
 	text "That's CIANWOOD's"
 	line "GYM BADGE!"
 
-	para "Then you should"
-	line "take this HM."
+	para "Then you can"
+	line "start using my"
+    cont "#MON to FLY."
 	done
+    
+Text_FlyWomanPager:
+    text "Added CHARIZARD"
+    line "to the RIDE PAGER."
+    done
+
+Text_FlyWomanInterim:
+    text "Also, take this."
+    done
 
 UnknownText_0x1a021d:
-	text "Teach FLY to your"
-	line "#MON."
+	text "Select FLY on"
+	line "your RIDE PAGER."
 
 	para "You will be able"
 	line "to FLY instantly"

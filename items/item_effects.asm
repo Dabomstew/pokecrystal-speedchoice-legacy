@@ -58,7 +58,7 @@ ItemEffects: ; e73c
 	dw SuperRepel
 	dw MaxRepel
 	dw DireHit
-	dw Item2D
+	dw RidePager
 	dw FreshWater
 	dw SodaPop
 	dw Lemonade
@@ -2880,6 +2880,123 @@ DoneButton:
     ret c
     callba PlaythroughStatsScreen
     ret
+    
+RidePager:
+    call RidePagerInternal
+    ld a, [wItemEffectSucceeded]
+    and a
+    ret nz
+    ld a, PAGER_RELOAD_PACK
+    ld [wItemEffectSucceeded], a
+    ld a, [wUsingItemWithSelect]
+    and a
+    ret z
+    jp CloseText
+    
+RidePagerInternal:
+    xor a
+	ld [wItemEffectSucceeded], a
+    ld a, [wPagerPokemonObtained]
+    and PAGER_SELECTABLE
+    jr z, .nothingToDo
+    cp PAGER_SELECTABLE
+    jr z, .pick
+    and (1 << PAGER_FLY)
+    jr z, .onlyFlash
+.onlyFly
+    ld hl, Text_AskFly
+    call PrintText
+    call YesNoBox
+    ret c
+.doFly
+; nasty hack to get a good sprite
+    xor a
+    ld [CurPartyMon], a
+    callba FlyFunction
+    ld a, [wUsingItemWithSelect]
+    and a
+    ret z
+    call ClearBGPalettes
+	call ReloadTilesetAndPalettes
+	call UpdateSprites
+	call ret_d90
+	jp FinishExitMenu
+.onlyFlash
+    ld hl, Text_AskFlash
+    call PrintText
+    call YesNoBox
+    ret c
+.doFlash
+    callba OWFlash
+    ret
+.pick
+    ld hl, Text_ChooseMove
+    call PrintText
+    ld a, SCREEN_WIDTH - 8
+    ld [wMenuBorderLeftCoord], a
+	add 5
+	ld [wMenuBorderRightCoord], a
+    ld a, 7
+    ld [wMenuBorderTopCoord], a
+	add 4
+	ld [wMenuBorderBottomCoord], a
+    ld hl, FlyFlashMenuDataHeader
+    call LoadMenuDataHeader
+    call VerticalMenu
+	push af
+	ld c, $f
+	call DelayFrames
+	call CloseWindow
+	pop af
+    ret c
+    ld a, [wMenuCursorY]
+    cp 2
+    jr z, .doFlash
+    jr .doFly
+.nothingToDo
+    ld hl, Text_NoPagers
+    call PrintText
+    ret
+    
+Text_AskFly::
+    text "Do you want to"
+    line "FLY on CHARIZARD?"
+    done
+    
+Text_AskFlash::
+    text "Do you want to"
+    line "have PIKACHU"
+    cont "use FLASH?"
+    done
+    
+Text_NoPagers::
+    text "You don't have"
+    line "any registered"
+    cont "#MON that are"
+    cont "used in the menu."
+    prompt
+    
+Text_ChooseMove::
+    text "Choose a move"
+    line "to be used."
+    done
+    
+
+FlyFlashMenuDataHeader:: ; 1e1d
+	db $40 ; tile backup
+	db 7, 12 ; start coords
+	db 11, 19 ; end coords
+	dw .MenuData2
+	db 1 ; default option
+; 1e25
+
+.MenuData2 ; 1e25
+	db $c0 ; flags
+	db 2
+	db "FLY@"
+	db "FLASH@"
+    
+
 
 Brightpowder:
 Item19:

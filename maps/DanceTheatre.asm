@@ -107,6 +107,14 @@ UnknownScript_0x994ff:
 UnknownScript_0x99505:
 	writetext UnknownText_0x9991a
 	buttonsound
+    givepager PAGER_SURF
+    writetext Text_SurfGuyPager
+    waitsfx
+    playsound SFX_REGISTER_PHONE_NUMBER
+	waitsfx
+	buttonsound
+    writetext Text_SurfGuyInterim
+    buttonsound
 	verbosegiveitem TM_SURF
 	setevent EVENT_GOT_TM53_SURF
 	writetext UnknownText_0x9999b
@@ -278,13 +286,21 @@ UnknownText_0x9991a:
 	line "this. Don't worry"
 	cont "--take it!"
 	done
+    
+Text_SurfGuyPager:
+    text "Added LAPRAS"
+    line "to the RIDE PAGER."
+    done
+
+Text_SurfGuyInterim:
+    text "Also, take this."
+    done
 
 UnknownText_0x9999b:
-	text "That's SURF."
+	text "You can now SURF."
 
-	para "It's a move that"
-	line "lets #MON swim"
-	cont "across water."
+	para "It'll let you swim"
+	line "across water."
 	done
 
 UnknownText_0x999d5:

@@ -17,6 +17,14 @@ SailorScript_0x9c8c1:
 	iftrue UnknownScript_0x9c8d3
 	writetext UnknownText_0x9c8df
 	buttonsound
+    givepager PAGER_STRENGTH
+    writetext Text_StrengthGuyPager
+    waitsfx
+    playsound SFX_REGISTER_PHONE_NUMBER
+	waitsfx
+	buttonsound
+    writetext Text_StrengthGuyInterim
+    buttonsound
 	verbosegiveitem TM_STRENGTH
 	setevent EVENT_GOT_TM54_STRENGTH
 UnknownScript_0x9c8d3:
@@ -41,9 +49,17 @@ UnknownText_0x9c8df:
 	cont "boulders aside."
 
 	para "Here, use this"
-	line "and teach them"
-	cont "STRENGTH!"
+	line "#MON instead!"
 	done
+    
+Text_StrengthGuyPager:
+    text "Added MACHAMP"
+    line "to the RIDE PAGER."
+    done
+
+Text_StrengthGuyInterim:
+    text "Also, take this."
+    done
 
 UnknownText_0x9c965:
 	text "On the sea, the"

@@ -172,6 +172,8 @@ UseRegisteredItem: ; 133c3
 	xor a
 	ld [wUsingItemWithSelect], a
 	ld a, [wItemEffectSucceeded]
+    cp PAGER_RELOAD_PACK
+    jr z, .done
 	cp 1
 	jr nz, ._cantuse
 	scf
@@ -186,6 +188,7 @@ UseRegisteredItem: ; 133c3
 ._cantuse
 	call CantUseItem
 	call CloseText
+.done
 	and a
 	ret
 ; 1342d

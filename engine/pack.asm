@@ -487,6 +487,7 @@ UseItem: ; 10311
 	and a
 	jr z, .NoPokemon
 	call DoItemEffect
+.ReloadPack:
 	xor a
 	ld [hBGMapMode], a
 	call Pack_InitGFX
@@ -504,6 +505,8 @@ UseItem: ; 10311
 	ld a, [wItemEffectSucceeded]
 	and a
 	jr z, .Oak
+    cp PAGER_RELOAD_PACK
+    jr z, .ReloadPack
 	ld a, $a
 	ld [wJumptableIndex], a
 	ret

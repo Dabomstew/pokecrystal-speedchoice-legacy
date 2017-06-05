@@ -138,8 +138,15 @@ RocketlessLoRLanceScript2:
 	setevent EVENT_TEAM_ROCKET_BASE_B3F_LANCE_PASSWORDS
 	setevent EVENT_TEAM_ROCKET_BASE_B3F_EXECUTIVE
 	setevent EVENT_RIVAL_TEAM_ROCKET_BASE
-	waitbutton
+	buttonsound
+    givepager PAGER_WHIRLPOOL
+    writetext Text_WhirlpoolPagerRocketless
+    waitsfx
+    playsound SFX_REGISTER_PHONE_NUMBER
+	waitsfx
+	buttonsound
 	closetext
+    
 	playsound SFX_WARP_TO
 	applymovement LAKEOFRAGE_LANCE, MovementData_0x70155
 	disappear LAKEOFRAGE_LANCE
@@ -390,6 +397,11 @@ UnknownText_0x701b4_Rocketless:
 	line "could you take"
 	cont "this junk away?"
 	done
+    
+Text_WhirlpoolPagerRocketless:
+    text "Added SENTRET"
+    line "to the RIDE PAGER."
+    done
 
 UnknownText_0x702c6:
 	text "LANCE: Excellent!"

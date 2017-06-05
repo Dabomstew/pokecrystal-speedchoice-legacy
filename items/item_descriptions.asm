@@ -77,7 +77,7 @@ ItemDescriptions:
 	dw SuperRepelDesc
 	dw MaxRepelDesc
 	dw DireHitDesc
-	dw TeruSama3Desc
+	dw RidePagerDesc
 	dw FreshWaterDesc
 	dw SodaPopDesc
 	dw LemonadeDesc
@@ -347,6 +347,9 @@ FullRestoreDesc:
 MaxPotionDesc:
 	db   "Fully restores"
 	next "#MON HP.@"
+    
+RidePagerDesc:
+	db   "Use field moves.@"
 
 HyperPotionDesc:
 	db   "Restores #MON"

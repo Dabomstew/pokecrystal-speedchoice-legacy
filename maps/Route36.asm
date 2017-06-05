@@ -147,6 +147,14 @@ FisherScript_0x1940b9:
 UnknownScript_0x1940cd:
 	writetext UnknownText_0x1944d0
 	buttonsound
+    givepager PAGER_ROCKSMASH
+    writetext Text_RockSmashGuyPager
+    waitsfx
+    playsound SFX_REGISTER_PHONE_NUMBER
+	waitsfx
+	buttonsound
+    writetext Text_RockSmashGuyInterim
+    buttonsound
 	verbosegiveitem TM_ROCK_SMASH
 	iffalse UnknownScript_0x1940de
 	setevent EVENT_GOT_TM08_ROCK_SMASH
@@ -497,6 +505,15 @@ UnknownText_0x1944d0:
 	line "I want you to"
 	cont "have this."
 	done
+    
+Text_RockSmashGuyPager:
+    text "Added TAUROS"
+    line "to the RIDE PAGER."
+    done
+
+Text_RockSmashGuyInterim:
+    text "Also, take this."
+    done
 
 UnknownText_0x19451a:
 	text "<PLAYER> received"
