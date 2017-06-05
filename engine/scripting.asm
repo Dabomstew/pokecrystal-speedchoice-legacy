@@ -245,6 +245,8 @@ ENDC
 	dw Script_check_permaoptions         ; aa
     dw Script_increment_2byte_stat       ; ab
     dw Script_increment_4byte_stat       ; ac
+    dw Script_checkpager                 ; ad
+    dw Script_givepager                  ; ae
 ; 96e05
 
 StartScript: ; 96e05
@@ -3304,5 +3306,49 @@ Script_increment_4byte_stat:
     ld d, a
     callba SRAMStatsIncrement4Byte
     ret
+    
+Script_checkpager:
+; script command 0xad
+; parameters:
+;       bit to check (SingleByteParam)
+    call GetScriptByte
+	ld c, a
+	ld a, [wPagerPokemonObtained]
+	ld b, a
+.continue
+	ld a, c
+	and a
+	jr z, .test
+.shiftLoop
+	srl b
+	dec a
+	jr nz, .shiftLoop
+.test
+	ld a, b
+	and $1
+	jr z, .writeResult
+	ld a, TRUE
+.writeResult
+	ld [ScriptVar], a
+	ret
+    
+Script_givepager:
+; script command 0xae
+; parameters:
+;       bit to give (SingleByteParam)
+    call GetScriptByte
+	ld c, 1
+.shiftloop
+    and a
+    jr z, .write
+    sla c
+    dec a
+    jr .shiftloop
+.write
+    ld hl, wPagerPokemonObtained
+    ld a, [hl]
+    or c
+    ld [hl], a
+	ret
 	
 ; 97c28

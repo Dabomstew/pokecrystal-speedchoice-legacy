@@ -307,9 +307,8 @@ UnknownText_0x1c05c8::
 	prompt
 
 UnknownText_0x1c05dd::
-	text_from_ram StringBuffer2
-	text " used"
-	line "CUT!"
+	text "Pager's DUX"
+	line "used CUT!"
 	prompt
 
 UnknownText_0x1c05ec::

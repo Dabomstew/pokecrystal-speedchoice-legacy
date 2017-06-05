@@ -1,7 +1,6 @@
 _UsedSurfText::
-	text_from_ram StringBuffer2
-	text " used"
-	line "SURF!"
+	text "Pager's LAPRAS"
+	line "used SURF!"
 	done
 
 _CantSurfText::
@@ -20,9 +19,8 @@ _AskSurfText::
 	done
 
 UnknownText_0x1c068e::
-	text_from_ram StringBuffer2
-	text " used"
-	line "WATERFALL!"
+	text "Pager's SEAKING"
+	line "used WATERFALL!"
 	done
 
 UnknownText_0x1c06a3::
@@ -69,9 +67,8 @@ UnknownText_0x1c0751::
 	prompt
 
 UnknownText_0x1c0774::
-	text_from_ram StringBuffer2
-	text " used"
-	line "STRENGTH!"
+	text "Pager's MACHAMP"
+	line "used STRENGTH!"
 	done
 
 UnknownText_0x1c0788::
@@ -99,9 +96,8 @@ UnknownText_0x1c07f4::
 	done
 
 UnknownText_0x1c0816::
-	text_from_ram StringBuffer2
-	text " used"
-	line "WHIRLPOOL!"
+	text "Pager's SENTRET"
+	line "used WHIRLPOOL!"
 	prompt
 
 UnknownText_0x1c082b::
@@ -139,9 +135,8 @@ UnknownText_0x1c08bc::
 	done
 
 UnknownText_0x1c08f0::
-	text_from_ram StringBuffer2
-	text " used"
-	line "ROCK SMASH!"
+	text "Pager's TAUROS"
+	line "used ROCK SMASH!"
 	prompt
 
 UnknownText_0x1c0906::

@@ -2358,7 +2358,10 @@ GameTimeSeconds:: ; d4c7
 GameTimeFrames:: ; d4c8
 	ds 1
 
-	ds 2
+wPagerPokemonObtained::
+    ds 1
+    
+	ds 1
 
 CurDay:: ; d4cb
 	ds 1

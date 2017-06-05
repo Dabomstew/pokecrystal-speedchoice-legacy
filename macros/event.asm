@@ -1084,3 +1084,15 @@ increment_4byte_stat: macro
     db increment_4byte_stat_command
     dw \1 ; address
     endm
+    
+    enum checkpager_command
+checkpager: macro
+    db checkpager_command
+    db \1 ; bit to check
+    endm
+    
+    enum givepager_command
+givepager: macro
+    db givepager_command
+    db \1 ; bit to check
+    endm

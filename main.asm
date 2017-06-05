@@ -2173,6 +2173,25 @@ CheckPartyMove: ; c742
 .no
 	scf
 	ret
+    
+CheckPager:
+; check if you have pager flag d
+; return z/nz
+    ld a, [wPagerPokemonObtained]
+	ld b, a
+.continue
+	ld a, d
+	and a
+	jr z, .test
+.shiftLoop
+	srl b
+	dec a
+	jr nz, .shiftLoop
+.test
+	ld a, b
+	and $1
+    ret
+    
 
 FieldMoveFailed: ; c779
 	ld hl, .CantUseHere
@@ -2626,10 +2645,10 @@ TrySurfOW:: ; c9e7
 	ld de, ENGINE_FOGBADGE
 	call CheckEngineFlag
 	jr c, .quit
-
-	ld d, SURF
-	call CheckPartyMove
-	jr c, .quit
+    
+    ld d, PAGER_SURF
+    call CheckPager
+    jr z, .quit
 
 	ld hl, BikeFlags
 	bit 1, [hl] ; always on bike (can't surf)
@@ -2827,9 +2846,9 @@ Script_UsedWaterfall: ; 0xcb20
 	db "@"
 
 TryWaterfallOW:: ; cb56
-	ld d, WATERFALL
-	call CheckPartyMove
-	jr c, .failed
+    ld d, PAGER_WATERFALL
+    call CheckPager
+    jr z, .failed
 	ld de, ENGINE_RISINGBADGE
 	call CheckEngineFlag
 	jr c, .failed
@@ -3189,9 +3208,9 @@ UnknownText_0xcd73: ; 0xcd73
 	db "@"
 
 TryStrengthOW: ; cd78
-	ld d, STRENGTH
-	call CheckPartyMove
-	jr c, .nope
+    ld d, PAGER_STRENGTH
+    call CheckPager
+    jr z, .nope
 
 	ld de, ENGINE_PLAINBADGE
 	call CheckEngineFlag
@@ -3323,9 +3342,9 @@ DisappearWhirlpool: ; ce1d
 	ret
 
 TryWhirlpoolOW:: ; ce3e
-	ld d, WHIRLPOOL
-	call CheckPartyMove
-	jr c, .failed
+    ld d, PAGER_WHIRLPOOL
+    call CheckPager
+    jr z, .failed
 	ld de, ENGINE_GLACIERBADGE
 	call CheckEngineFlag
 	jr c, .failed
@@ -3547,9 +3566,9 @@ UnknownText_0xcf77: ; 0xcf77
 	db "@"
 
 HasRockSmash: ; cf7c
-	ld d, ROCK_SMASH
-	call CheckPartyMove
-	jr nc, .yes
+    ld d, PAGER_ROCKSMASH
+    call CheckPager
+    jr nz, .yes
 .no
 	ld a, 1
 	jr .done
@@ -3904,9 +3923,9 @@ GotOffTheBikeText: ; 0xd181
 	db "@"
 
 TryCutOW:: ; d186
-	ld d, CUT
-	call CheckPartyMove
-	jr c, .cant_cut
+    ld d, PAGER_CUT
+    call CheckPager
+    jr z, .cant_cut
 
 	ld de, ENGINE_HIVEBADGE
 	call CheckEngineFlag
@@ -4072,6 +4091,7 @@ _CheckItem:: ; d244
 	ld h, d
 	ld l, e
 	jp CheckKeyItems
+
 
 .Item ; d276
 	ld h, d
