@@ -345,7 +345,7 @@ UnknownText_0x5d282:
 	text "Bull's-eye!"
 	line "Question 3:"
 
-	para "Does HM01 contain"
+	para "Does TM51 contain"
 	line "the move FLASH?"
 	done
 

@@ -68,7 +68,7 @@ UnknownScript_0x184947:
 SageLiScript:
 	faceplayer
 	opentext
-	checkevent EVENT_GOT_HM05_FLASH
+	checkevent EVENT_GOT_TM55_FLASH
 	iftrue UnknownScript_0x1849d1
 	writetext SageLiSeenText
 	waitbutton
@@ -80,8 +80,8 @@ SageLiScript:
 	opentext
 	writetext UnknownText_0x184cc2
 	buttonsound
-	verbosegiveitem HM_FLASH
-	setevent EVENT_GOT_HM05_FLASH
+	verbosegiveitem TM_FLASH
+	setevent EVENT_GOT_TM55_FLASH
 	setevent EVENT_BEAT_SAGE_LI
 	writetext UnknownText_0x184d13
 	waitbutton

@@ -243,16 +243,17 @@
 	add_tm FIRE_PUNCH   ; $F0
 	add_tm FURY_CUTTER  ; $F1
 	add_tm NIGHTMARE    ; $F2
-NUM_TMS = const_value - TM01 - 2
 
-	add_hm CUT          ; $F3
-	add_hm FLY          ; $F4
-	add_hm SURF         ; $F5
-	add_hm STRENGTH     ; $F6
-	add_hm FLASH        ; $F7
-	add_hm WHIRLPOOL    ; $F8
-	add_hm WATERFALL    ; $F9
-NUM_HMS = const_value - HM01
+
+	add_tm CUT          ; $F3
+	add_tm FLY          ; $F4
+	add_tm SURF         ; $F5
+	add_tm STRENGTH     ; $F6
+	add_tm FLASH        ; $F7
+	add_tm WHIRLPOOL    ; $F8
+	add_tm WATERFALL    ; $F9
+NUM_TMS = const_value - TM01 - 2
+NUM_HMS EQU 0
 	const HM_08         ; $FA
 
 	add_mt FLAMETHROWER

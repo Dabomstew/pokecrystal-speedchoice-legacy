@@ -23,7 +23,7 @@ IlexForest_MapScriptHeader:
 	dbw MAPCALLBACK_OBJECTS, .FarfetchdCallback
 
 .FarfetchdCallback:
-	checkevent EVENT_GOT_HM01_CUT
+	checkevent EVENT_GOT_TM51_CUT
 	iftrue .Static
 	copybytetovar FarfetchdPosition
 	if_equal  1, .PositionOne
@@ -350,12 +350,12 @@ IlexForestFarfetchdScript:
 IlexForestCharcoalMasterScript:
 	faceplayer
 	opentext
-	checkevent EVENT_GOT_HM01_CUT
+	checkevent EVENT_GOT_TM51_CUT
 	iftrue .AlreadyGotCut
 	writetext Text_CharcoalMasterIntro
 	buttonsound
-	verbosegiveitem HM_CUT
-	setevent EVENT_GOT_HM01_CUT
+	verbosegiveitem TM_CUT
+	setevent EVENT_GOT_TM51_CUT
 	writetext Text_CharcoalMasterOutro
 	waitbutton
 	closetext

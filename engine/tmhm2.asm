@@ -56,10 +56,6 @@ AskTeachTMHM: ; 2c7bf (b:47bf)
 	call CopyName1
 	ld hl, Text_BootedTM ; Booted up a TM
 	ld a, [CurItem]
-	cp HM01
-	jr c, .TM
-	ld hl, Text_BootedHM ; Booted up an HM
-.TM
 	call PrintText
 	ld hl, Text_ItContained
 	call PrintText

@@ -16,15 +16,6 @@ endc
 	enum \1_TMNUM
 ENDM
 
-add_hm: MACRO
-if !def(HM01)
-HM01 = const_value
-endc
-	define _\@_1, "HM_\1"
-	const _\@_1
-	enum \1_TMNUM
-ENDM
-
 add_mt: MACRO
 	enum \1_TMNUM
 ENDM

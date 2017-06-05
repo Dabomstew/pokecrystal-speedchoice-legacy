@@ -89,7 +89,7 @@ UnknownScript_0x1a001e:
 PokefanFScript_0x1a0084:
 	faceplayer
 	opentext
-	checkevent EVENT_GOT_HM02_FLY
+	checkevent EVENT_GOT_TM52_FLY
 	iftrue UnknownScript_0x1a00ad
 	writetext UnknownText_0x1a00f1
 	buttonsound
@@ -103,9 +103,9 @@ PokefanFScript_0x1a0084:
 UnknownScript_0x1a009c:
 	writetext UnknownText_0x1a01e3
 	buttonsound
-	verbosegiveitem HM_FLY
+	verbosegiveitem TM_FLY
 	iffalse UnknownScript_0x1a00b1
-	setevent EVENT_GOT_HM02_FLY
+	setevent EVENT_GOT_TM52_FLY
 	writetext UnknownText_0x1a021d
 	buttonsound
 UnknownScript_0x1a00ad:

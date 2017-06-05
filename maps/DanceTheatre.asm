@@ -76,7 +76,7 @@ GentlemanScript_0x994c6:
 	opentext
 	writetext UnknownText_0x9980a
 	buttonsound
-	checkevent EVENT_GOT_HM03_SURF
+	checkevent EVENT_GOT_TM53_SURF
 	iftrue UnknownScript_0x99515
 	checkevent EVENT_BEAT_KIMONO_GIRL_NAOKO
 	iffalse UnknownScript_0x994f3
@@ -107,8 +107,8 @@ UnknownScript_0x994ff:
 UnknownScript_0x99505:
 	writetext UnknownText_0x9991a
 	buttonsound
-	verbosegiveitem HM_SURF
-	setevent EVENT_GOT_HM03_SURF
+	verbosegiveitem TM_SURF
+	setevent EVENT_GOT_TM53_SURF
 	writetext UnknownText_0x9999b
 	waitbutton
 	closetext

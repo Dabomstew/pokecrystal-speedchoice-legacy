@@ -888,15 +888,7 @@ GetTMHMName:: ; 3487
 	push af
 
 ; TM/HM prefix
-	cp HM01
 	push af
-	jr c, .TM
-
-	ld hl, .HMText
-	ld bc, .HMTextEnd - .HMText
-	jr .asm_34a1
-
-.TM
 	ld hl, .TMText
 	ld bc, .TMTextEnd - .TMText
 
@@ -914,9 +906,6 @@ GetTMHMName:: ; 3487
 ; HM numbers start from 51, not 1
 	pop af
 	ld a, c
-	jr c, .asm_34b9
-	sub NUM_TMS
-.asm_34b9
 
 ; Divide and mod by 10 to get the top and bottom digits respectively
 	ld b, "0"
@@ -962,11 +951,7 @@ GetTMHMName:: ; 3487
 ; 34df
 
 IsHM:: ; 34df
-	cp HM01
-	jr c, .NotHM
-	scf
-	ret
-.NotHM
+; no, never
 	and a
 	ret
 ; 34e7
@@ -977,13 +962,6 @@ IsHMMove:: ; 34e7
 	jp IsInArray
 
 .HMMoves
-	db CUT
-	db FLY
-	db SURF
-	db STRENGTH
-	db FLASH
-	db WATERFALL
-	db WHIRLPOOL
 	db -1
 ; 34f8
 

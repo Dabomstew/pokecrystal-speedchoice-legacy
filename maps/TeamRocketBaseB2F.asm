@@ -298,8 +298,8 @@ UnknownScript_0x6d184:
 	opentext
 	writetext UnknownText_0x6d809
 	buttonsound
-	verbosegiveitem HM_WHIRLPOOL
-	setevent EVENT_GOT_HM06_WHIRLPOOL
+	verbosegiveitem TM_WHIRLPOOL
+	setevent EVENT_GOT_TM56_WHIRLPOOL
 	writetext UnknownText_0x6d8f8
 	waitbutton
 	closetext
@@ -749,7 +749,7 @@ UnknownText_0x6d809:
 
 UnknownText_0x6d8e6:
 	text "<PLAYER> received"
-	line "HM06."
+	line "TM56."
 	done
 
 UnknownText_0x6d8f8:

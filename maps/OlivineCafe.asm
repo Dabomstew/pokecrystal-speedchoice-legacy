@@ -13,12 +13,12 @@ OlivineCafe_MapScriptHeader:
 SailorScript_0x9c8c1:
 	faceplayer
 	opentext
-	checkevent EVENT_GOT_HM04_STRENGTH
+	checkevent EVENT_GOT_TM54_STRENGTH
 	iftrue UnknownScript_0x9c8d3
 	writetext UnknownText_0x9c8df
 	buttonsound
-	verbosegiveitem HM_STRENGTH
-	setevent EVENT_GOT_HM04_STRENGTH
+	verbosegiveitem TM_STRENGTH
+	setevent EVENT_GOT_TM54_STRENGTH
 UnknownScript_0x9c8d3:
 	writetext UnknownText_0x9c965
 	waitbutton
