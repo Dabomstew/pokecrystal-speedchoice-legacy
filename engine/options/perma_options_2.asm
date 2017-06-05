@@ -3,14 +3,14 @@ PermaOptionsP2String:: ; e4241
 	db "        :<LNBRK>"
 	db "GOOD EARLY WILDS<LNBRK>"
 	db "        :<LNBRK>"
-    db "RACE GOAL<LNBRK>"
-    db "        :@"
+	db "RACE GOAL<LNBRK>"
+	db "        :@"
 ; e42d6
 
 PermaOptionsP2Pointers::
 	dw Options_BetterMartsOption
 	dw Options_GoodEarlyWildsOption
-    dw Options_RaceGoalOption
+	dw Options_RaceGoalOption
 	dw Options_PermaOptionsPage
 	
 Options_BetterMartsOption:
@@ -58,7 +58,7 @@ Options_GoodEarlyWildsOption:
 	db "OFF@"
 .On
 	db "ON @"
-    
+	
 Options_RaceGoalOption: ; e44fa
 	ld hl, wPermanentOptions2
 	bit D_LEFT_F, a
@@ -78,17 +78,17 @@ Options_RaceGoalOption: ; e44fa
 
 .Save
 	cp $ff
-    jr z, .writehigh
-    cp $03
-    jr nz, .dowrite
+	jr z, .writehigh
+	cp $03
+	jr nz, .dowrite
 ; low
-    xor a
-    jr .dowrite
+	xor a
+	jr .dowrite
 .writehigh
-    ld a, $2
+	ld a, $2
 .dowrite
 	sla a
-    sla a
+	sla a
 	ld b, a
 	ld a, [hl]
 	and GOAL_MASK ^ $FF
@@ -115,14 +115,14 @@ endr
 	ld a, [hl]
 	and GOAL_MASK
 	srl a
-    srl a
+	srl a
 	ret
 	
 .Strings:
 	dw .Manual
-    dw .E4
-    dw .Red
-    
+	dw .E4
+	dw .Red
+	
 	
 .Manual
 	db "MANUAL@"
