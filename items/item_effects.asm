@@ -322,20 +322,32 @@ endr
 	
 	ld a, d
 	cp h
-	jr c, .noCapValue
+	jr c, .divisorCheck
 	jr nz, .capValue
 	
 	ld a, e
 	cp l
-	jr c, .noCapValue
-	jr z, .noCapValue
+	jr c, .divisorCheck
+	jr z, .divisorCheck
 	
 .capValue
 	ld d, h
 	ld e, l
 	
-.noCapValue
-	push hl
+.divisorCheck
+	; Divide hl and de by 2 until hl fits in a single byte
+	ld a, h
+	and a
+	jr z, .multiplyCatchRate
+
+	srl h
+	rr l
+	srl d
+	rr e
+
+	jr .divisorCheck
+
+.multiplyCatchRate
 	ld a, [$ffb6]
 	ld [hMultiplier], a
 	ld a, d
@@ -345,26 +357,9 @@ endr
 	xor a
 	ld [hProduct], a
 	ld [hMultiplicand], a
+	push hl
 	call Multiply
 	pop hl
-	
-.divisorCheck
-	ld a, h
-	and a
-	jr z, .realDivide
-	
-	srl h
-	rr l
-	srl h
-	rr l
-
-	push hl
-	ld a, $4
-	ld [hMultiplier], a
-	ld b, $4
-	call Divide
-	pop hl
-	jr .divisorCheck
 	
 .realDivide
 	ld a, l
