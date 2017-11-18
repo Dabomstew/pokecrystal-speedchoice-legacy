@@ -50,6 +50,8 @@ hStringCmpString2  EQU $ffb5
 hBigDividend       EQU $ffb2
 hDividend          EQU $ffb3 ; length in b register, before 'call Divide' (max 4 bytes)
 hDivisor           EQU $ffb7 ; 1 byte long
+hLongDivisor       EQU $ffb7 ; 2 bytes long
+hLongQuotient      EQU $ffb3 ; result (4 bytes long)
 hQuotient          EQU $ffb4 ; result (3 bytes long)
 hRemainder         EQU $ffb7
 
@@ -75,6 +77,7 @@ hPrintNum10        EQU $ffbc
 
 hUsedSpriteIndex   EQU $ffbd
 hUsedSpriteTile    EQU $ffbe
+hLoopCounter       EQU $ffbf
 hFFBF              EQU $ffbf
 hFFC0              EQU $ffc0
 hFFC1              EQU $ffc1
