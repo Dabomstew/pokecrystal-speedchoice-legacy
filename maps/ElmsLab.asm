@@ -98,7 +98,7 @@ ProfElmScript:
 	opentext
 	checkevent EVENT_GOT_SS_TICKET_FROM_ELM
 	iftrue ElmCheckMasterBall
-	checkevent EVENT_BEAT_ELITE_FOUR
+	checkevent EVENT_ELM_HAS_SS_TICKET
 	iftrue ElmGiveTicketScript
 ElmCheckMasterBall:
 	checkevent EVENT_GOT_MASTER_BALL_FROM_ELM

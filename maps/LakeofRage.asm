@@ -73,7 +73,7 @@ UnknownScript_0x70035:
 	setevent EVENT_DECIDED_TO_HELP_LANCE
 	domaptrigger MAHOGANY_MART_1F, $1
 	end
-	
+
 RocketlessLoRLanceScript1:
 	writetext UnknownText_0x701b4_Rocketless
 	yesorno
@@ -138,6 +138,12 @@ RocketlessLoRLanceScript2:
 	setevent EVENT_TEAM_ROCKET_BASE_B3F_LANCE_PASSWORDS
 	setevent EVENT_TEAM_ROCKET_BASE_B3F_EXECUTIVE
 	setevent EVENT_RIVAL_TEAM_ROCKET_BASE
+	; setup for boat
+	setflag ENGINE_CREDITS_SKIP
+	specialphonecall SPECIALCALL_SSTICKET
+	; fix people flags later on
+	clearevent EVENT_GOLDENROD_TRAIN_STATION_GENTLEMAN
+	clearevent EVENT_SAFFRON_TRAIN_STATION_POPULATION
 	waitbutton
 	closetext
 	playsound SFX_WARP_TO
@@ -315,15 +321,15 @@ LakeofRageTMDetect:
 
 LakeofRageHiddenFullRestore:
 	dwb EVENT_LAKE_OF_RAGE_HIDDEN_FULL_RESTORE, FULL_RESTORE
-	
+
 
 LakeofRageHiddenRareCandy:
 	dwb EVENT_LAKE_OF_RAGE_HIDDEN_RARE_CANDY, RARE_CANDY
-	
+
 
 LakeofRageHiddenMaxPotion:
 	dwb EVENT_LAKE_OF_RAGE_HIDDEN_MAX_POTION, MAX_POTION
-	
+
 
 MovementData_0x70155:
 	teleport_from
@@ -366,7 +372,7 @@ UnknownText_0x701b4:
 	line "could you help me"
 	cont "investigate?"
 	done
-	
+
 UnknownText_0x701b4_Rocketless:
 	text "Did you come here"
 	line "because of the"
@@ -409,7 +415,7 @@ UnknownText_0x702c6:
 	para "I'll be waiting"
 	line "for you, <PLAY_G>."
 	done
-	
+
 UnknownText_0x702c6_Rocketless:
 	text "LANCE: Excellent!"
 
@@ -417,7 +423,7 @@ UnknownText_0x702c6_Rocketless:
 	line "around town,"
 	cont "but I have no use"
 	cont "for it at all."
-	
+
 	para "Take it off my"
 	line "hands, please!"
 	done

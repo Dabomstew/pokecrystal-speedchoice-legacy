@@ -20,6 +20,8 @@ OfficerScript_0x550ec:
 	opentext
 	checkevent EVENT_RESTORED_POWER_TO_KANTO
 	iftrue .MagnetTrainToSaffron
+	check_permaoptions ROCKETLESS
+	iftrue .MagnetTrainToSaffron
 	writetext UnknownText_0x55160
 	waitbutton
 	closetext
