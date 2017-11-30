@@ -46,6 +46,16 @@ BlackthornGymClairScript:
 	reloadmapafterbattle
 	setevent EVENT_BEAT_CLAIR
 	opentext
+	check_permaoptions ROCKETLESS
+	iffalse .not_rocketless
+	writetext ClairText_Lazy
+	playsound SFX_GET_BADGE
+	waitsfx
+	setflag ENGINE_RISINGBADGE
+	writetext BlackthornGymClairText_DescribeBadge
+	jump .GiveTM
+
+.not_rocketless
 	writetext ClairText_GoToDragonsDen
 	waitbutton
 	closetext
@@ -69,6 +79,7 @@ BlackthornGymClairScript:
 	checkevent EVENT_GOT_TM24_DRAGONBREATH
 	iftrue .GotTM24
 	writetext BlackthornGymClairText_YouKeptMeWaiting
+.GiveTM
 	buttonsound
 	giveitem TM_DRAGONBREATH
 	iffalse .BagFull
@@ -217,6 +228,59 @@ ClairText_GoToDragonsDen:
 	para "you as a trainer"
 	line "worthy of a GYM"
 	cont "BADGE!"
+	done
+
+ClairText_Lazy:
+	text "I won't admit"
+	line "this."
+
+	para "I may have lost,"
+	line "but you're still"
+
+	para "not ready for the"
+	line "#MON LEAGUE."
+
+	para "… You know what?"
+	line "I'm feeling par-"
+	cont "ticularly lazy."
+
+	para "Normally I send"
+	line "TRAINERS to the"
+	cont "DRAGON'S DEN…"
+
+	para "But I don't feel"
+	line "like putting"
+
+	para "myself through"
+	line "those motions."
+
+	para "This is the"
+	line "RISINGBADGE."
+	cont "Just take it."
+
+	para "<PLAYER> received"
+	line "RISINGBADGE."
+	done
+
+BlackthornGymClairText_DescribeBadge:
+	text "RISINGBADGE will"
+	line "enable your"
+
+	para "#MON to use the"
+	line "move for climbing"
+	cont "waterfalls."
+
+	para "Also, all #MON"
+	line "will recognize you"
+
+	para "as a trainer and"
+	line "obey your every"
+
+	para "command without"
+	line "question."
+
+	para "And here, have"
+	line "this junk too."
 	done
 
 ClairText_TooMuchToExpect:
