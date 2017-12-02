@@ -138,12 +138,15 @@ RocketlessLoRLanceScript2:
 	setevent EVENT_TEAM_ROCKET_BASE_B3F_LANCE_PASSWORDS
 	setevent EVENT_TEAM_ROCKET_BASE_B3F_EXECUTIVE
 	setevent EVENT_RIVAL_TEAM_ROCKET_BASE
+	check_permaoptions EARLY_KANTO
+	iffalse .skip_boat_and_train
 	; setup for boat
 	setflag ENGINE_CREDITS_SKIP
 	specialphonecall SPECIALCALL_SSTICKET
 	; fix people flags later on
 	clearevent EVENT_GOLDENROD_TRAIN_STATION_GENTLEMAN
 	clearevent EVENT_SAFFRON_TRAIN_STATION_POPULATION
+.skip_boat_and_train
 	waitbutton
 	closetext
 	playsound SFX_WARP_TO

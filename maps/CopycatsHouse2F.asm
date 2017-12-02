@@ -52,7 +52,7 @@ Copycat:
 	special RunCallback_04
 	checkevent EVENT_RETURNED_MACHINE_PART
 	iftrue .Part7
-	check_permaoptions ROCKETLESS
+	check_permaoptions EARLY_KANTO
 	iftrue .Part7
 	opentext
 	checkflag ENGINE_PLAYER_IS_FEMALE

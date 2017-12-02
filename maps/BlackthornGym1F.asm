@@ -46,16 +46,17 @@ BlackthornGymClairScript:
 	reloadmapafterbattle
 	setevent EVENT_BEAT_CLAIR
 	opentext
-	check_permaoptions ROCKETLESS
-	iffalse .not_rocketless
+	check_permaoptions EARLY_KANTO
+	iffalse .do_dden
 	writetext ClairText_Lazy
 	playsound SFX_GET_BADGE
 	waitsfx
 	setflag ENGINE_RISINGBADGE
+	specialphonecall SPECIALCALL_MASTERBALL
 	writetext BlackthornGymClairText_DescribeBadge
 	jump .GiveTM
 
-.not_rocketless
+.do_dden
 	writetext ClairText_GoToDragonsDen
 	waitbutton
 	closetext

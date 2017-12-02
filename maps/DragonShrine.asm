@@ -121,7 +121,7 @@ DragonShrineTestScript:
 	writetext UnknownText_0x18d47c
 	waitbutton
 	dotrigger $1
-	check_permaoptions ROCKETLESS
+	check_permaoptions EARLY_KANTO
 	iftrue DSElderGiveDratini
 	closetext
 	playsound SFX_ENTER_DOOR

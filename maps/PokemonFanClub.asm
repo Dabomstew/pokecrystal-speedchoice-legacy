@@ -59,7 +59,7 @@ FisherScript_0x191824:
 	iftrue UnknownScript_0x19185f
 	checkevent EVENT_RETURNED_MACHINE_PART
 	iftrue UnknownScript_0x191838
-	check_permaoptions ROCKETLESS
+	check_permaoptions EARLY_KANTO
 	iftrue UnknownScript_0x191838
 	writetext UnknownText_0x191ba0
 	waitbutton

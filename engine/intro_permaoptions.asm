@@ -45,7 +45,7 @@ PrintPermaOptionsToScreen::
 	ld a, [wPermanentOptions]
 	ld b, a
 ; rocketless
-	coord hl, 1, 2
+	coord hl, 1, 1
 	bit ROCKETLESS, b
 	ld de, NormalRocketsText
 	jr z, .placeRocketSetting
@@ -124,6 +124,13 @@ PrintPermaOptionsToScreen::
 	ld de, BetterWildsText
 .placeWildsSetting
 	call PlaceStringIncHL
+; kanto
+	bit EARLY_KANTO_F, b
+	ld de, NormalKantoText
+	jr z, .placeKantoSetting
+	ld de, EarlyKantoText
+.placeKantoSetting
+	call PlaceStringIncHL
 ; checkvalue stuff
 	coord hl, 1, 11
 	ld [hl], "C"
@@ -172,15 +179,10 @@ PrintHexValueXoredWithOptions::
 .printNibble
 	ld a, b
 	and $0F
-	cp $A
-	jr nc, .printHex
 	add "0"
-.doPrint
+	or $80
 	ld [hli], a
 	ret
-.printHex
-	add "A" - $A
-	jr .doPrint
 	
 SelectedOptionsText::
 	db "SELECTED OPTIONS@"
@@ -226,7 +228,10 @@ NormalWildsText::
 	db "NORM WILDS@"
 BetterWildsText::
 	db "GOOD WILDS@"
-
+NormalKantoText::
+	db "NORM KANTO@"
+EarlyKantoText::
+	db "EARLY KANTO@"
 
 PleaseSetOptions::
 	text_jump _PleaseSetOptions

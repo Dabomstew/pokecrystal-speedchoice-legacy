@@ -22,7 +22,7 @@ OfficerScript_0x18a81e:
 	opentext
 	checkevent EVENT_RESTORED_POWER_TO_KANTO
 	iftrue .MagnetTrainToGoldenrod
-	check_permaoptions ROCKETLESS
+	check_permaoptions EARLY_KANTO
 	iftrue .MagnetTrainToGoldenrod
 	writetext UnknownText_0x18a8a9
 	waitbutton

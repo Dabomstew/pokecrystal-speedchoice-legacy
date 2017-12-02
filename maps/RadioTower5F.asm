@@ -132,9 +132,15 @@ RadioTower5FRocketBossTrigger:
 	domaptrigger ECRUTEAK_HOUSE, $0
 	setevent EVENT_GOT_CLEAR_BELL
 	setevent EVENT_TEAM_ROCKET_DISBANDED
-	jump .UselessJump
-
-.UselessJump:
+	check_permaoptions EARLY_KANTO
+	iffalse .skip_boat_and_train
+	; setup for boat
+	setflag ENGINE_CREDITS_SKIP
+	specialphonecall SPECIALCALL_SSTICKET
+	; fix people flags later on
+	clearevent EVENT_GOLDENROD_TRAIN_STATION_GENTLEMAN
+	clearevent EVENT_SAFFRON_TRAIN_STATION_POPULATION
+.skip_boat_and_train
 	applymovement RADIOTOWER5F_DIRECTOR, RadioTower5FDirectorWalksOut
 	playsound SFX_EXIT_BUILDING
 	disappear RADIOTOWER5F_DIRECTOR
