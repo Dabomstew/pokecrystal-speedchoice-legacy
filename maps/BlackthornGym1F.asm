@@ -46,9 +46,18 @@ BlackthornGymClairScript:
 	reloadmapafterbattle
 	setevent EVENT_BEAT_CLAIR
 	opentext
+	setevent EVENT_BEAT_COOLTRAINERM_PAUL
+	setevent EVENT_BEAT_COOLTRAINERM_CODY
+	setevent EVENT_BEAT_COOLTRAINERM_MIKE
+	setevent EVENT_BEAT_COOLTRAINERF_FRAN
+	setevent EVENT_BEAT_COOLTRAINERF_LOLA
+	clearevent EVENT_MAHOGANY_MART_OWNERS
+	setevent EVENT_BLACKTHORN_CITY_GRAMPS_BLOCKS_DRAGONS_DEN
+	clearevent EVENT_BLACKTHORN_CITY_GRAMPS_NOT_BLOCKING_DRAGONS_DEN
 	check_permaoptions EARLY_KANTO
 	iffalse .do_dden
 	writetext ClairText_Lazy
+	waitsfx
 	playsound SFX_GET_BADGE
 	waitsfx
 	setflag ENGINE_RISINGBADGE
@@ -60,14 +69,6 @@ BlackthornGymClairScript:
 	writetext ClairText_GoToDragonsDen
 	waitbutton
 	closetext
-	setevent EVENT_BEAT_COOLTRAINERM_PAUL
-	setevent EVENT_BEAT_COOLTRAINERM_CODY
-	setevent EVENT_BEAT_COOLTRAINERM_MIKE
-	setevent EVENT_BEAT_COOLTRAINERF_FRAN
-	setevent EVENT_BEAT_COOLTRAINERF_LOLA
-	clearevent EVENT_MAHOGANY_MART_OWNERS
-	setevent EVENT_BLACKTHORN_CITY_GRAMPS_BLOCKS_DRAGONS_DEN
-	clearevent EVENT_BLACKTHORN_CITY_GRAMPS_NOT_BLOCKING_DRAGONS_DEN
 	end
 
 .FightDone
