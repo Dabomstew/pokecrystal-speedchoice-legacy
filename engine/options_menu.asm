@@ -22,6 +22,41 @@ OptionsMenuCommon:: ; e41d0
 	ld [hl], $1
 	call ClearBGPalettes
 .pageLoad
+	call DrawOptionsMenu
+.joypad_loop
+	call JoyTextDelay
+	ld a, [hJoyPressed]
+	ld b, a
+	ld a, [wOptionsExitButtons]
+	and b
+	jr nz, .ExitOptions
+	call OptionsControl
+	jr c, .dpad
+	call GetOptionPointer
+	jr c, .ExitOptions
+
+.dpad
+	call Options_UpdateCursorPosition
+	ld c, 3
+	call DelayFrames
+	jr .joypad_loop
+
+.ExitOptions
+	ld a, [wOptionsNextMenuID]
+	cp $FF
+	jr z, .doExit
+	ld [wOptionsMenuID], a
+	jr .pageLoad
+.doExit
+	pop af
+	ld [hInMenu], a
+	ld de, SFX_TRANSACTION
+	call PlaySFX
+	call WaitSFX
+	ret
+; e4241
+
+DrawOptionsMenu:
 	call RetrieveOptionsMenuConfig
 	hlcoord 0, 0
 	ld b, 16
@@ -63,39 +98,7 @@ OptionsMenuCommon:: ; e41d0
 	ld b, SCGB_08
 	call GetSGBLayout
 	call SetPalettes
-
-.joypad_loop
-	call JoyTextDelay
-	ld a, [hJoyPressed]
-	ld b, a
-	ld a, [wOptionsExitButtons]
-	and b
-	jr nz, .ExitOptions
-	call OptionsControl
-	jr c, .dpad
-	call GetOptionPointer
-	jr c, .ExitOptions
-
-.dpad
-	call Options_UpdateCursorPosition
-	ld c, 3
-	call DelayFrames
-	jr .joypad_loop
-
-.ExitOptions
-	ld a, [wOptionsNextMenuID]
-	cp $FF
-	jr z, .doExit
-	ld [wOptionsMenuID], a
-	jr .pageLoad
-.doExit
-	pop af
-	ld [hInMenu], a
-	ld de, SFX_TRANSACTION
-	call PlaySFX
-	call WaitSFX
 	ret
-; e4241
 
 RetrieveOptionsMenuConfig::
 	ld a, [wOptionsMenuID]
@@ -120,7 +123,7 @@ OptionsMenuScreens:
 	; permaoptions page 1
 	options_menu 7, PermaOptionsString, PermaOptionsPointers, START
 	; permaoptions page 2
-	options_menu 4, PermaOptionsP2String, PermaOptionsP2Pointers, START
+	options_menu 6, PermaOptionsP2String, PermaOptionsP2Pointers, START
 
 GetOptionPointer: ; e42d6
 	ld a, [wOptionsMenuCount]

@@ -14,8 +14,17 @@ IntroPermaOptions::
 	ld [Options2], a
 	xor a
 	ld [RandomizedMovesStatus], a
+	ld a, "@"
+	ld [PlayerName], a
 .setOptions
 	callba PermaOptionsMenu
+	ld de, PlayerName
+	ld a, [de]
+	cp "@"
+	jr nz, .name_okay
+	ld b, 1
+	callba NamingScreen
+.name_okay
 	call ClearTileMap
 	call PrintPermaOptionsToScreen
 	ld hl, AreOptionsAcceptable
