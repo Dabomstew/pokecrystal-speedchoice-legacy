@@ -235,6 +235,8 @@ Randomizer_Electrode1Species::
 	iftrue UnknownScript_0x6d182
 	disappear TEAMROCKETBASEB2F_VOLTORB1
 	disappear TEAMROCKETBASEB2F_VOLTORB4
+	check_permaoptions ROCKETLESS
+	iftrue UnknownScript_0x6d182
 	checkevent EVENT_TEAM_ROCKET_BASE_B2F_ELECTRODE_1
 	iffalse UnknownScript_0x6d182
 	checkevent EVENT_TEAM_ROCKET_BASE_B2F_ELECTRODE_2
@@ -255,6 +257,8 @@ Randomizer_Electrode2Species::
 	iftrue UnknownScript_0x6d182
 	disappear TEAMROCKETBASEB2F_VOLTORB2
 	disappear TEAMROCKETBASEB2F_VOLTORB5
+	check_permaoptions ROCKETLESS
+	iftrue UnknownScript_0x6d182
 	checkevent EVENT_TEAM_ROCKET_BASE_B2F_ELECTRODE_1
 	iffalse UnknownScript_0x6d182
 	checkevent EVENT_TEAM_ROCKET_BASE_B2F_ELECTRODE_2
@@ -275,6 +279,8 @@ Randomizer_Electrode3Species::
 	iftrue UnknownScript_0x6d182
 	disappear TEAMROCKETBASEB2F_VOLTORB3
 	disappear TEAMROCKETBASEB2F_VOLTORB6
+	check_permaoptions ROCKETLESS
+	iftrue UnknownScript_0x6d182
 	checkevent EVENT_TEAM_ROCKET_BASE_B2F_ELECTRODE_1
 	iffalse UnknownScript_0x6d182
 	checkevent EVENT_TEAM_ROCKET_BASE_B2F_ELECTRODE_2
