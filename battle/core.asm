@@ -6811,44 +6811,44 @@ CheckSleepingTreeMon: ; 3eb38
 CheckUnownLetter: ; 3eb75
 ; Return carry if the Unown letter hasn't been unlocked yet
 
-	ld a, [UnlockedUnowns]
-	ld c, a
-	ld de, 0
+;	ld a, [UnlockedUnowns]
+;	ld c, a
+;	ld de, 0
 
-.loop
+;.loop
 
 ; Don't check this set unless it's been unlocked
-	srl c
-	jr nc, .next
+;	srl c
+;	jr nc, .next
 
 ; Is our letter in the set?
-	ld hl, .LetterSets
-	add hl, de
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
+;	ld hl, .LetterSets
+;	add hl, de
+;	ld a, [hli]
+;	ld h, [hl]
+;	ld l, a
 
-	push de
-	ld a, [UnownLetter]
-	ld de, 1
-	push bc
-	call IsInArray
-	pop bc
-	pop de
+;	push de
+;	ld a, [UnownLetter]
+;	ld de, 1
+;	push bc
+;	call IsInArray
+;	pop bc
+;	pop de
 
-	jr c, .match
+;	jr c, .match
 
-.next
+;.next
 ; Make sure we haven't gone past the end of the table
-	inc e
-	inc e
-	ld a, e
-	cp a, .Set1 - .LetterSets
-	jr c, .loop
+;	inc e
+;	inc e
+;	ld a, e
+;	cp a, .Set1 - .LetterSets
+;	jr c, .loop
 
 ; Hasn't been unlocked, or the letter is invalid
-	scf
-	ret
+;	scf
+;	ret
 
 .match
 ; Valid letter
