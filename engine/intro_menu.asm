@@ -67,7 +67,7 @@ NewGame: ; 5b6b
 	call ResetWRAM
 	call NewGame_ClearTileMapEtc
 	callba IntroPermaOptions
-	call AreYouABoyOrAreYouAGirl
+	; call AreYouABoyOrAreYouAGirl
 	call OakSpeech
 	call InitializeWorld
 	ld a, 1
@@ -714,9 +714,9 @@ Randomizer_IntroSpriteOffset::
 	call GetSGBLayout
 	call Intro_RotatePalettesLeftFrontpic
 
-	ld hl, OakText6
-	call PrintText
-	call NamePlayer
+	; ld hl, OakText6
+	; call PrintText
+	; call NamePlayer
 	ld hl, OakText7
 	call PrintText
 	ret

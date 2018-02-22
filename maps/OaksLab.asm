@@ -25,6 +25,8 @@ Oak:
 	buttonsound
 	setevent EVENT_TALKED_TO_OAK_IN_KANTO
 .CheckBadges
+	check_permaoptions EARLY_KANTO
+	iftrue .OpenMtSilver_Rocketless
 	checkcode VAR_BADGES
 	if_equal 16, .OpenMtSilver
 	if_equal  8, .Complain
@@ -41,6 +43,12 @@ Oak:
 
 .OpenMtSilver
 	writetext OakOpenMtSilverText
+	buttonsound
+	setevent EVENT_OPENED_MT_SILVER
+	jump .CheckPokedex
+
+.OpenMtSilver_Rocketless
+	writetext OakOpenMtSilverText_Rocketless
 	buttonsound
 	setevent EVENT_OPENED_MT_SILVER
 	jump .CheckPokedex
@@ -104,6 +112,50 @@ OakLabGoodbyeText:
 	text "If you're in the"
 	line "area, I hope you"
 	cont "come visit again."
+	done
+
+OakOpenMtSilverText_Rocketless:
+	text "OAK: Oh? Is KANTO"
+	line "not the challenge"
+
+	para "you were looking"
+	line "for?"
+
+	para "Hmm… Well, you do"
+	line "seem capable…"
+
+	para "Tell you what,"
+	line "<PLAY_G>. I'll make"
+
+	para "arrangements so"
+	line "that you can go to"
+	cont "MT.SILVER."
+
+	para "MT.SILVER is a big"
+	line "mountain that is"
+
+	para "home to many wild"
+	line "#MON."
+
+	para "It's too dangerous"
+	line "for your average"
+
+	para "trainer, so it's"
+	line "off limits. But"
+
+	para "we can make an"
+	line "exception in your"
+	cont "case, <PLAY_G>."
+
+	para "Go up to INDIGO"
+	line "PLATEAU. You can"
+
+	para "reach MT.SILVER"
+	line "from there."
+
+	para "Besides, what's the"
+	line "worst that can"
+	cont "happen? Hahaha!"
 	done
 
 OakOpenMtSilverText:

@@ -120,6 +120,9 @@ DragonShrineTestScript:
 .PassedTheTest:
 	writetext UnknownText_0x18d47c
 	waitbutton
+	dotrigger $1
+	check_permaoptions EARLY_KANTO
+	iftrue DSElderGiveDratini
 	closetext
 	playsound SFX_ENTER_DOOR
 	showemote EMOTE_SHOCK, PLAYER, 15
@@ -167,7 +170,6 @@ DragonShrineTestScript:
 	waitsfx
 	special RestartMapMusic
 	specialphonecall SPECIALCALL_MASTERBALL
-	dotrigger $1
 	domaptrigger DRAGONS_DEN_B1F, $1
 	writetext UnknownText_0x18d9f2
 	buttonsound

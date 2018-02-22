@@ -25,7 +25,13 @@ RocketScript_0x1adbfa:
 	writetext UnknownText_0x1addc0
 	buttonsound
 	special Special_FadeOutMusic
+	check_permaoptions ROCKETLESS
+	iftrue .rocketless_text
 	writetext UnknownText_0x1adee1
+	jump .finish
+.rocketless_text
+	writetext Route24RocketOutroRocketlessText
+.finish
 	waitbutton
 	closetext
 	special Special_FadeBlackQuickly
@@ -116,6 +122,17 @@ UnknownText_0x1adee1:
 	para "Oh, no! Should I"
 	line "do what now on"
 	cont "from, me?"
+	done
+
+Route24RocketOutroRocketlessText:
+	text "…"
+
+	para "You say what? TEAM"
+	line "ROCKET is not ex-"
+	cont "isting?"
+
+	para "Oh, no! Is making"
+	line "what of, me?"
 	done
 
 Route24_MapEventHeader:

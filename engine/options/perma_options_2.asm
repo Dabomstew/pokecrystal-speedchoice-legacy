@@ -4,6 +4,12 @@ PermaOptionsP2String:: ; e4241
 	db "GOOD EARLY WILDS<LNBRK>"
 	db "        :<LNBRK>"
 	db "RACE GOAL<LNBRK>"
+	db "        :<LNBRK>"
+	db "KANTO ACCESS<LNBRK>"
+	db "        :<LNBRK>"
+	db "NAME<LNBRK>"
+	db "        :<LNBRK>"
+	db "GENDER<LNBRK>"
 	db "        :@"
 ; e42d6
 
@@ -11,8 +17,11 @@ PermaOptionsP2Pointers::
 	dw Options_BetterMartsOption
 	dw Options_GoodEarlyWildsOption
 	dw Options_RaceGoalOption
+	dw Options_KantoAccessOption
+	dw Options_Name
+	dw Options_PlayerGender
 	dw Options_PermaOptionsPage
-	
+
 Options_BetterMartsOption:
 	ld hl, wPermanentOptions2
 	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
@@ -131,3 +140,76 @@ endr
 .Red
 	db "RED   @"
 
+
+Options_KantoAccessOption:
+	ld hl, wPermanentOptions2
+	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
+	ld a, [hl]
+	jr z, .GetText
+	xor (1 << EARLY_KANTO_F)
+	ld [hl], a
+.GetText
+	bit EARLY_KANTO_F, a
+	ld de, .Off
+	jr z, .Display
+	ld de, .On
+.Display
+	hlcoord 11, 9
+	call PlaceString
+	and a
+	ret
+	
+.Off
+	db "NORMAL@"
+.On
+	db "EARLY @"
+
+
+Options_Name:
+	and A_BUTTON
+	jr z, .GetText
+	ld a, [wJumptableIndex]
+	push af
+	ld b, 1
+	ld de, PlayerName
+	callba NamingScreen
+	call DrawOptionsMenu
+	pop af
+	ld [wJumptableIndex], a
+.GetText
+	ld de, PlayerName
+	ld a, [de]
+	cp "@"
+	jr nz, .Display
+	ld de, .NotSetString
+.Display
+	hlcoord 11, 11
+	call PlaceString
+	and a
+	ret
+
+.NotSetString
+	db "NOT SET@"
+
+Options_PlayerGender:
+	ld hl, PlayerGender
+	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
+	ld a, [hl]
+	jr z, .GetText
+	xor 1
+	ld [hl], a
+.GetText
+	rrca
+	ld de, .MaleText
+	jr nc, .Display
+	ld de, .FemaleText
+.Display
+	hlcoord 11, 13
+	call PlaceString
+	and a
+	ret
+
+.MaleText
+	db "MALE  @"
+.FemaleText
+	db "FEMALE@"

@@ -258,11 +258,11 @@ ElmPhoneScript1: ; 0xbd00d
 
 ElmPhoneScript2: ; 0xbd081
 	checkcode VAR_SPECIALPHONECALL
-	if_equal $2, .disaster
-	if_equal $3, .assistant
-	if_equal $4, .rocket
-	if_equal $5, .gift
-	if_equal $8, .gift
+	if_equal SPECIALCALL_ROBBED, .disaster
+	if_equal SPECIALCALL_ASSISTANT, .assistant
+	if_equal SPECIALCALL_WEIRDBROADCAST, .rocket
+	if_equal SPECIALCALL_SSTICKET, .gift_ticket
+	if_equal SPECIALCALL_MASTERBALL, .gift
 	farwritetext ElmPhonePokerusText
 	specialphonecall SPECIALCALL_NONE
 	end
@@ -285,6 +285,8 @@ ElmPhoneScript2: ; 0xbd081
 	specialphonecall SPECIALCALL_NONE
 	end
 
+.gift_ticket
+	setevent EVENT_ELM_HAS_SS_TICKET
 .gift ; 0xbd0c0
 	farwritetext ElmPhoneGiftText
 	specialphonecall SPECIALCALL_NONE
