@@ -114,7 +114,10 @@ GLOBAL PicPointers, UnownPicPointers
 
 .unown
 	ld a, [UnownLetter]
+	and a
 	ld d, BANK(UnownPicPointers)
+	jr nz, .ok
+	inc a
 
 .ok
 	ld hl, PicPointers ; UnownPicPointers
