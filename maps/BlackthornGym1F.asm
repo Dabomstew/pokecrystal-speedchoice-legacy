@@ -54,8 +54,8 @@ BlackthornGymClairScript:
 	clearevent EVENT_MAHOGANY_MART_OWNERS
 	setevent EVENT_BLACKTHORN_CITY_GRAMPS_BLOCKS_DRAGONS_DEN
 	clearevent EVENT_BLACKTHORN_CITY_GRAMPS_NOT_BLOCKING_DRAGONS_DEN
-	check_permaoptions EARLY_KANTO
-	iffalse .do_dden
+	; check_permaoptions EARLY_KANTO
+	; iffalse .do_dden
 	writetext ClairText_Lazy
 	waitsfx
 	playsound SFX_GET_BADGE
@@ -65,11 +65,11 @@ BlackthornGymClairScript:
 	writetext BlackthornGymClairText_DescribeBadge
 	jump .GiveTM
 
-.do_dden
-	writetext ClairText_GoToDragonsDen
-	waitbutton
-	closetext
-	end
+; .do_dden
+	; writetext ClairText_GoToDragonsDen
+	; waitbutton
+	; closetext
+	; end
 
 .FightDone
 	writetext ClairText_TooMuchToExpect
