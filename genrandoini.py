@@ -76,7 +76,7 @@ def main():
         setconfig(key, '0x{:X}'.format(syms[sym] + extra))
     
     def set_tm_text(num, key, txt):
-        setconfig('TMText[]', '[{:d}, 0x{:X}, {}]'.format(num, key, txt))
+        setconfig('TMText[]', '[{:d},0x{:X},{}]'.format(num, key + 1, txt))
 
     # Print version
     args.rom.seek(0x14c)
