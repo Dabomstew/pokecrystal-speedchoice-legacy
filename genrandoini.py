@@ -50,6 +50,13 @@ class Symfile(dict):
         return retval
 
 
+def fpeek(fp, size=1):
+    tell = fp.tell()
+    buff = fp.read(size)
+    fp.seek(tell, os.SEEK_SET)
+    return buff
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('rom', type=argparse.FileType('rb'))
@@ -132,9 +139,9 @@ def main():
     set_symbol('TrainerClassNamesOffset', 'TrainerClassNames')
 
     args.rom.seek(0x3bfff)
-    while args.rom.peek(1) == b'\x00':
+    while fpeek(args.rom) == b'\x00':
         args.rom.seek(-1, os.SEEK_CUR)
-    tnamesize = 2691 + args.rom.tell() - 0x3bfff
+    tnamesize = 2691 + 0x3bfff - args.rom.tell()
     setconfig('MaxSumOfTrainerNameLengths', str(tnamesize))
     setconfig('DoublesTrainerClasses', '[60]')  # only twins
 
