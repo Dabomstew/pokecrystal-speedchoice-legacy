@@ -2379,7 +2379,7 @@ KANTO_FLYPOINT EQU const_value
 
 ret_91c8f: ; 91c8f
 	ret
-
+	
 ; 91c90
 
 FlyMap: ; 91c90
@@ -2458,6 +2458,10 @@ FlyMap: ; 91c90
 ; visits, it's made the default flypoint
 	dec hl
 	ld a, [hl]
+	ld hl, Flypoints + 1
+	ld de, 2
+	call IsInArray
+	ld a, b
 	ld [wd002], a
 ; Fill out the map
 	call FillKantoMap
@@ -2507,9 +2511,6 @@ FlyMap: ; 91c90
 	db SPAWN_CINNABAR
 	db SPAWN_INDIGO
 	db $ff
-
-HasVisitedAnySpawn:
-	ret
 
 _Area: ; 91d11
 ; e: Current landmark
