@@ -2373,7 +2373,7 @@ KANTO_FLYPOINT EQU const_value
 	flypoint FUCHSIA,     FUCHSIA_CITY
 	flypoint CINNABAR,    CINNABAR_ISLAND
 	flypoint INDIGO,      INDIGO_PLATEAU
-	db -1, -1
+	db -1,
 
 ; 91c8f
 
@@ -2430,18 +2430,23 @@ FlyMap: ; 91c90
 ; can be flown to even if none are enabled
 
 ; To prevent both of these things from happening when the player
-; enters Kanto, fly access is restricted until Indigo Plateau is
+; enters Kanto, fly access is restricted until at least one city is
 
 ; visited and its flypoint enabled
 	push af
-	ld hl, .KantoSpawns
+	ld hl, Flypoints + 2 * KANTO_FLYPOINT
+	ld b, KANTO_FLYPOINT - 1
 .loop_spawns
 	ld a, [hli]
 	cp $ff
 	jr z, .NoKanto
+	inc b
+	ld c, [hl]
+	inc hl
 	push hl
-	ld c, a
+	push bc
 	call HasVisitedSpawn
+	pop bc
 	pop hl
 	and a
 	jr z, .loop_spawns
@@ -2453,18 +2458,8 @@ FlyMap: ; 91c90
 ; ...and end at Indigo Plateau
 	ld a, FLY_INDIGO
 	ld [EndFlypoint], a
-; Because Indigo Plateau is the first flypoint the player
-
-; visits, it's made the default flypoint
-	dec hl
-	ld a, [hl]
-	ld hl, Flypoints + 1
-	ld de, 2
-	call IsInArray
+; Use the lowest index flypoint the player visits as the default flypoint
 	ld a, b
-	jr c, .valid_kanto_spawn
-	ld a, FLY_INDIGO ; error handling
-.valid_kanto_spawn
 	ld [wd002], a
 ; Fill out the map
 	call FillKantoMap
@@ -2474,7 +2469,7 @@ FlyMap: ; 91c90
 	ret
 
 .NoKanto
-; If Indigo Plateau hasn't been visited, we use Johto's map instead
+; If Kanto hasn't been visited, we use Johto's map instead
 
 ; Start from New Bark Town
 	ld a, FLY_NEW_BARK
@@ -2499,21 +2494,6 @@ FlyMap: ; 91c90
 	ret
 
 ; 91d11
-
-.KantoSpawns
-	db SPAWN_PALLET
-	db SPAWN_VIRIDIAN
-	db SPAWN_PEWTER
-	db SPAWN_CERULEAN
-	db SPAWN_ROCK_TUNNEL
-	db SPAWN_VERMILION
-	db SPAWN_LAVENDER
-	db SPAWN_SAFFRON
-	db SPAWN_CELADON
-	db SPAWN_FUCHSIA
-	db SPAWN_CINNABAR
-	db SPAWN_INDIGO
-	db $ff
 
 _Area: ; 91d11
 ; e: Current landmark
