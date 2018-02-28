@@ -2434,11 +2434,18 @@ FlyMap: ; 91c90
 
 ; visited and its flypoint enabled
 	push af
-	ld c, SPAWN_INDIGO
-	call HasVisitedSpawn
-	and a
+	ld hl, .KantoSpawns
+.loop_spawns
+	ld a, [hli]
+	cp $ff
 	jr z, .NoKanto
-; Kanto's map is only loaded if we've visited Indigo Plateau
+	push hl
+	ld c, a
+	call HasVisitedSpawn
+	pop hl
+	and a
+	jr z, .loop_spawns
+; Kanto's map is only loaded if we've visited any place in Kanto
 
 ; Flypoints begin at Pallet Town...
 	ld a, FLY_PALLET
@@ -2449,6 +2456,8 @@ FlyMap: ; 91c90
 ; Because Indigo Plateau is the first flypoint the player
 
 ; visits, it's made the default flypoint
+	dec hl
+	ld a, [hl]
 	ld [wd002], a
 ; Fill out the map
 	call FillKantoMap
@@ -2483,6 +2492,24 @@ FlyMap: ; 91c90
 	ret
 
 ; 91d11
+
+.KantoSpawns
+	db SPAWN_PALLET
+	db SPAWN_VIRIDIAN
+	db SPAWN_PEWTER
+	db SPAWN_CERULEAN
+	db SPAWN_ROCK_TUNNEL
+	db SPAWN_VERMILION
+	db SPAWN_LAVENDER
+	db SPAWN_SAFFRON
+	db SPAWN_CELADON
+	db SPAWN_FUCHSIA
+	db SPAWN_CINNABAR
+	db SPAWN_INDIGO
+	db $ff
+
+HasVisitedAnySpawn:
+	ret
 
 _Area: ; 91d11
 ; e: Current landmark
