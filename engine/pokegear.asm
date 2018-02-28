@@ -2373,7 +2373,7 @@ KANTO_FLYPOINT EQU const_value
 	flypoint FUCHSIA,     FUCHSIA_CITY
 	flypoint CINNABAR,    CINNABAR_ISLAND
 	flypoint INDIGO,      INDIGO_PLATEAU
-	db -1
+	db -1, -1
 
 ; 91c8f
 
@@ -2462,6 +2462,9 @@ FlyMap: ; 91c90
 	ld de, 2
 	call IsInArray
 	ld a, b
+	jr c, .valid_kanto_spawn
+	ld a, FLY_INDIGO ; error handling
+.valid_kanto_spawn
 	ld [wd002], a
 ; Fill out the map
 	call FillKantoMap
