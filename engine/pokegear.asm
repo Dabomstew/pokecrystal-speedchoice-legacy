@@ -2416,7 +2416,7 @@ KANTO_FLYPOINT EQU const_value
 	flypoint FUCHSIA,     FUCHSIA_CITY
 	flypoint CINNABAR,    CINNABAR_ISLAND
 	flypoint INDIGO,      INDIGO_PLATEAU
-	db -1,
+	db -1
 
 ; 91c8f
 
