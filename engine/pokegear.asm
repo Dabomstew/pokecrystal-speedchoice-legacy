@@ -2514,6 +2514,11 @@ GetJohtoFlyParams:
 	ret
 
 GetKantoFlyParams:
+	ld c, SPAWN_INDIGO
+	call HasVisitedSpawn
+	and a
+	ld b, FLY_INDIGO
+	jr nz, .spawnIndigo
 	ld hl, Flypoints + 2 * KANTO_FLYPOINT
 	ld b, KANTO_FLYPOINT - 1
 .loop_spawns
@@ -2531,6 +2536,7 @@ GetKantoFlyParams:
 	and a
 	jr z, .loop_spawns
 ; Kanto's map is only loaded if we've visited any place in Kanto
+.spawnIndigo
 
 ; Flypoints begin at Pallet Town...
 	ld a, FLY_PALLET
