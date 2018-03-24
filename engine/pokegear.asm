@@ -2304,7 +2304,7 @@ TownMapBubble: ; 91bb5
 	call .Name
 ; Up/down arrows
 	hlcoord 18, 1
-	ld [hl], $34	
+	ld [hl], $34
 	ret
 
 .Where
@@ -2416,7 +2416,7 @@ KANTO_FLYPOINT EQU const_value
 	flypoint FUCHSIA,     FUCHSIA_CITY
 	flypoint CINNABAR,    CINNABAR_ISLAND
 	flypoint INDIGO,      INDIGO_PLATEAU
-	db -1,
+	db -1
 
 ; 91c8f
 
@@ -2428,7 +2428,7 @@ ret_91c8f: ; 91c8f
 	ld a, d
 	ld [wd00a], a
 	ret
-	
+
 ; 91c90
 
 FlyMap: ; 91c90
