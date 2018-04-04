@@ -272,6 +272,7 @@ sStatsItemsSold:: ds 2
 sStatsMovesLearnt:: ds 2
 sStatsBallsThrown:: ds 2
 sStatsPokemonCaughtInBalls:: ds 2
+sStatsNumPokemaniacsFought:: dw
 sStatsEnd::
 
 

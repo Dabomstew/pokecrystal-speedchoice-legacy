@@ -565,6 +565,7 @@ PSMiscConfig::
 	stat_screen_entry PSMiscSavesString, STATTYPE_2BYTE, sStatsSaveCount
 	stat_screen_entry PSMiscReloadsString, STATTYPE_2BYTE, sStatsReloadCount
 	stat_screen_entry PSMiscClockResetsString, STATTYPE_2BYTE, sStatsClockResetCount
+	stat_screen_entry PSMiscPokemaniacsFoughtString, STATTYPE_2BYTE, sStatsNumPokemaniacsFought
 	dw 0
 	
 PlayerStatsString:
@@ -671,6 +672,8 @@ PSMiscReloadsString:
 	db "SAVE RELOADS:@"
 PSMiscClockResetsString:
 	db "CLOCK RESETS:@"
+PSMiscPokemaniacsFoughtString:
+	db "No. #MANIACS:@"
 
 PSPageStartString:
 	db "PAGE@"

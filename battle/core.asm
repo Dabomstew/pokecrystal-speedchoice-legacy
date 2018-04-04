@@ -2501,6 +2501,15 @@ WinTrainerBattle: ; 3cfa4
 	call PrintWinLossText
 
 .skip_win_loss_text
+	ld a, [OtherTrainerClass]
+	cp POKEMANIAC
+	jr nz, .not_pokemaniac
+	ld a, BANK(sStatsNumPokemaniacsFought)
+	call GetSRAMBank
+	ld hl, sStatsNumPokemaniacsFought
+	inc [hl]
+	call CloseSRAM
+.not_pokemaniac
 	jp HandleBattleReward
 
 .mobile
