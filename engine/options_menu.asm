@@ -7,7 +7,7 @@ NUM_PERMAOPTIONS_PAGES EQU 2
 PermaOptionsMenu:
 	ld a, FIRST_PERMAOPTIONS_PAGEID
 	jr OptionsMenuCommon
-	
+
 OptionsMenu:
 	xor a
 	; fallthrough
@@ -48,6 +48,22 @@ OptionsMenuCommon:: ; e41d0
 	ld [wOptionsMenuID], a
 	jr .pageLoad
 .doExit
+	ld a, [wOptionsMenuID]
+	cp FIRST_PERMAOPTIONS_PAGEID
+	jr c, .exit
+	ld a, [PlayerName]
+	cp "@"
+	jr nz, .exit
+	ld a, [Options2]
+	push af
+	and $ff ^ (1 << HOLD_TO_MASH)
+	ld [Options2], a
+	ld hl, NameNotSetText
+	call PrintText
+	pop af
+	ld [Options2], a
+	jr .pageLoad
+.exit
 	pop af
 	ld [hInMenu], a
 	ld de, SFX_TRANSACTION
@@ -286,3 +302,16 @@ INCLUDE "engine/options/main_options.asm"
 INCLUDE "engine/options/main_options_2.asm"
 INCLUDE "engine/options/perma_options.asm"
 INCLUDE "engine/options/perma_options_2.asm"
+
+NameNotSetText::
+	text "Please set your"
+	line "name on page 2!@"
+	start_asm
+	ld de, SFX_WRONG
+	call PlaySFX
+	call WaitSFX
+	ld hl, .done
+	ret
+.done
+	text ""
+	prompt
