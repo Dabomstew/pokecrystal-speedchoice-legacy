@@ -76,7 +76,8 @@ def main():
         setconfig(key, '0x{:X}'.format(syms[sym] + extra))
     
     def set_tm_text(num, key, txt):
-        setconfig('TMText[]', '[{:d},0x{:X},{}]'.format(num, key + 1, txt))
+        setconfig('TMText[]',
+                  '[{:d},0x{:X},{}]'.format(num, syms[key] + 1, txt))
 
     # Print version
     args.rom.seek(0x14c)
@@ -196,51 +197,51 @@ def main():
         setconfig('StaticPokemonGameCorner[]',
                   '[0x{:X}, 0x{:X}, 0x{:X}, 0x{:X}]'.format(*offs))
 
-    set_tm_text(1, syms['UnknownText_0x9d8da'],
+    set_tm_text(1, 'UnknownText_0x9d8da',
                 'That is\\n%m.\\e')
-    set_tm_text(3, syms['UnknownText_0x71db3'],
+    set_tm_text(3, 'UnknownText_0x71db3',
                 'TM03 is\\n%m.\\p'
                 'It\'s a terrifying\\n'
                 'move!\\e')
-    set_tm_text(5, syms['Text_RoarOutro'],
+    set_tm_text(5, 'Text_RoarOutro',
                 'WROOOAR!\\nIT\'S %m!\\e')
-    set_tm_text(6, syms['UnknownText_0x196002'],
+    set_tm_text(6, 'UnknownText_0x196002',
                 'JANINE: You\'re so\\n'
                 'tough! I have a \\l'
                 'special gift!\\p'
                 'It\'s %m!\\e')
-    set_tm_text(7, syms['UnknownText_0x1893f4'],
+    set_tm_text(7, 'UnknownText_0x1893f4',
                 'MANAGER: TM07 is\\n'
                 'my %m.\\p'
                 'It\'s a powerful\\n'
                 'technique!\\e')
-    set_tm_text(8, syms['UnknownText_0x19452c'],
+    set_tm_text(8, 'UnknownText_0x19452c',
                 'That happens to be\\n'
                 '%m.\\p'
                 'If any rocks are\\n'
                 'in your way, find\\l'
                 'ROCK SMASH!\\e')
-    set_tm_text(10, syms['HiddenPowerGuyText2'],
+    set_tm_text(10, 'HiddenPowerGuyText2',
                 'Do you see it? It\\n'
                 'is %m!\\e')
-    set_tm_text(11, syms['UnknownText_0x5e821'],
+    set_tm_text(11, 'UnknownText_0x5e821',
                 'It\'s %m.\\n'
                 'Use it wisely.\\e')
-    set_tm_text(12, syms['UnknownText_0x62df6'],
+    set_tm_text(12, 'UnknownText_0x62df6',
                 'It\'s %m.\\p'
                 'Use it on\\n'
                 'enemy [POKé]MON.\\e')
-    set_tm_text(13, syms['UnknownText_0x9d1c7'],
+    set_tm_text(13, 'UnknownText_0x9d1c7',
                 'That there\'s\\n'
                 '%m.\\p'
                 'It\'s a rare move.\\e')
-    set_tm_text(16, syms['UnknownText_0x199def'],
+    set_tm_text(16, 'UnknownText_0x199def',
                 'That TM contains\\n'
                 '%m.\\p'
                 'It demonstrates\\n'
                 'the harshness of\\l'
                 'winter.\\e')
-    set_tm_text(19, syms['UnknownText_0x72cb0'],
+    set_tm_text(19, 'UnknownText_0x72cb0',
                 'That was a\\n'
                 'delightful match.\\p'
                 'I felt inspired.\\n'
@@ -251,31 +252,31 @@ def main():
                 'move!\\p'
                 'Please use it if\\n'
                 'it pleases you…\\e')
-    set_tm_text(23, syms['UnknownText_0x9c3a5'],
+    set_tm_text(23, 'UnknownText_0x9c3a5',
                 '…That teaches\\n'
                 '%m.\\e')
-    set_tm_text(24, syms['ClairText_DescribeDragonbreathDragonDen'],
+    set_tm_text(24, 'ClairText_DescribeDragonbreathDragonDen',
                 'That contains\\n'
                 '%m.\\p'
                 'If you don\'t want\\n'
                 'it, you don\'t have\\l'
                 'to take it.\\e')
-    set_tm_text(24, syms['BlackthornGymClairText_DescribeTM24'],
+    set_tm_text(24, 'BlackthornGymClairText_DescribeTM24',
                 'That contains\\n'
                 '%m.\\p'
                 'If you don\'t want\\n'
                 'it, you don\'t have\\l'
                 'to take it.\\e')
-    set_tm_text(29, syms['MrPsychicText2'],
+    set_tm_text(29, 'MrPsychicText2',
                 'TM29 is\\n'
                 '%m.\\p'
                 'It may be\\n'
                 'useful.\\e')
-    set_tm_text(30, syms['UnknownText_0x9a0ec'],
+    set_tm_text(30, 'UnknownText_0x9a0ec',
                 'It\'s %m.\\p'
                 'Use it if it\\n'
                 'appeals to you.\\e')
-    set_tm_text(31, syms['UnknownText_0x68648'],
+    set_tm_text(31, 'UnknownText_0x68648',
                 'By using a TM, a\\n'
                 '[POKé]MON will\\p'
                 'instantly learn a\\n'
@@ -284,28 +285,28 @@ def main():
                 'act--a TM can be\\l'
                 'used only once.\\p'
                 'TM31 contains\\n%m.\\e')
-    set_tm_text(37, syms['SandstormHouseSandstormDescription'],
+    set_tm_text(37, 'SandstormHouseSandstormDescription',
                 'TM37 happens to be\\n'
                 '%m.\\p'
                 'It\'s for advanced\\n'
                 'trainers only.\\p'
                 'Use it if you\\n'
                 'dare. Good luck!\\e')
-    set_tm_text(42, syms['UnknownText_0x1a9d86'],
+    set_tm_text(42, 'UnknownText_0x1a9d86',
                 'TM42 contains\\n'
                 '%m…\\p'
                 '…Zzz…\\e')
-    set_tm_text(45, syms['UnknownText_0x54302'],
+    set_tm_text(45, 'UnknownText_0x54302',
                 'It\'s %m!\\p'
                 'Isn\'t it just per-\\n'
                 'fect for a cutie\\l'
                 'like me?\\e')
-    set_tm_text(49, syms['BugsyText_FuryCutterSpeech'],
+    set_tm_text(49, 'BugsyText_FuryCutterSpeech',
                 'TM49 contains\\n'
                 '%m.\\p'
                 'Isn\'t it great?\\n'
                 'I discovered it!\\e')
-    set_tm_text(50, syms['Text_Route31DescribeNightmare'],
+    set_tm_text(50, 'Text_Route31DescribeNightmare',
                 'TM50 is\\n'
                 '%m.\\p'
                 'Ooooh…\\n'

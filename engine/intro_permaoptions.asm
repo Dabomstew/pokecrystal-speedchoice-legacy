@@ -16,15 +16,10 @@ IntroPermaOptions::
 	ld [RandomizedMovesStatus], a
 	ld a, "@"
 	ld [PlayerName], a
+	ld hl, PlayerGender
+	set 0, [hl]
 .setOptions
 	callba PermaOptionsMenu
-	ld de, PlayerName
-	ld a, [de]
-	cp "@"
-	jr nz, .name_okay
-	ld b, 1
-	callba NamingScreen
-.name_okay
 	call ClearTileMap
 	call PrintPermaOptionsToScreen
 	ld hl, AreOptionsAcceptable
@@ -245,7 +240,7 @@ EarlyKantoText::
 PleaseSetOptions::
 	text_jump _PleaseSetOptions
 	db "@"
-	
+
 AreOptionsAcceptable::
 	text_jump _AreOptionsAcceptable
 	db "@"

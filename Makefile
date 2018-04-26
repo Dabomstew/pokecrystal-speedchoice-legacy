@@ -1,11 +1,12 @@
 PYTHON := python
+PYTHON3 := python3
 RGBDS := $(shell dirname $(shell which rgbasm))
 ASM := $(RGBDS)/rgbasm
 LD := $(RGBDS)/rgblink
 FIX := $(RGBDS)/rgbfix
 
 .SUFFIXES:
-.PHONY: all clean crystal
+.PHONY: all clean crystal config
 .SECONDEXPANSION:
 .PRECIOUS: %.2bpp %.1bpp
 
@@ -36,6 +37,8 @@ roms := crystal-speedchoice.gbc
 all: $(roms)
 crystal: crystal-speedchoice.gbc
 
+config: crystal-speedchoice.ini
+
 clean:
 	rm -f $(roms) $(crystal_obj) $(roms:.gbc=.map) $(roms:.gbc=.sym)
 
@@ -59,3 +62,6 @@ gfx/pics/%/normal.pal gfx/pics/%/bitmask.asm gfx/pics/%/frames.asm: gfx/pics/%/f
 %.bin: ;
 %.blk: ;
 %.tilemap: ;
+
+%.ini: %.gbc %.sym
+	$(PYTHON3) genrandoini.py $^ $@

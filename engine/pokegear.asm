@@ -2183,6 +2183,9 @@ FlyMapScroll: ; 91b73
 	ld a, [hl]
 	and D_DOWN
 	jr nz, .ScrollPrev
+	ld a, [hl]
+	and D_LEFT | D_RIGHT
+	jr nz, .SwapRegion
 	ret
 
 .ScrollNext
@@ -2211,11 +2214,51 @@ FlyMapScroll: ; 91b73
 	dec [hl]
 	call CheckIfVisitedFlypoint
 	jr z, .ScrollPrev
+	jr .Finally
+
+.SwapRegion:
+	ld a, [hWY]
+	and a
+	jr nz, .johtoToKanto
+; Start from New Bark Town
+	call GetJohtoFlyParams
+; Fill out the map
+	ld d, 1
+	call .showHidePlayer
+	ld a, $90
+	jr .mapFinally
+
+.johtoToKanto
+	call GetKantoFlyParams
+	ret c
+	ld d, 0
+	call .showHidePlayer
+	xor a
+.mapFinally
+	ld [hWY], a
 .Finally
 	call TownMapBubble
 	call WaitBGMap
 	xor a
 	ld [hBGMapMode], a
+	ret
+
+.showHidePlayer:
+	ld hl, wd008
+	ld a, [hli]
+	ld b, [hl]
+	ld c, a
+	ld hl, SPRITEANIMSTRUCT_YCOORD
+	add hl, bc
+	ld a, [wd007]
+	cp d
+	jr nz, .show
+	ld a, $c0
+	jr .got_y
+.show
+	ld a, [wd00a]
+.got_y
+	ld [hl], a
 	ret
 
 ; 91bb5
@@ -2261,7 +2304,7 @@ TownMapBubble: ; 91bb5
 	call .Name
 ; Up/down arrows
 	hlcoord 18, 1
-	ld [hl], $34	
+	ld [hl], $34
 	ret
 
 .Where
@@ -2378,11 +2421,140 @@ KANTO_FLYPOINT EQU const_value
 ; 91c8f
 
 ret_91c8f: ; 91c8f
+	ld a, c
+	ld [wd008], a
+	ld a, b
+	ld [wd008+1], a
+	ld a, d
+	ld [wd00a], a
 	ret
 
 ; 91c90
 
 FlyMap: ; 91c90
+	ld a, $90
+	ld [hWY], a
+	call FlyMapIsInKanto
+	jr nc, .KantoFlyMap
+.JohtoFlyMap
+; Note that .NoKanto should be modified in tandem with this branch
+	push af
+; Start from New Bark Town
+	call GetJohtoFlyParams
+	xor a
+	ld [wd007], a
+; Fill out the map
+	call .MapHud
+	pop af
+	call TownMapPlayerIcon
+	ret
+
+.KantoFlyMap
+; The event that there are no flypoints enabled in a map is not
+
+; accounted for. As a result, if you attempt to select a flypoint
+; when there are none enabled, the game will crash. Additionally,
+
+; the flypoint selection has a default starting point that
+; can be flown to even if none are enabled
+
+; To prevent both of these things from happening when the player
+; enters Kanto, fly access is restricted until at least one city is
+
+; visited and its flypoint enabled
+	push af
+	call GetKantoFlyParams
+	jr c, .NoKanto
+; Fill out the map
+	xor a
+	ld [hWY], a
+	inc a
+	ld [wd007], a
+	call .MapHud
+	pop af
+	call TownMapPlayerIcon
+	ret
+
+.NoKanto
+; If Kanto hasn't been visited, we use Johto's map instead
+
+; Start from New Bark Town
+	call GetJohtoFlyParams
+	xor a
+	ld [wd007], a
+	pop af
+.MapHud
+	call FillKantoMap
+	call TownMapBubble
+	call TownMapPals
+	hlbgcoord 0, 0, VBGMap1
+	call TownMapBGUpdate
+	call FillJohtoMap
+	call TownMapBubble
+	call TownMapPals
+	hlbgcoord 0, 0
+	call TownMapBGUpdate
+	call TownMapMon
+	ld a, c
+	ld [wd003], a
+	ld a, b
+	ld [wd004], a
+	ret
+
+; 91d11
+
+GetJohtoFlyParams:
+	ld a, FLY_NEW_BARK
+	ld [wd002], a
+; Flypoints begin at New Bark Town...
+	ld [StartFlypoint], a
+; ..and end at Silver Cave
+	ld a, FLY_MT_SILVER
+	ld [EndFlypoint], a
+	ret
+
+GetKantoFlyParams:
+	ld c, SPAWN_INDIGO
+	call HasVisitedSpawn
+	and a
+	ld b, FLY_INDIGO
+	jr nz, .spawnIndigo
+	ld hl, Flypoints + 2 * KANTO_FLYPOINT
+	ld b, KANTO_FLYPOINT - 1
+.loop_spawns
+	ld a, [hli]
+	cp $ff
+	jr z, .NoKanto
+	inc b
+	ld c, [hl]
+	inc hl
+	push hl
+	push bc
+	call HasVisitedSpawn
+	pop bc
+	pop hl
+	and a
+	jr z, .loop_spawns
+; Kanto's map is only loaded if we've visited any place in Kanto
+.spawnIndigo
+
+; Flypoints begin at Pallet Town...
+	ld a, FLY_PALLET
+	ld [StartFlypoint], a
+; ...and end at Indigo Plateau
+	ld a, FLY_INDIGO
+	ld [EndFlypoint], a
+; Use the lowest index flypoint the player visits as the default flypoint
+	ld a, b
+	ld [wd002], a
+	and a
+	ret
+
+.NoKanto:
+	scf
+	ret
+
+FlyMapIsInKanto:
 	ld a, [MapGroup]
 	ld b, a
 	ld a, [MapNumber]
@@ -2401,88 +2573,7 @@ FlyMap: ; 91c90
 .CheckRegion
 ; The first 46 locations are part of Johto. The rest are in Kanto
 	cp KANTO_LANDMARK
-	jr nc, .KantoFlyMap
-.JohtoFlyMap
-; Note that .NoKanto should be modified in tandem with this branch
-	push af
-; Start from New Bark Town
-	ld a, FLY_NEW_BARK
-	ld [wd002], a
-; Flypoints begin at New Bark Town...
-	ld [StartFlypoint], a
-; ..and end at Silver Cave
-	ld a, FLY_MT_SILVER
-	ld [EndFlypoint], a
-; Fill out the map
-	call FillJohtoMap
-	call .MapHud
-	pop af
-	call TownMapPlayerIcon
 	ret
-
-.KantoFlyMap
-; The event that there are no flypoints enabled in a map is not
-
-; accounted for. As a result, if you attempt to select a flypoint
-; when there are none enabled, the game will crash. Additionally,
-
-; the flypoint selection has a default starting point that
-; can be flown to even if none are enabled
-
-; To prevent both of these things from happening when the player
-; enters Kanto, fly access is restricted until Indigo Plateau is
-
-; visited and its flypoint enabled
-	push af
-	ld c, SPAWN_INDIGO
-	call HasVisitedSpawn
-	and a
-	jr z, .NoKanto
-; Kanto's map is only loaded if we've visited Indigo Plateau
-
-; Flypoints begin at Pallet Town...
-	ld a, FLY_PALLET
-	ld [StartFlypoint], a
-; ...and end at Indigo Plateau
-	ld a, FLY_INDIGO
-	ld [EndFlypoint], a
-; Because Indigo Plateau is the first flypoint the player
-
-; visits, it's made the default flypoint
-	ld [wd002], a
-; Fill out the map
-	call FillKantoMap
-	call .MapHud
-	pop af
-	call TownMapPlayerIcon
-	ret
-
-.NoKanto
-; If Indigo Plateau hasn't been visited, we use Johto's map instead
-
-; Start from New Bark Town
-	ld a, FLY_NEW_BARK
-	ld [wd002], a
-; Flypoints begin at New Bark Town...
-	ld [StartFlypoint], a
-; ..and end at Silver Cave
-	ld a, FLY_MT_SILVER
-	ld [EndFlypoint], a
-	call FillJohtoMap
-	pop af
-.MapHud
-	call TownMapBubble
-	call TownMapPals
-	hlbgcoord 0, 0 ; BG Map 0
-	call TownMapBGUpdate
-	call TownMapMon
-	ld a, c
-	ld [wd003], a
-	ld a, b
-	ld [wd004], a
-	ret
-
-; 91d11
 
 _Area: ; 91d11
 ; e: Current landmark
