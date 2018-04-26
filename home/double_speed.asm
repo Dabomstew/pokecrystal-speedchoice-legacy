@@ -9,14 +9,9 @@ DoubleSpeed:: ; 2fef
 	ld hl, rKEY1
 	bit 7, [hl]
 	jr z, SwitchSpeed
+NormalSpeed::
 	ret
 ; 2ff7
-
-NormalSpeed:: ; 2ff7
-	ld hl, rKEY1
-	bit 7, [hl]
-	ret z
-; 2ffd
 
 SwitchSpeed:: ; 2ffd
 	set 0, [hl]
