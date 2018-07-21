@@ -1,4 +1,6 @@
 PermaOptionsString:: ; e4241
+	db "PRESET (A: SET)<LNBRK>"
+	db "        :<LNBRK>"
 	db "ROCKET SECTIONS<LNBRK>"
 	db "        :<LNBRK>"
 	db "SPINNERS<LNBRK>"
@@ -10,20 +12,94 @@ PermaOptionsString:: ; e4241
 	db "BETTER ENC. SLOTS<LNBRK>"
 	db "        :<LNBRK>"
 	db "#MON GENDER<LNBRK>"
-	db "        :<LNBRK>"
-	db "B/W EXP SYSTEM<LNBRK>"
 	db "        :@"
 ; e42d6
 
 PermaOptionsPointers::
+	dw Options_Preset
 	dw Options_Rocketless
 	dw Options_Spinners
 	dw Options_TrainerVision
 	dw Options_NerfHMs
 	dw Options_BetterEncSlots
 	dw Options_Gender
-	dw Options_BWXP
 	dw Options_PermaOptionsPage
+
+PermaOptionsPresets:
+	; Vanilla
+	dw (2 << RACE_GOAL) , Preset_VanillaName
+	; Bingo
+	dw (1 << ROCKETLESS) | (1 << SPINNERS) | (1 << BETTER_ENC_SLOTS) | (1 << BW_XP) | (1 << BETTER_MARTS), Preset_BingoName
+	; 251
+	dw (1 << ROCKETLESS) | (1 << SPINNERS) | (1 << BETTER_ENC_SLOTS) | (1 << BW_XP) | (1 << BETTER_MARTS) | (2 << RACE_GOAL), Preset_CEAName
+PermaOptionsPresetsEnd:
+
+Preset_VanillaName:
+	db "VANILLA @"
+Preset_BingoName:
+	db "BINGO   @"
+Preset_CEAName:
+	db "251 RACE@"
+
+Options_Preset::
+	ld hl, wOptionsMenuPreset
+	ld c, [hl]
+	bit D_LEFT_F, a
+	jr nz, .decr
+	bit D_RIGHT_F, a
+	jr nz, .incr
+	bit A_BUTTON_F, a
+	jr z, .print
+	call .get_pointer
+	ld de, wPermanentOptions
+	ld a, [hli]
+	ld [de], a
+	inc de
+	ld a, [hl]
+	ld [de], a
+	ld de, SFX_TRANSACTION
+	call PlaySFX
+	call WaitSFX
+	call DrawOptionsMenuLagless_
+	and a
+	ret
+
+.incr
+	inc c
+	ld a, c
+	cp (PermaOptionsPresetsEnd - PermaOptionsPresets) / 4
+	jr c, .okay
+	ld c, 0
+	jr .okay
+
+.decr
+	ld a, c
+	dec c
+	and a
+	jr nz, .okay
+	ld c, (PermaOptionsPresetsEnd - PermaOptionsPresets) / 4 - 1
+.okay
+	ld [hl], c
+.print
+	call .get_pointer
+	inc hl
+	inc hl
+	ld a, [hli]
+	ld d, [hl]
+	ld e, a
+	hlcoord 11, 3
+	call PlaceString
+	and a
+	ret
+
+.get_pointer
+	ld b, 0
+	ld hl, PermaOptionsPresets
+	add hl, bc
+	add hl, bc
+	add hl, bc
+	add hl, bc
+	ret
 
 Options_Rocketless:
 	ld hl, wPermanentOptions
@@ -38,7 +114,7 @@ Options_Rocketless:
 	jr z, .Display
 	ld de, .On
 .Display
-	hlcoord 11, 3
+	hlcoord 11, 5
 	call PlaceString
 	and a
 	ret
@@ -85,7 +161,7 @@ endr
 	ld e, [hl]
 	inc hl
 	ld d, [hl]
-	hlcoord 11, 5
+	hlcoord 11, 7
 	call PlaceString
 	and a
 	ret
@@ -124,7 +200,7 @@ Options_TrainerVision:
 	jr z, .Display
 	ld de, .On
 .Display
-	hlcoord 11, 7
+	hlcoord 11, 9
 	call PlaceString
 	and a
 	ret
@@ -170,7 +246,7 @@ Options_NerfHMs:
 	jr z, .Display
 	ld de, .On
 .Display
-	hlcoord 11, 9
+	hlcoord 11, 11
 .doDisplay
 	call PlaceString
 	and a
@@ -202,7 +278,7 @@ Options_BetterEncSlots:
 	jr z, .Display
 	ld de, .On
 .Display
-	hlcoord 11, 11
+	hlcoord 11, 13
 	call PlaceString
 	and a
 	ret
@@ -225,7 +301,7 @@ Options_Gender:
 	jr z, .Display
 	ld de, .On
 .Display
-	hlcoord 11, 13
+	hlcoord 11, 15
 	call PlaceString
 	and a
 	ret
@@ -234,27 +310,4 @@ Options_Gender:
 	db "SHOW@"
 .On
 	db "HIDE@"
-
-Options_BWXP:
-	ld hl, wPermanentOptions
-	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
-	ld a, [hl]
-	jr z, .GetText
-	xor (1 << BW_XP)
-	ld [hl], a
-.GetText
-	bit BW_XP, a
-	ld de, .Off
-	jr z, .Display
-	ld de, .On
-.Display
-	hlcoord 11, 15
-	call PlaceString
-	and a
-	ret
-	
-.Off
-	db "OFF@"
-.On
-	db "ON @"
 

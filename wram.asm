@@ -1519,6 +1519,7 @@ wOptionsMenuID:: ds 1
 wStoredJumptableIndex:: ds 1
 Requested1bppQuarters:: ds 1
 Requested2bppQuarters:: ds 1
+wOptionsMenuPreset:: ds 1
 
 wRAM0End:: ; cfd8
 
