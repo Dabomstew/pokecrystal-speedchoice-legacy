@@ -1,4 +1,8 @@
 PermaOptionsP2String:: ; e4241
+	db "BETTER ENC. SLOTS<LNBRK>"
+	db "        :<LNBRK>"
+	db "#MON GENDER<LNBRK>"
+	db "        :<LNBRK>"
 	db "B/W EXP SYSTEM<LNBRK>"
 	db "        :<LNBRK>"
 	db "BETTER MARTS<LNBRK>"
@@ -8,22 +12,64 @@ PermaOptionsP2String:: ; e4241
 	db "RACE GOAL<LNBRK>"
 	db "        :<LNBRK>"
 	db "KANTO ACCESS<LNBRK>"
-	db "        :<LNBRK>"
-	db "NAME<LNBRK>"
-	db "        :<LNBRK>"
-	db "GENDER<LNBRK>"
 	db "        :@"
 ; e42d6
 
 PermaOptionsP2Pointers::
+	dw Options_BetterEncSlots
+	dw Options_Gender
 	dw Options_BWXP
 	dw Options_BetterMartsOption
 	dw Options_GoodEarlyWildsOption
 	dw Options_RaceGoalOption
 	dw Options_KantoAccessOption
-	dw Options_Name
-	dw Options_PlayerGender
 	dw Options_PermaOptionsPage
+
+Options_BetterEncSlots:
+	ld hl, wPermanentOptions
+	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
+	ld a, [hl]
+	jr z, .GetText
+	xor (1 << BETTER_ENC_SLOTS)
+	ld [hl], a
+.GetText
+	bit BETTER_ENC_SLOTS, a
+	ld de, .Off
+	jr z, .Display
+	ld de, .On
+.Display
+	hlcoord 11, 3
+	call PlaceString
+	and a
+	ret
+	
+.Off
+	db "OFF@"
+.On
+	db "ON @"
+	
+Options_Gender:
+	ld hl, wPermanentOptions
+	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
+	ld a, [hl]
+	jr z, .GetText
+	xor (1 << DISABLE_GENDER)
+	ld [hl], a
+.GetText
+	bit DISABLE_GENDER, a
+	ld de, .Off
+	jr z, .Display
+	ld de, .On
+.Display
+	hlcoord 11, 5
+	call PlaceString
+	and a
+	ret
+	
+.Off
+	db "SHOW@"
+.On
+	db "HIDE@"
 
 Options_BWXP:
 	ld hl, wPermanentOptions
@@ -38,7 +84,7 @@ Options_BWXP:
 	jr z, .Display
 	ld de, .On
 .Display
-	hlcoord 11, 3
+	hlcoord 11, 7
 	call PlaceString
 	and a
 	ret
@@ -61,7 +107,7 @@ Options_BetterMartsOption:
 	jr z, .Display
 	ld de, .On
 .Display
-	hlcoord 11, 5
+	hlcoord 11, 9
 	call PlaceString
 	and a
 	ret
@@ -84,7 +130,7 @@ Options_GoodEarlyWildsOption:
 	jr z, .Display
 	ld de, .On
 .Display
-	hlcoord 11, 7
+	hlcoord 11, 11
 	call PlaceString
 	and a
 	ret
@@ -141,7 +187,7 @@ endr
 	ld e, [hl]
 	inc hl
 	ld d, [hl]
-	hlcoord 11, 9
+	hlcoord 11, 13
 	call PlaceString
 	and a
 	ret
@@ -180,7 +226,7 @@ Options_KantoAccessOption:
 	jr z, .Display
 	ld de, .On
 .Display
-	hlcoord 11, 11
+	hlcoord 11, 15
 	call PlaceString
 	and a
 	ret
@@ -190,52 +236,3 @@ Options_KantoAccessOption:
 .On
 	db "EARLY @"
 
-
-Options_Name:
-	and A_BUTTON
-	jr z, .GetText
-	ld a, [wJumptableIndex]
-	push af
-	ld b, 1
-	ld de, PlayerName
-	callba NamingScreen
-	call DrawOptionsMenu
-	pop af
-	ld [wJumptableIndex], a
-.GetText
-	ld de, PlayerName
-	ld a, [de]
-	cp "@"
-	jr nz, .Display
-	ld de, .NotSetString
-.Display
-	hlcoord 11, 13
-	call PlaceString
-	and a
-	ret
-
-.NotSetString
-	db "NOT SET@"
-
-Options_PlayerGender:
-	ld hl, PlayerGender
-	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
-	ld a, [hl]
-	jr z, .GetText
-	xor 1
-	ld [hl], a
-.GetText
-	rrca
-	ld de, .MaleText
-	jr nc, .Display
-	ld de, .FemaleText
-.Display
-	hlcoord 11, 15
-	call PlaceString
-	and a
-	ret
-
-.MaleText
-	db "MALE  @"
-.FemaleText
-	db "FEMALE@"

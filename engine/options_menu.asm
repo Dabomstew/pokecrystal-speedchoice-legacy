@@ -317,7 +317,7 @@ INCLUDE "engine/options/perma_options_2.asm"
 
 NameNotSetText::
 	text "Please set your"
-	line "name on page 2!@"
+	line "name on page 1!@"
 	start_asm
 	ld de, SFX_WRONG
 	call PlaySFX

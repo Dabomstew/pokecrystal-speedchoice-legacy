@@ -1,6 +1,10 @@
 PermaOptionsString:: ; e4241
 	db "PRESET (A: SET)<LNBRK>"
 	db "        :<LNBRK>"
+	db "NAME<LNBRK>"
+	db "        :<LNBRK>"
+	db "GENDER<LNBRK>"
+	db "        :<LNBRK>"
 	db "ROCKET SECTIONS<LNBRK>"
 	db "        :<LNBRK>"
 	db "SPINNERS<LNBRK>"
@@ -8,21 +12,17 @@ PermaOptionsString:: ; e4241
 	db "TRAINER VISION<LNBRK>"
 	db "        :<LNBRK>"
 	db "NERF HMs<LNBRK>"
-	db "        :<LNBRK>"
-	db "BETTER ENC. SLOTS<LNBRK>"
-	db "        :<LNBRK>"
-	db "#MON GENDER<LNBRK>"
 	db "        :@"
 ; e42d6
 
 PermaOptionsPointers::
 	dw Options_Preset
+	dw Options_Name
+	dw Options_PlayerGender
 	dw Options_Rocketless
 	dw Options_Spinners
 	dw Options_TrainerVision
 	dw Options_NerfHMs
-	dw Options_BetterEncSlots
-	dw Options_Gender
 	dw Options_PermaOptionsPage
 
 PermaOptionsPresets:
@@ -101,6 +101,55 @@ Options_Preset::
 	add hl, bc
 	ret
 
+Options_Name:
+	and A_BUTTON
+	jr z, .GetText
+	ld a, [wJumptableIndex]
+	push af
+	ld b, 1
+	ld de, PlayerName
+	callba NamingScreen
+	call DrawOptionsMenu
+	pop af
+	ld [wJumptableIndex], a
+.GetText
+	ld de, PlayerName
+	ld a, [de]
+	cp "@"
+	jr nz, .Display
+	ld de, .NotSetString
+.Display
+	hlcoord 11, 5
+	call PlaceString
+	and a
+	ret
+
+.NotSetString
+	db "NOT SET@"
+
+Options_PlayerGender:
+	ld hl, PlayerGender
+	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
+	ld a, [hl]
+	jr z, .GetText
+	xor 1
+	ld [hl], a
+.GetText
+	rrca
+	ld de, .MaleText
+	jr nc, .Display
+	ld de, .FemaleText
+.Display
+	hlcoord 11, 7
+	call PlaceString
+	and a
+	ret
+
+.MaleText
+	db "MALE  @"
+.FemaleText
+	db "FEMALE@"
+
 Options_Rocketless:
 	ld hl, wPermanentOptions
 	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
@@ -114,7 +163,7 @@ Options_Rocketless:
 	jr z, .Display
 	ld de, .On
 .Display
-	hlcoord 11, 5
+	hlcoord 11, 9
 	call PlaceString
 	and a
 	ret
@@ -161,7 +210,7 @@ endr
 	ld e, [hl]
 	inc hl
 	ld d, [hl]
-	hlcoord 11, 7
+	hlcoord 11, 11
 	call PlaceString
 	and a
 	ret
@@ -200,7 +249,7 @@ Options_TrainerVision:
 	jr z, .Display
 	ld de, .On
 .Display
-	hlcoord 11, 9
+	hlcoord 11, 13
 	call PlaceString
 	and a
 	ret
@@ -246,7 +295,7 @@ Options_NerfHMs:
 	jr z, .Display
 	ld de, .On
 .Display
-	hlcoord 11, 11
+	hlcoord 11, 15
 .doDisplay
 	call PlaceString
 	and a
@@ -264,50 +313,4 @@ Options_NerfHMs:
 	db "RANDOMIZED MOVES!@"
 .PoundUnchanged
 	move POUND,        EFFECT_NORMAL_HIT,         40, NORMAL,   100, 35,   0
-	
-Options_BetterEncSlots:
-	ld hl, wPermanentOptions
-	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
-	ld a, [hl]
-	jr z, .GetText
-	xor (1 << BETTER_ENC_SLOTS)
-	ld [hl], a
-.GetText
-	bit BETTER_ENC_SLOTS, a
-	ld de, .Off
-	jr z, .Display
-	ld de, .On
-.Display
-	hlcoord 11, 13
-	call PlaceString
-	and a
-	ret
-	
-.Off
-	db "OFF@"
-.On
-	db "ON @"
-	
-Options_Gender:
-	ld hl, wPermanentOptions
-	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
-	ld a, [hl]
-	jr z, .GetText
-	xor (1 << DISABLE_GENDER)
-	ld [hl], a
-.GetText
-	bit DISABLE_GENDER, a
-	ld de, .Off
-	jr z, .Display
-	ld de, .On
-.Display
-	hlcoord 11, 15
-	call PlaceString
-	and a
-	ret
-	
-.Off
-	db "SHOW@"
-.On
-	db "HIDE@"
 
