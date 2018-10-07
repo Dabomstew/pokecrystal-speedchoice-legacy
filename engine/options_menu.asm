@@ -16,6 +16,7 @@ OptionsMenuCommon:: ; e41d0
 	ld [wOptionsMenuID], a
 	xor a
 	ld [wStoredJumptableIndex], a
+	ld [wOptionsMenuPreset], a
 	ld hl, hInMenu
 	ld a, [hl]
 	push af
@@ -73,6 +74,29 @@ OptionsMenuCommon:: ; e41d0
 ; e4241
 
 DrawOptionsMenu:
+	call DrawOptionsMenuLagless
+	call LoadFontsExtra
+	ld a, [wStoredJumptableIndex]
+	ld [wJumptableIndex], a
+	xor a
+	ld [wStoredJumptableIndex], a
+	inc a
+	ld [hBGMapMode], a
+	call WaitBGMap
+	ld b, SCGB_08
+	call GetSGBLayout
+	call SetPalettes
+	ret
+
+DrawOptionsMenuLagless_::
+	ld a, [wJumptableIndex]
+	push af
+	call DrawOptionsMenuLagless
+	pop af
+	ld [wJumptableIndex], a
+	ret
+
+DrawOptionsMenuLagless::
 	call RetrieveOptionsMenuConfig
 	hlcoord 0, 0
 	ld b, 16
@@ -102,18 +126,6 @@ DrawOptionsMenu:
 	inc [hl]
 	dec c
 	jr nz, .print_text_loop
-
-	call LoadFontsExtra
-	ld a, [wStoredJumptableIndex]
-	ld [wJumptableIndex], a
-	xor a
-	ld [wStoredJumptableIndex], a
-	inc a
-	ld [hBGMapMode], a
-	call WaitBGMap
-	ld b, SCGB_08
-	call GetSGBLayout
-	call SetPalettes
 	ret
 
 RetrieveOptionsMenuConfig::
@@ -139,7 +151,7 @@ OptionsMenuScreens:
 	; permaoptions page 1
 	options_menu 7, PermaOptionsString, PermaOptionsPointers, START
 	; permaoptions page 2
-	options_menu 6, PermaOptionsP2String, PermaOptionsP2Pointers, START
+	options_menu 7, PermaOptionsP2String, PermaOptionsP2Pointers, START
 
 GetOptionPointer: ; e42d6
 	ld a, [wOptionsMenuCount]
@@ -305,7 +317,7 @@ INCLUDE "engine/options/perma_options_2.asm"
 
 NameNotSetText::
 	text "Please set your"
-	line "name on page 2!@"
+	line "name on page 1!@"
 	start_asm
 	ld de, SFX_WRONG
 	call PlaySFX
