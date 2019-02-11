@@ -1,3 +1,6 @@
+VersionNumberText::
+    db "v5.2@"
+
 IntroPermaOptions::
 	xor a
 	ld hl, wPermanentOptions
@@ -43,13 +46,16 @@ IntroPermaOptions::
 	ret
 	
 PrintPermaOptionsToScreen::
-	ld de, SelectedOptionsText
-	coord hl, 2, 0
+	;ld de, SelectedOptionsText
+	;coord hl, 2, 0
+	;call PlaceString
+	coord hl, 16, 0
+	ld de, VersionNumberText
 	call PlaceString
 	ld a, [wPermanentOptions]
 	ld b, a
 ; rocketless
-	coord hl, 1, 1
+	coord hl, 1, 0
 	bit ROCKETLESS, b
 	ld de, NormalRocketsText
 	jr z, .placeRocketSetting
@@ -98,7 +104,18 @@ PrintPermaOptionsToScreen::
 	ld de, BetterEncountersText
 .placeEncSetting
 	call PlaceStringIncHL
+; tin tower
+	ld a, [wPermanentOptions2]
+	ld b, a
+	bit EASY_TIN_TOWER_F, b
+	ld de, NormalTinTowerText
+	jr z, .placeTowerSetting
+	ld de, EasyTinTowerText
+.placeTowerSetting
+    call PlaceStringIncHL
 ; gender
+	ld a, [wPermanentOptions]
+	ld b, a
 	bit DISABLE_GENDER, b
 	ld de, ShowGenderText
 	jr z, .placeGenderSetting
@@ -236,6 +253,10 @@ NormalKantoText::
 	db "NORM KANTO@"
 EarlyKantoText::
 	db "EARLY KANTO@"
+NormalTinTowerText::
+	db "NORMAL TIN TOWER@"
+EasyTinTowerText::
+	db "EASY TIN TOWER@"
 
 PleaseSetOptions::
 	text_jump _PleaseSetOptions

@@ -25,6 +25,12 @@ PermaOptionsP2Pointers::
 	dw Options_KantoAccessOption
 	dw Options_PermaOptionsPage
 
+; hack to save enough space for bank
+OffG::
+	db "OFF@"
+OnG::
+	db "ON @"
+
 Options_BetterEncSlots:
 	ld hl, wPermanentOptions
 	and (1 << D_LEFT_F) | (1 << D_RIGHT_F)
@@ -34,19 +40,14 @@ Options_BetterEncSlots:
 	ld [hl], a
 .GetText
 	bit BETTER_ENC_SLOTS, a
-	ld de, .Off
+	ld de, OffG
 	jr z, .Display
-	ld de, .On
+	ld de, OnG
 .Display
 	hlcoord 11, 3
 	call PlaceString
 	and a
 	ret
-	
-.Off
-	db "OFF@"
-.On
-	db "ON @"
 	
 Options_Gender:
 	ld hl, wPermanentOptions
@@ -80,19 +81,14 @@ Options_BWXP:
 	ld [hl], a
 .GetText
 	bit BW_XP, a
-	ld de, .Off
+	ld de, OffG
 	jr z, .Display
-	ld de, .On
+	ld de, OnG
 .Display
 	hlcoord 11, 7
 	call PlaceString
 	and a
 	ret
-	
-.Off
-	db "OFF@"
-.On
-	db "ON @"
 
 Options_BetterMartsOption:
 	ld hl, wPermanentOptions2
@@ -103,19 +99,14 @@ Options_BetterMartsOption:
 	ld [hl], a
 .GetText
 	bit BETTER_MARTS_F, a
-	ld de, .Off
+	ld de, OffG
 	jr z, .Display
-	ld de, .On
+	ld de, OnG
 .Display
 	hlcoord 11, 9
 	call PlaceString
 	and a
 	ret
-	
-.Off
-	db "OFF@"
-.On
-	db "ON @"
 	
 Options_GoodEarlyWildsOption:
 	ld hl, wPermanentOptions2
@@ -126,19 +117,14 @@ Options_GoodEarlyWildsOption:
 	ld [hl], a
 .GetText
 	bit EVOLVED_EARLY_WILDS_F, a
-	ld de, .Off
+	ld de, OffG
 	jr z, .Display
-	ld de, .On
+	ld de, OnG
 .Display
 	hlcoord 11, 11
 	call PlaceString
 	and a
 	ret
-	
-.Off
-	db "OFF@"
-.On
-	db "ON @"
 	
 Options_RaceGoalOption: ; e44fa
 	ld hl, wPermanentOptions2

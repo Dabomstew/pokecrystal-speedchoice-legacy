@@ -2,7 +2,7 @@ FIRST_OPTIONS_PAGEID EQU 0
 NUM_OPTIONS_PAGES EQU 2
 
 FIRST_PERMAOPTIONS_PAGEID EQU 2
-NUM_PERMAOPTIONS_PAGES EQU 2
+NUM_PERMAOPTIONS_PAGES EQU 3
 
 PermaOptionsMenu:
 	ld a, FIRST_PERMAOPTIONS_PAGEID
@@ -152,6 +152,8 @@ OptionsMenuScreens:
 	options_menu 7, PermaOptionsString, PermaOptionsPointers, START
 	; permaoptions page 2
 	options_menu 7, PermaOptionsP2String, PermaOptionsP2Pointers, START
+	; permaoptions page 3
+	options_menu 1, PermaOptionsP3String, PermaOptionsP3Pointers, START
 
 GetOptionPointer: ; e42d6
 	ld a, [wOptionsMenuCount]
@@ -314,6 +316,7 @@ INCLUDE "engine/options/main_options.asm"
 INCLUDE "engine/options/main_options_2.asm"
 INCLUDE "engine/options/perma_options.asm"
 INCLUDE "engine/options/perma_options_2.asm"
+INCLUDE "engine/options/perma_options_3.asm"
 
 NameNotSetText::
 	text "Please set your"

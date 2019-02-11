@@ -29,9 +29,9 @@ PermaOptionsPresets:
 	; Vanilla
 	dw (2 << RACE_GOAL) , Preset_VanillaName
 	; Bingo
-	dw (1 << ROCKETLESS) | (1 << SPINNERS) | (1 << BETTER_ENC_SLOTS) | (1 << BW_XP) | (1 << BETTER_MARTS), Preset_BingoName
+	dw (1 << ROCKETLESS) | (1 << SPINNERS) | (1 << BETTER_ENC_SLOTS) | (1 << BW_XP) | (1 << BETTER_MARTS) | (1 << EASY_TIN_TOWER), Preset_BingoName
 	; 251
-	dw (1 << ROCKETLESS) | (1 << SPINNERS) | (1 << BETTER_ENC_SLOTS) | (1 << BW_XP) | (1 << BETTER_MARTS) | (2 << RACE_GOAL), Preset_CEAName
+	dw (1 << ROCKETLESS) | (1 << SPINNERS) | (1 << BETTER_ENC_SLOTS) | (1 << BW_XP) | (1 << BETTER_MARTS) | (2 << RACE_GOAL) | (1 << EASY_TIN_TOWER), Preset_CEAName
 PermaOptionsPresetsEnd:
 
 Preset_VanillaName:
