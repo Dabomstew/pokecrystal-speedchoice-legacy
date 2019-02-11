@@ -37,10 +37,16 @@ UnknownScript_0x18502e:
 UnknownScript_0x18502f:
 	checkevent EVENT_GOT_RAINBOW_WING
 	iftrue UnknownScript_0x185047
+	check_permaoptions EASY_TIN_TOWER
+	iffalse Normal
+	checkevent EVENT_DECIDED_TO_HELP_LANCE ; say Yes to Lance at Lake of Rage, rockets or not
+	iftrue Success
+Normal:
 	checkevent EVENT_BEAT_ELITE_FOUR
 	iffalse UnknownScript_0x185050
 	special SpecialBeastsCheck
 	iffalse UnknownScript_0x185050
+Success:
 	clearevent EVENT_TIN_TOWER_1F_WISE_TRIO_2
 	setevent EVENT_TIN_TOWER_1F_WISE_TRIO_1
 UnknownScript_0x185047:
