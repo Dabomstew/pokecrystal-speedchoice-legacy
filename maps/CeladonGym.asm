@@ -35,6 +35,8 @@ ErikaScript_0x72a6a:
 	playsound SFX_GET_BADGE
 	waitsfx
 	setflag ENGINE_RAINBOWBADGE
+	checkcode VAR_BADGES
+	scall CeladonGymTriggerRockets
 .FightDone
 	checkevent EVENT_GOT_TM19_GIGA_DRAIN
 	iftrue UnknownScript_0x72aae
@@ -48,6 +50,17 @@ UnknownScript_0x72aae:
 	waitbutton
 	closetext
 	end
+
+CeladonGymTriggerRockets:
+	if_equal 7, .RadioTowerRockets
+	if_equal 6, .GoldenrodRockets
+	end
+
+.GoldenrodRockets
+	jumpstd goldenrodrockets
+
+.RadioTowerRockets
+	jumpstd radiotowerrockets
 
 TrainerLassMichelle:
 	trainer EVENT_BEAT_LASS_MICHELLE, LASS, MICHELLE, LassMichelleSeenText, LassMichelleBeatenText, 0, LassMichelleScript

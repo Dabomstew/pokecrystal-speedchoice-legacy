@@ -61,6 +61,8 @@ BlackthornGymClairScript:
 	playsound SFX_GET_BADGE
 	waitsfx
 	setflag ENGINE_RISINGBADGE
+	checkcode VAR_BADGES
+	scall BlackthornGymTriggerRockets
 	specialphonecall SPECIALCALL_MASTERBALL
 	writetext BlackthornGymClairText_DescribeBadge
 	jump .GiveTM
@@ -106,6 +108,17 @@ BlackthornGymClairScript:
 	waitbutton
 	closetext
 	end
+
+BlackthornGymTriggerRockets:
+	if_equal 7, .RadioTowerRockets
+	if_equal 6, .GoldenrodRockets
+	end
+
+.GoldenrodRockets
+	jumpstd goldenrodrockets
+
+.RadioTowerRockets
+	jumpstd radiotowerrockets
 
 TrainerCooltrainermPaul:
 	trainer EVENT_BEAT_COOLTRAINERM_PAUL, COOLTRAINERM, PAUL, CooltrainermPaulSeenText, CooltrainermPaulBeatenText, 0, CooltrainermPaulScript

@@ -81,11 +81,24 @@ MistyScript_0x188432:
 	playsound SFX_GET_BADGE
 	waitsfx
 	setflag ENGINE_CASCADEBADGE
+	checkcode VAR_BADGES
+	scall CeruleanGymTriggerRockets
 .FightDone
 	writetext UnknownText_0x188782
 	waitbutton
 	closetext
 	end
+
+CeruleanGymTriggerRockets:
+	if_equal 7, .RadioTowerRockets
+	if_equal 6, .GoldenrodRockets
+	end
+
+.GoldenrodRockets
+	jumpstd goldenrodrockets
+
+.RadioTowerRockets
+	jumpstd radiotowerrockets
 
 TrainerSwimmerfDiana:
 	trainer EVENT_BEAT_SWIMMERF_DIANA, SWIMMERF, DIANA, SwimmerfDianaSeenText, SwimmerfDianaBeatenText, 0, SwimmerfDianaScript
