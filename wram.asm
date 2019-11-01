@@ -2,7 +2,7 @@ INCLUDE "includes.asm"
 INCLUDE "macros/wram.asm"
 INCLUDE "vram.asm"
 
-SECTION "Stack", WRAM0
+SECTION "Stack", WRAM0 [$c000]
 wc000::
 StackBottom::
 	ds $100 - 1
@@ -11,7 +11,7 @@ StackTop::
 	ds 1
 
 
-SECTION "Audio", WRAM0
+SECTION "AudioWRAM", WRAM0 [$c100]
 wMusic::
 MusicPlaying:: ; c100
 ; nonzero if playing
@@ -134,7 +134,7 @@ wMapMusic:: ; c2c0
 wDontPlayMapMusicOnReload:: ds 1
 wMusicEnd::
 
-SECTION "WRAM", WRAM0
+SECTION "WRAM", WRAM0 [$c2c2]
 
 wLZAddress:: dw ; c2c2
 wLZBank::    db ; c2c4
@@ -220,8 +220,9 @@ SECTION "wSpriteAnims", WRAM0 [$c300]
 ; wc300 - wc313 is a 10x2 dictionary.
 ; keys: taken from third column of SpriteAnimSeqData
 ; values: VTiles
+UNION
 wSpriteAnimDict:: ds 10 * 2
-	ds wSpriteAnimDict - @
+NEXTU
 wc300:: ds 1
 wc301:: ds 1
 wc302:: ds 1
@@ -241,6 +242,7 @@ wc310:: ds 1
 wc311:: ds 1
 wc312:: ds 1
 wc313:: ds 1
+ENDU
 wSpriteAnimationStructs::
 
 sprite_anim_struct: MACRO
@@ -282,11 +284,15 @@ wc384::
 SpriteAnim8:: sprite_anim_struct SpriteAnim8
 wc394::
 SpriteAnim9:: sprite_anim_struct SpriteAnim9
+
+UNION ; could be moved before anim structs, add a lot of empty ds
 wc3a4::
 SpriteAnim10:: sprite_anim_struct SpriteAnim10
 wSpriteAnimationStructsEnd::
-	ds -8
+NEXTU
+	ds 8
 wc3ac:: ds 8 ; c3ac
+ENDU
 wSpriteAnimCount:: ds 1
 wCurrSpriteOAMAddr:: ds 1
 
@@ -350,7 +356,7 @@ Sprites:: ; c400
 SpritesEnd::
 
 
-SECTION "Tilemap", WRAM0
+SECTION "Tilemap", WRAM0 [$c4a0]
 
 TileMap:: ; c4a0
 ; 20x18 grid of 8x8 tiles
@@ -358,19 +364,23 @@ TileMap:: ; c4a0
 TileMapEnd::
 
 
-SECTION "Battle", WRAM0
+SECTION "Battle", WRAM0 [$c608]
+UNION
 wc608::
 wOddEgg:: party_struct OddEgg
 wOddEggName:: ds PKMN_NAME_LENGTH
 wOddEggOTName:: ds PKMN_NAME_LENGTH
-	ds wc608 - @
-
+TEST3::
+NEXTU
 wBT_OTTemp:: battle_tower_struct wBT_OTTemp
-	ds wc608 - @
-
+TEST2:: ;SOMETHING HERE IS FUCKY
+; FIND OUT WHY THIS IS BIGGER THAN EXPECTED
+; THEN remove the [blahblahs] I added, and fix overworld
+; TODO TODO TODO probably redo battle tbh
+NEXTU
 	hall_of_fame wHallOfFameTemp
-	ds wc608 - @
-
+TEST1::
+NEXTU
 wMisc:: ; ds (SCREEN_WIDTH + 4) * (SCREEN_HEIGHT + 2)
 	ds 10
 wc612::
@@ -378,7 +388,7 @@ wc612::
 wInitHourBuffer:: ; c61c
 	ds 10
 wc626::
-	ds wc608 - @
+NEXTU
 
 wBattle::
 wEnemyMoveStruct::  move_struct wEnemyMoveStruct ; c608
@@ -571,6 +581,7 @@ PlayerSpdLevel:: ; c6ce
 PlayerSAtkLevel:: ; c6cf
 	ds 1
 
+UNION
 wc6d0::
 PlayerSDefLevel:: ; c6d0
 	ds 1
@@ -755,7 +766,7 @@ wBattleEnd::
 ; Battle RAM
 
 ; c741
-	ds wc6d0 - @
+NEXTU
 wTrademons::
 wPlayerTrademon:: trademon wPlayerTrademon
 wOTTrademon::     trademon wOTTrademon
@@ -771,7 +782,7 @@ wc7b9:: ds 1
 wc7ba:: ds 1
 wc7bb:: ds 2
 wc7bd::
-	ds wc6d0 - @
+NEXTU
 
 ; naming screen
 wNamingScreenDestinationPointer:: ds 2 ; c6d0
@@ -781,7 +792,7 @@ wNamingScreenType:: ds 1 ; c6d4
 wNamingScreenCursorObjectPointer:: ds 2 ; c6d5
 wNamingScreenLastCharacter:: ds 1 ; c6d7
 wNamingScreenStringEntryCoord:: ds 2 ; c6d8
-	ds wc6d0 - @
+NEXTU
 
 ; pokegear
 wPokegearPhoneLoadNameBuffer:: ds 1 ; c6d0
@@ -795,7 +806,7 @@ wPokegearMapPlayerIconLandmark:: ds 1 ; c6d8
 wPokegearRadioChannelBank:: ds 1 ; c6d9
 wPokegearRadioChannelAddr:: ds 2 ; c6da
 wPokegearRadioMusicPlaying:: ds 1 ; c6dc
-	ds wc6d0 - @
+NEXTU
 
 wSlots::
 ; Slot Machine
@@ -821,8 +832,7 @@ wSlotBuildingMatch:: ds 1
 wSlotsDataEnd::
 	ds 28
 wSlotsEnd::
-	ds wSlots - @
-
+NEXTU
 ; Card Flip
 ; c6d0
 wCardFlip::
@@ -834,8 +844,7 @@ wCardFlipFaceUpCard:: ds 1
 wDiscardPile:: ds 24
 wDiscardPileEnd::
 wCardFlipEnd::
-	ds wCardFlip - @
-
+NEXTU
 ; Dummy Game
 ; c6d0
 wDummyGame::
@@ -851,14 +860,14 @@ wDummyGameLastMatches:: ds 5 ; c703
 wDummyGameCounter:: ds 1 ; c708
 wDummyGameNumCardsMatched:: ds 1 ; c709
 wDummyGameEnd::
-	ds wDummyGame - @
+NEXTU
 ; Unown Puzzle
 wUnownPuzzle::
 wPuzzlePieces::
 	ds 6 * 6
 wUnownPuzzleEnd::
 
-	ds wc6d0 - @
+NEXTU
 
 wPokedexDataStart::
 wPokedexOrder:: ds NUM_POKEMON +- 1
@@ -908,12 +917,16 @@ wMiscEnd::
 
 wc7e8:: ds 24
 
+ENDU ; Again, just has to be as large as the largest union, this is safe though
+ENDU
+
 SECTION "Overworld Map", WRAM0 [$c800]
 
+UNION
 OverworldMap:: ; c800
 	ds 1300
 OverworldMapEnd::
-	ds OverworldMap - @
+NEXTU
 
 wBillsPCPokemonList::
 ; Pokemon, box number, list index
@@ -927,6 +940,7 @@ wLinkPartyCount:: ds 1
 wLinkPartySpecies:: ds PARTY_LENGTH
 wLinkPartySpeciesEnd:: ds 1
 
+UNION
 wTimeCapsulePlayerData::
 wTimeCapsulePartyMon1:: red_party_struct wTimeCapsulePartyMon1
 wTimeCapsulePartyMon2:: red_party_struct wTimeCapsulePartyMon2
@@ -937,7 +951,7 @@ wTimeCapsulePartyMon6:: red_party_struct wTimeCapsulePartyMon6
 wTimeCapsulePartyMonOTNames:: ds PARTY_LENGTH * NAME_LENGTH
 wTimeCapsulePartyMonNicks:: ds PARTY_LENGTH * PKMN_NAME_LENGTH
 wTimeCapsulePlayerDataEnd::
-	ds wTimeCapsulePlayerData - @
+NEXTU
 
 wLinkPlayerData::
 wLinkPlayerPartyMon1:: party_struct wLinkPlayerPartyMon1
@@ -950,10 +964,9 @@ wLinkPlayerPartyMonOTNames:: ds PARTY_LENGTH * NAME_LENGTH
 wLinkPlayerPartyMonNicks:: ds PARTY_LENGTH * PKMN_NAME_LENGTH
 wLinkPlayerDataEnd::
 	ds $35d
-
+ENDU
 wLinkDataEnd::
-	ds wLinkData - @
-
+NEXTU
 wc800::	ds 1
 wc801:: ds 1
 wc802:: ds 1
@@ -971,13 +984,15 @@ wc820:: ds 1
 wc821:: ds 15
 wc830:: ds 16
 wc840:: ds 16
+UNION ; another sub union
 wMysteryGiftTrainerData:: ds (1 + 1 + NUM_MOVES) * PARTY_LENGTH + 2
 wMysteryGiftTrainerDataEnd::
-	ds wMysteryGiftTrainerData - @
+NEXTU
 wc850:: ds 16
 wc860:: ds 16
 wc870:: ds 16
 wc880:: ds 16
+ENDU
 wc890:: ds 16
 wc8a0:: ds 16
 wc8b0:: ds 16
@@ -1114,7 +1129,10 @@ wccb8:: ds 1
 wccb9:: ds 1
 wccba:: ds 102
 
+ENDU ; very late for safety
+
 SECTION "Video", WRAM0
+UNION
 CreditsPos::
 BGMapBuffer::
 wMobileMonSpeciesPointerBuffer:: dw
@@ -1122,7 +1140,7 @@ wMobileMonStructurePointerBuffer:: dw
 wMobileMonOTNamePointerBuffer:: dw
 wMobileMonNicknamePointerBuffer:: dw
 wMobileMonMailPointerBuffer:: dw
-	ds CreditsPos - @
+NEXTU
 
 wcd20:: ds 1
 wcd21:: ds 1
@@ -1168,6 +1186,8 @@ wcd44:: ds 1
 wcd45:: ds 1
 wcd46:: ds 1
 wcd47:: ds 1
+
+ENDU ; this union could end earlier, but this is safe enough
 
 BGMapPalBuffer:: ; cd48
 	ds 1 ; 40
@@ -1257,11 +1277,13 @@ AttrMap:: ; cdd9
 ; bit 0-2: palette id
 	ds SCREEN_WIDTH * SCREEN_HEIGHT
 AttrMapEnd::
+
+UNION
 	ds 1
 wcf42:: ds 2
 wcf44:: ds 1
 wcf45::
-	ds AttrMapEnd - @
+NEXTU
 wTileAnimBuffer::
 	ds $10
 ; addresses dealing with serial comms
@@ -1272,6 +1294,8 @@ wcf57:: ds 4
 wcf5b:: ds 1
 wcf5c:: ds 1
 wcf5d:: ds 2
+
+ENDU ; later than necessary
 
 MonType:: ; cf5f
 	ds 1
@@ -1524,16 +1548,16 @@ wOptionsMenuPreset:: ds 1
 wRAM0End:: ; cfd8
 
 
-SECTION "WRAM 1", WRAMX, BANK [1]
+SECTION "WRAM 1", WRAMX [$d000], BANK [1]
 
 wd000:: ds 1
 DefaultSpawnpoint::
 wd001:: ds 1
 
 ; d002
+UNION
 wTempMail:: mailmsg wTempMail
-	ds wTempMail - @
-
+NEXTU
 wSeerAction:: ds 1
 wSeerNickname:: ds PKMN_NAME_LENGTH
 wSeerCaughtLocation:: ds 17
@@ -1544,14 +1568,14 @@ wSeerCaughtLevelString:: ds 4
 wSeerCaughtLevel:: ds 1
 wSeerCaughtData:: ds 1
 wSeerCaughtGender:: ds 1
-	ds wSeerAction - @
+NEXTU
 
 wBufferMonNick:: ds PKMN_NAME_LENGTH
 wBufferMonOT:: ds NAME_LENGTH
 wBufferMon:: party_struct wBufferMon
 	ds 8
 wMonOrItemNameBuffer::
-	ds wBufferMonNick - @
+NEXTU
 
 bugcontestwinner: macro
 \1PersonID:: ds 1
@@ -1567,7 +1591,7 @@ wBugContestWinnersEnd::
 	ds 4
 wBugContestWinnerName:: ds NAME_LENGTH
 
-	ds wBugContestResults - @
+NEXTU
 
 wd002::
 wTempDayOfWeek::
@@ -1614,9 +1638,10 @@ wd00a:: ds 1
 wMartItem4BCD::
 wd00b:: ds 1
 
+UNION ; sub union
 wRadioText:: ds 2 * SCREEN_WIDTH
 wRadioTextEnd::
-	ds wRadioText - @
+NEXTU
 
 wMobileParticipant2Nickname::
 wd00c:: ds 1
@@ -1652,6 +1677,7 @@ wd031:: ds 1
 wd032:: ds 1
 wd033:: ds 1
 wd034:: ds 2
+ENDU ; end sub union
 wd036:: ds 2
 wd038:: ds 3
 wd03b:: ds 3
@@ -1726,6 +1752,8 @@ wTempTrainerHeaderEnd::
 wd04e:: ds 24
 wTMHMMoveNameBackup:: ds MOVE_NAME_LENGTH
 
+ENDU
+
 StringBuffer1:: ; d073
 	ds 19
 
@@ -1789,9 +1817,10 @@ VramState:: ; d0ed
 
 wBattleResult:: ds 1
 wUsingItemWithSelect:: ds 1
+UNION
 CurMart:: ds 16
 CurMartEnd::
-	ds CurMart - @
+NEXTU
 CurElevator:: ds 1
 wd0f1::
 CurElevatorFloors::
@@ -1801,6 +1830,8 @@ wMailboxCount:: ds 1
 wMailboxItems:: ds MAILBOX_CAPACITY
 wMailboxEnd:: ds 1 ; d1fe
 	ds 2
+
+ENDU
 
 wd100:: ds 1
 wd101:: ds 1
@@ -1882,10 +1913,10 @@ wPlayerStepDirection:: ds 1 ; d151
 
 wBGMapAnchor:: ds 2 ; d152
 
+UNION
 UsedSprites:: ds 64 ; d154
 UsedSpritesEnd::
-	ds UsedSprites - @
-
+NEXTU
 wd154:: ; d154
 	ds 31 ; 64
 
@@ -1899,6 +1930,7 @@ wd191:: ds 1
 wd192:: ds 1
 wd193:: ds 1
 wOverworldMapAnchor:: dw ; d194
+ENDU
 wMetatileStandingY:: ds 1 ; d196
 wMetatileStandingX:: ds 1 ; d197
 wSecondMapHeaderBank:: ds 1 ; d198
@@ -2189,6 +2221,7 @@ TimeOfDay:: ; d269
 	ds 1
 
 SECTION "Enemy Party", WRAMX, BANK [1]
+UNION
 wPokedexShowPointerAddr::
 wd26b:: ds 1
 wd26c:: ds 1
@@ -2196,17 +2229,18 @@ wPokedexShowPointerBank::
 wd26d:: ds 1
 	ds 3
 wd271:: ds 5
-	ds wd26b - @
-
+NEXTU
 
 ; SECTION "Enemy Party", WRAMX, BANK [1]
 OTPlayerName:: ds NAME_LENGTH ; d26b
 OTPlayerID:: ds 2 ; d276
 	ds 8
+ENDU
 OTPartyCount::   ds 1 ; d280
 OTPartySpecies:: ds PARTY_LENGTH ; d281
 OTPartyEnd::     ds 1
 
+UNION
 wDudeBag:: ; d288
 wDudeNumItems:: ds 1
 wDudeItems:: ds 2 * 4
@@ -2220,8 +2254,7 @@ wDudeNumBalls:: ds 1 ; d2a6
 wDudeBalls:: ds 2 * 4 ; d2a7
 wDudeBallsEnd:: ds 1 ; d2af
 wDudeBagEnd::
-	ds wDudeBag - @
-
+NEXTU
 OTPartyMons::
 OTPartyMon1:: party_struct OTPartyMon1 ; d288
 OTPartyMon2:: party_struct OTPartyMon2 ; d2b8
@@ -2230,6 +2263,8 @@ OTPartyMon4:: party_struct OTPartyMon4 ; d318
 OTPartyMon5:: party_struct OTPartyMon5 ; d348
 OTPartyMon6:: party_struct OTPartyMon6 ; d378
 OTPartyMonsEnd::
+
+ENDU
 
 OTPartyMonOT:: ds NAME_LENGTH * PARTY_LENGTH ; d3a8
 OTPartyMonNicknames:: ds PKMN_NAME_LENGTH * PARTY_LENGTH ; d3ea
@@ -3020,6 +3055,7 @@ w3_d100:: ; BattleTower OpponentTrainer-Data (length = 0xe0 = $a + $1 + 3*$3b + 
 BT_OTTrainer:: battle_tower_struct BT_OT
 ; d1e0	
 	ds $20
+UNION
 ; d200
 BT_TrainerTextIndex:: ds 2
 w3_d202:: battle_tower_struct w3_d202
@@ -3030,11 +3066,14 @@ w3_d582:: battle_tower_struct w3_d582
 w3_d662:: battle_tower_struct w3_d662
 w3_d742:: battle_tower_struct w3_d742
 ; d822
-	ds -$22
-
+NEXTU
+	ds $600
 wBTChoiceOfLvlGroup::
 w3_d800:: ; ds BG_MAP_WIDTH * SCREEN_HEIGHT ($240)
 	ds $69
+
+ENDU
+
 w3_d869:: ds $17
 w3_d880:: ds 1
 w3_d881:: ds 1
@@ -3180,10 +3219,15 @@ wBattleAnimTemp7:: ds 1
 wBattleAnimTempPalette::
 wBattleAnimTemp8:: ds 1
 
+UNION
+
 wSurfWaveBGEffect:: ds $40
 wSurfWaveBGEffectEnd::
-	ds -$e
+NEXTU
+	ds $40-$e
+
 wBattleAnimEnd::
+ENDU
 
 SECTION "WRAM 5 MOBILE", WRAMX [$d800], BANK [5]
 w5_d800:: ds $200

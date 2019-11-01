@@ -1166,7 +1166,7 @@ Function296bd: ; 296bd (a:56bd)
 	inc [hl]
 	ret
 .asm_296c8
-	ld hl, $
+	ld hl, $0
 	add hl, bc
 	ld [hl], $0
 	ret
@@ -1204,7 +1204,7 @@ Function296f2: ; 296f2 (a:56f2)
 	dec [hl]
 	and a
 	ret nz
-	ld hl, $
+	ld hl, $0
 	add hl, bc
 	ld [hl], $0
 	ret

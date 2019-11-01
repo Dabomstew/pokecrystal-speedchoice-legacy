@@ -196,7 +196,7 @@ sCrystalData::
 	ds wCrystalDataEnd - wCrystalData
 sMobileEventIndexBackup:: ds 1
 
-SECTION "SRAM Battle Tower", SRAM, BANK [1]
+SECTION "SRAM Battle Tower", SRAM [$be45], BANK [1]
 ; data of the BattleTower must be in SRAM because you can save and leave between battles
 sBattleTowerChallengeState:: ds 1
 ; 0: normal
