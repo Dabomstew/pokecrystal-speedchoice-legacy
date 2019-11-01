@@ -323,6 +323,7 @@ WRAM0
 	"AudioWRAM"
 	"WRAM"
 	"wSpriteAnims"
+	align 8
 	"Sprites"
 	"Tilemap"
 	"Battle"
@@ -340,7 +341,9 @@ WRAMX $04
 	"Aligned Tile Map"
 WRAMX $05
 	"GBC Video"
+	org $d300
 	"Battle Animations"
+	org $d800
 	"WRAM 5 MOBILE"
 WRAMX $06
 	"WRAM 6"
@@ -352,7 +355,9 @@ VRAM $01
 	"VRAM1"
 SRAM $00
 	"Scratch"
+	org $a600
 	"SRAM Bank 0"
+	org $b200
 	"Backup Save"
 SRAM $01
 	"SRAM Bank 1"
