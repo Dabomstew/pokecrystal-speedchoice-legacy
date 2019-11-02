@@ -9,7 +9,7 @@ If you run into trouble, ask on irc ([**freenode#pret**](https://kiwiirc.com/cli
 Python 2.7 and Python 3 are required.
 
 ```bash
-sudo apt-get install make gcc bison git python
+sudo apt-get install make gcc bison git python python3
 
 wget https://github.com/rednex/rgbds/releases/download/v0.3.9/rgbds-0.3.9.tar.gz
 tar -xvf rgbds-0.3.9.tar.gz
