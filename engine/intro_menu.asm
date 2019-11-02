@@ -1036,7 +1036,7 @@ StartTitleScreen: ; 6219
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 ; 626a
 
 .dw
@@ -1089,7 +1089,7 @@ TitleScreenScene: ; 62a3
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 ; 62af
 
 .scenes

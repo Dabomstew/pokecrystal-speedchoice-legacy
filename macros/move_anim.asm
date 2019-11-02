@@ -11,7 +11,7 @@ endc
 anim_obj: macro
 	db anim_obj_command
 	db \1 ; obj
-	db (\2 << 3) + \3 ; x
+	db (\2 * 8) + \3 ; x
 	db (\4 << 3) + \5 ; y
 	db \6 ; param
 	endm

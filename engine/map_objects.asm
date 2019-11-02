@@ -1970,7 +1970,7 @@ JumpMovementPointer: ; 505e
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 ; 5065
 
 ContinueReadingMovement: ; 5065

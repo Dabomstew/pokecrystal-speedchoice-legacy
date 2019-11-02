@@ -376,7 +376,7 @@ endr
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 
 Jumptable_171a45: ; 171a45 (5c:5a45)
 	dw Function171a95

@@ -70,7 +70,7 @@ endr
 	ld l, a
 	ld bc, .done
 	push bc
-	jp [hl]
+	jp hl
 
 .done
 	jp ComputeTrainerReward

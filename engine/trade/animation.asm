@@ -230,7 +230,7 @@ endr
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 ; 290af
 
 .JumpTable: ; 290af
@@ -525,7 +525,7 @@ endr
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 ; 2928f
 
 Jumptable_2928f: ; 2928f
@@ -1111,7 +1111,7 @@ endr
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 ; 29686
 
 Jumptable_29686: ; 29686 (a:5686)

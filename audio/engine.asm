@@ -230,7 +230,7 @@ UpdateChannels: ; e8125
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 
 
 .ChannelFnPtrs
@@ -1394,7 +1394,7 @@ endr
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 
 ; e8720
 

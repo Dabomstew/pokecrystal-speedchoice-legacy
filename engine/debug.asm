@@ -306,7 +306,7 @@ endr
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 
 .asm_81a9a
 	call Function81eca
@@ -615,7 +615,7 @@ endr
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 
 .asm_81cdf
 	ld a, $4
@@ -1362,7 +1362,7 @@ endr
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 ; 82301
 
 .dw: ; 82301
