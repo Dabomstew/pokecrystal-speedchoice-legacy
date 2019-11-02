@@ -6,14 +6,14 @@ If you run into trouble, ask on irc ([**freenode#pret**](https://kiwiirc.com/cli
 
 # Linux
 
-Python 2.7 is required.
+Python 2.7 and Python 3 are required.
 
 ```bash
 sudo apt-get install make gcc bison git python
 
-wget https://github.com/rednex/rgbds/releases/download/v0.2.5/rgbds-0.2.5.tar.gz
-tar -xvf rgbds-0.2.5.tar.gz
-cd rgbds-0.2.5
+wget https://github.com/rednex/rgbds/releases/download/v0.3.9/rgbds-0.3.9.tar.gz
+tar -xvf rgbds-0.3.9.tar.gz
+cd rgbds-0.3.9
 sudo make install
 cd ..
 
@@ -35,9 +35,9 @@ In **Terminal**, run:
 ```bash
 xcode-select --install
 
-wget https://github.com/rednex/rgbds/releases/download/v0.2.5/rgbds-0.2.5.tar.gz
-tar -xvf rgbds-0.2.5.tar.gz
-cd rgbds-0.2.5
+wget https://github.com/rednex/rgbds/releases/download/v0.3.9/rgbds-0.3.9.tar.gz
+tar -xvf rgbds-0.3.9.tar.gz
+cd rgbds-0.3.9
 sudo make install
 cd ..
 
@@ -56,9 +56,9 @@ make
 
 To build on Windows, install [**Cygwin**](http://cygwin.com/install.html) with the default settings.
 
-In the installer, select the following packages: `make` `git` `python` `gettext`
+In the installer, select the following packages: `make` `git` `python` `gettext` `python3`
 
-Then get version 0.2.5 of [**rgbds**](https://github.com/bentley/rgbds/releases/).
+Then get version 0.3.9 of [**rgbds**](https://github.com/rednex/rgbds/releases/).
 Extract the archive and put `rgbasm.exe`, `rgblink.exe` and `rgbfix.exe` in `C:\cygwin64\usr\local\bin`.
 
 In the **Cygwin terminal**:
@@ -79,16 +79,3 @@ make
 
 - If `gettext` no longer exists, grab `libsasl2-3` `ca-certificates`.
 
-# Notes for all OSes
-
-RGBDS after v0.2.5 will not build this project, and v0.2.5 will not build projects that require RGBDS versions after v0.2.5.  If you want to have both versions installed, you can install v0.2.5 in a custom directory as such:
-
-```bash
-sudo make install PREFIX=/path/you/want
-```
-
-To use this version of RGBDS to build **crystal-speedchoice.gbc**:
-
-```bash
-make RGBDS=/path/you/want/bin
-```
