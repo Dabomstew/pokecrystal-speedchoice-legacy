@@ -285,7 +285,7 @@ SpriteAnim8:: sprite_anim_struct SpriteAnim8
 wc394::
 SpriteAnim9:: sprite_anim_struct SpriteAnim9
 
-UNION ; could be moved before anim structs, add a lot of empty ds
+UNION
 wc3a4::
 SpriteAnim10:: sprite_anim_struct SpriteAnim10
 wSpriteAnimationStructsEnd::
@@ -370,16 +370,11 @@ wc608::
 wOddEgg:: party_struct OddEgg
 wOddEggName:: ds PKMN_NAME_LENGTH
 wOddEggOTName:: ds PKMN_NAME_LENGTH
-TEST3::
 NEXTU
 wBT_OTTemp:: battle_tower_struct wBT_OTTemp
-TEST2:: ;SOMETHING HERE IS FUCKY
-; FIND OUT WHY THIS IS BIGGER THAN EXPECTED
-; THEN remove the [blahblahs] I added, and fix overworld
-; TODO TODO TODO probably redo battle tbh
+
 NEXTU
 	hall_of_fame wHallOfFameTemp
-TEST1::
 NEXTU
 wMisc:: ; ds (SCREEN_WIDTH + 4) * (SCREEN_HEIGHT + 2)
 	ds 10
@@ -917,7 +912,7 @@ wMiscEnd::
 
 wc7e8:: ds 24
 
-ENDU ; Again, just has to be as large as the largest union, this is safe though
+ENDU
 ENDU
 
 SECTION "Overworld Map", WRAM0
@@ -984,7 +979,7 @@ wc820:: ds 1
 wc821:: ds 15
 wc830:: ds 16
 wc840:: ds 16
-UNION ; another sub union
+UNION ; sub union
 wMysteryGiftTrainerData:: ds (1 + 1 + NUM_MOVES) * PARTY_LENGTH + 2
 wMysteryGiftTrainerDataEnd::
 NEXTU
@@ -1129,7 +1124,7 @@ wccb8:: ds 1
 wccb9:: ds 1
 wccba:: ds 102
 
-ENDU ; very late for safety
+ENDU
 
 SECTION "Video", WRAM0
 UNION
@@ -1187,7 +1182,7 @@ wcd45:: ds 1
 wcd46:: ds 1
 wcd47:: ds 1
 
-ENDU ; this union could end earlier, but this is safe enough
+ENDU
 
 BGMapPalBuffer:: ; cd48
 	ds 1 ; 40
@@ -1295,7 +1290,7 @@ wcf5b:: ds 1
 wcf5c:: ds 1
 wcf5d:: ds 2
 
-ENDU ; later than necessary
+ENDU
 
 MonType:: ; cf5f
 	ds 1
@@ -1677,7 +1672,7 @@ wd031:: ds 1
 wd032:: ds 1
 wd033:: ds 1
 wd034:: ds 2
-ENDU ; end sub union
+ENDU
 wd036:: ds 2
 wd038:: ds 3
 wd03b:: ds 3

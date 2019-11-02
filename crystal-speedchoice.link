@@ -31,9 +31,9 @@ ROM0
 ROMX $01
 	"bank1"
 	"movenamesnerfed"
+	"femon"
 	"rbsfx"
 	"lrtrainercheck"
-	"femon"
 ROMX $02
 	"bank2"
 	"statsdisplay"
@@ -317,6 +317,7 @@ ROMX $7e
 	"bank7E"
 ROMX $7f
 	"bank7F"
+	org $7DE0
 	"stadium2"
 WRAM0
 	"Stack"
