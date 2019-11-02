@@ -33,7 +33,7 @@ endr
 	ld h, [hl]
 	ld l, a
 
-	jp [hl]
+	jp hl
 ; fc01b
 
 Tileset00Anim: ; 0xfc01b
@@ -421,7 +421,7 @@ ScrollTileDown: ; fc36a
 
 
 AnimateFountain: ; fc387
-	ld hl, [sp+0]
+	ld hl, sp+0
 	ld b, h
 	ld c, l
 	ld hl, .frames
@@ -463,7 +463,7 @@ AnimateWaterTile: ; fc402
 ; Draw a water tile for the current frame in VRAM tile at de.
 
 ; Save sp in bc (see WriteTile).
-	ld hl, [sp+0]
+	ld hl, sp+0
 	ld b, h
 	ld c, l
 	
@@ -498,7 +498,7 @@ WaterTileFrames: ; fc41c
 
 
 ForestTreeLeftAnimation: ; fc45c
-	ld hl, [sp+0]
+	ld hl, sp+0
 	ld b, h
 	ld c, l
 
@@ -540,7 +540,7 @@ ForestTreeRightFrames: ; fc4a4
 
 
 ForestTreeRightAnimation: ; fc4c4
-	ld hl, [sp+0]
+	ld hl, sp+0
 	ld b, h
 	ld c, l
 
@@ -575,7 +575,7 @@ endr
 
 
 ForestTreeLeftAnimation2: ; fc4f2
-	ld hl, [sp+0]
+	ld hl, sp+0
 	ld b, h
 	ld c, l
 
@@ -607,7 +607,7 @@ endr
 
 
 ForestTreeRightAnimation2: ; fc51c
-	ld hl, [sp+0]
+	ld hl, sp+0
 	ld b, h
 	ld c, l
 
@@ -672,7 +672,7 @@ AnimateFlowerTile: ; fc56d
 ; No parameters.
 
 ; Save sp in bc (see WriteTile).
-	ld hl, [sp+0]
+	ld hl, sp+0
 	ld b, h
 	ld c, l
 	
@@ -708,7 +708,7 @@ FlowerTileFrames: ; fc58c
 
 SafariFountainAnim1: ; fc5cc
 ; Splash in the bottom-right corner of the fountain.
-	ld hl, [sp+0]
+	ld hl, sp+0
 	ld b, h
 	ld c, l
 	ld a, [TileAnimationTimer]
@@ -731,7 +731,7 @@ endr
 
 SafariFountainAnim2: ; fc5eb
 ; Splash in the top-left corner of the fountain.
-	ld hl, [sp+0]
+	ld hl, sp+0
 	ld b, h
 	ld c, l
 	ld a, [TileAnimationTimer]
@@ -762,7 +762,7 @@ AnimateSproutPillarTile: ; fc645
 ; 	Destination (VRAM)
 ;	Address of the first tile in the frame array
 
-	ld hl, [sp+0]
+	ld hl, sp+0
 	ld b, h
 	ld c, l
 
@@ -822,7 +822,7 @@ AnimateWhirlpoolTile: ; fc678
 ; Only does one of 4 tiles at a time.
 
 ; Save sp in bc (see WriteTile).
-	ld hl, [sp+0]
+	ld hl, sp+0
 	ld b, h
 	ld c, l
 	
@@ -862,7 +862,7 @@ WriteTileFromBuffer: ; fc696
 ; Write tiledata at wTileAnimBuffer to de.
 ; wTileAnimBuffer is loaded to sp for WriteTile.
 
-	ld hl, [sp+0]
+	ld hl, sp+0
 	ld b, h
 	ld c, l
 	
@@ -879,7 +879,7 @@ WriteTileToBuffer: ; fc6a2
 ; Write tiledata de to wTileAnimBuffer.
 ; de is loaded to sp for WriteTile.
 
-	ld hl, [sp+0]
+	ld hl, sp+0
 	ld b, h
 	ld c, l
 	

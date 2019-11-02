@@ -146,7 +146,7 @@ Function114243:: ; 114243
 	ld h, [hl]
 	ld l, a
 	pop de
-	jp [hl]
+	jp hl
 
 ; 11425c
 
@@ -5412,7 +5412,7 @@ endr
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 
 ; 1165af
 
@@ -6947,7 +6947,7 @@ endr
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 
 Jumptable_117728: ; 117728 (45:7728)
 	dw Function117738
@@ -7436,7 +7436,7 @@ endr
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 
 .Jumptable: ; 0x117af8
 	dw Function117b06

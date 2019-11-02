@@ -378,7 +378,7 @@ endr
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 ; 10828a
 
 .Jumptable: ; 10828a

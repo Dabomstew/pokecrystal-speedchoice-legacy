@@ -124,7 +124,7 @@ endr
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 ; e467f
 
 .dw: ; e467f
@@ -222,7 +222,7 @@ endr
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 
 GameFreakLogoScenes: ; e46fd (39:46fd)
 	dw GameFreakLogoScene1
@@ -440,7 +440,7 @@ endr
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 ; e491e
 
 IntroScenes: ; e491e (39:491e)

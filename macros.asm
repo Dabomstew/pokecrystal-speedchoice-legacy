@@ -93,7 +93,7 @@ dab: MACRO ; dwb address, bank
 	ENDM
 
 lb: MACRO ; r, hi, lo
-	ld \1, (\2 & $ff) << 8 + (\3 & $ff)
+	ld \1, ((\2) & $ff) << 8 + ((\3) & $ff)
 	ENDM
 
 ln: MACRO ; r, hi, lo
@@ -268,5 +268,5 @@ jumptable: MACRO
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 endm

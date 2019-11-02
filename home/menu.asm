@@ -332,7 +332,7 @@ Function1eda:: ; 1eda
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 ; 1eff
 
 Function1eff:: ; 1eff
@@ -454,7 +454,7 @@ MenuJumptable:: ; 1fa7
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 ; 1fb1
 
 GetMenuDataPointerTableEntry:: ; 1fb1

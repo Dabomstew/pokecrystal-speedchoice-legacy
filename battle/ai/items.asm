@@ -211,7 +211,7 @@ endr
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 .callback
 	pop de
 	pop hl

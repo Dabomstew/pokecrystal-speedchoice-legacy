@@ -77,7 +77,7 @@ endr
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 ; e01a0 (38:41a0)
 
 .Jumptable: ; e01a0
@@ -655,7 +655,7 @@ CardFlip_BlankDiscardedCardSlot: ; e0534
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 ; e0553
 
 .Jumptable: ; e0553
@@ -844,7 +844,7 @@ CardFlip_CheckWinCondition: ; e0637
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 ; e0643
 
 .Jumptable: ; e0643

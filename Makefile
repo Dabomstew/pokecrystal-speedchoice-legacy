@@ -48,8 +48,8 @@ clean:
 %.o: %.asm $$(dep)
 	$(ASM) -o $@ $<
 
-crystal-speedchoice.gbc: $(crystal_obj)
-	$(LD) -n crystal-speedchoice.sym -m crystal-speedchoice.map -o $@ $^
+crystal-speedchoice.gbc: $(crystal_obj) crystal-speedchoice.link
+	$(LD) -n crystal-speedchoice.sym -m crystal-speedchoice.map -l crystal-speedchoice.link -o $@ $(crystal_obj)
 	$(FIX) -Cjv -i KAPB -k 01 -l 0x33 -m 0x10 -p 0 -n 4 -r 3 -t PM_CRYSTAL $@
 
 %.png: ;

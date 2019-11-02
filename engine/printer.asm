@@ -27,7 +27,7 @@ endr
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 ; 84031
 
 
@@ -438,7 +438,7 @@ _PrinterReceive:: ; 842db
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 ; 842ea
 
 
