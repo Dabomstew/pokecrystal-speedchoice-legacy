@@ -1908,6 +1908,9 @@ PlaceMoveData: ; 13256
 	hlcoord 12, 12
 	ld de, String_132ca
 	call PlaceString
+	hlcoord 12, 13
+	ld de, String_Acc
+	call PlaceString
 	ld a, [CurMove]
 	ld b, a
 	hlcoord 2, 12
@@ -1917,6 +1920,7 @@ PlaceMoveData: ; 13256
 	call LoadHLMovesPlusPower
 	ld bc, MOVE_LENGTH
 	call AddNTimes
+	push hl
 	ld a, BANK(Moves)
 	call GetFarByte
 	hlcoord 16, 12
@@ -1933,6 +1937,42 @@ PlaceMoveData: ; 13256
 	call PlaceString
 
 .description
+; hijack for accuracy
+	pop hl
+	ld bc, MOVE_ACC - MOVE_POWER
+	add hl, bc
+	ld a, BANK(Moves)
+	call GetFarByte
+	cp 2
+	jr nc, .print_acc
+	hlcoord 16, 13
+	ld de, String_132cf
+	call PlaceString
+	jr .real_description
+.print_acc
+	ld [hMultiplicand + 2], a
+	xor a
+	ld [hMultiplicand], a
+	ld [hMultiplicand + 1], a
+	ld a, 100
+	ld [hMultiplier], a
+	call Multiply
+	ld a, 255
+	ld [hDivisor], a
+	ld b, 4
+	call Divide
+; increase displayed number by 1 if remainder is >=128
+	ld a, [hRemainder]
+	cp $80
+	jr c, .noIncrease
+	ld hl, hQuotient + 2
+	inc [hl]
+.noIncrease
+	ld de, hQuotient + 2
+	lb bc, 1, 3
+	hlcoord 16, 13
+	call PrintNum
+.real_description
 	hlcoord 1, 14
 	predef PrintMoveDesc
 	ld a, $1
@@ -1948,6 +1988,8 @@ String_132c2: ; 132c2
 ; 132ca
 String_132ca: ; 132ca
 	db "ATK/@"
+String_Acc: ; 132ca
+	db "ACC/@"
 ; 132cf
 String_132cf: ; 132cf
 	db "---@"
