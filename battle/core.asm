@@ -5950,8 +5950,8 @@ MoveInfoBox: ; 3e6c8
 	xor a
 	ld [hBGMapMode], a
 
-	hlcoord 0, 8
-	ld b, 3
+	hlcoord 0, 6
+	ld b, 5
 	ld c, 9
 	call TextBox
 	call MobileTextBorder
@@ -5965,12 +5965,12 @@ MoveInfoBox: ; 3e6c8
 	ld b, a
 	ld a, [wMenuCursorY]
 	cp b
-	jr nz, .not_disabled
+	jp nz, .not_disabled
 
 	hlcoord 1, 10
 	ld de, .Disabled
 	call PlaceString
-	jr .done
+	jp .done
 
 .not_disabled
 	ld hl, wMenuCursorY
@@ -6013,7 +6013,57 @@ MoveInfoBox: ; 3e6c8
 	ld b, a
 	hlcoord 2, 10
 	predef PrintMoveType
-
+	
+	hlcoord 1, 8
+	ld de, .Accuracy
+	call PlaceString
+	ld a, [wPlayerMoveStructAccuracy]
+	cp 2
+	jr nc, .printAcc
+	hlcoord 8, 8
+	ld de, .None
+	call PlaceString
+	jr .power
+.printAcc
+; acc*100/255
+	ld [hMultiplicand + 2], a
+	xor a
+	ld [hMultiplicand], a
+	ld [hMultiplicand + 1], a
+	ld a, 100
+	ld [hMultiplier], a
+	call Multiply
+	ld a, 255
+	ld [hDivisor], a
+	ld b, 4
+	call Divide
+; increase displayed number by 1 if remainder is >=128
+	ld a, [hRemainder]
+	cp $80
+	jr c, .noIncrease
+	ld hl, hQuotient + 2
+	inc [hl]
+.noIncrease
+	ld de, hQuotient + 2
+	lb bc, 1, 3
+	hlcoord 7, 8
+	call PrintNum
+.power
+	hlcoord 1, 7
+	ld de, .Power
+	call PlaceString
+	ld a, [wPlayerMoveStructPower]
+	cp 2
+	jr nc, .printPower
+	hlcoord 8, 7
+	ld de, .None
+	call PlaceString
+	jr .done
+.printPower
+	ld de, wPlayerMoveStructPower
+	lb bc, 1, 3
+	hlcoord 7, 7
+	call PrintNum
 .done
 	ret
 ; 3e74f
@@ -6022,6 +6072,12 @@ MoveInfoBox: ; 3e6c8
 	db "Disabled!@"
 .Type
 	db "TYPE/@"
+.Accuracy
+	db "ACC/ @"
+.Power
+	db "POW/ @"
+.None
+	db "--@"
 ; 3e75f
 
 
