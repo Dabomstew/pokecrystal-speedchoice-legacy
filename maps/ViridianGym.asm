@@ -27,6 +27,8 @@ BlueScript_0x9aa26:
 	playsound SFX_GET_BADGE
 	waitsfx
 	setflag ENGINE_EARTHBADGE
+	checkcode VAR_BADGES
+	scall ViridianGymTriggerRockets
 	writetext LeaderBlueAfterText
 	waitbutton
 	closetext
@@ -37,6 +39,17 @@ BlueScript_0x9aa26:
 	waitbutton
 	closetext
 	end
+
+ViridianGymTriggerRockets:
+	if_equal 7, .RadioTowerRockets
+	if_equal 6, .GoldenrodRockets
+	end
+
+.GoldenrodRockets
+	jumpstd goldenrodrockets
+
+.RadioTowerRockets
+	jumpstd radiotowerrockets
 
 ViridianGymGuyScript:
 	faceplayer

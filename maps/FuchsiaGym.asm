@@ -41,6 +41,8 @@ JanineScript_0x195db9:
 	playsound SFX_GET_BADGE
 	waitsfx
 	setflag ENGINE_SOULBADGE
+	checkcode VAR_BADGES
+	scall FuchsiaGymTriggerRockets
 	jump UnknownScript_0x195e02
 .FightDone
 	faceplayer
@@ -58,6 +60,17 @@ UnknownScript_0x195e15:
 	waitbutton
 	closetext
 	end
+
+FuchsiaGymTriggerRockets:
+	if_equal 7, .RadioTowerRockets
+	if_equal 6, .GoldenrodRockets
+	end
+
+.GoldenrodRockets
+	jumpstd goldenrodrockets
+
+.RadioTowerRockets
+	jumpstd radiotowerrockets
 
 FuschiaGym1Script_0x195e1b:
 	checkevent EVENT_BEAT_LASS_ALICE
