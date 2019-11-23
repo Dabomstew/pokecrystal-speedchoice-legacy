@@ -1,5 +1,5 @@
 VersionNumberText::
-    db "v5.3@"
+    db "v6.0@"
 
 IntroPermaOptions::
 	xor a
