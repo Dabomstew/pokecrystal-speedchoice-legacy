@@ -178,7 +178,7 @@ def main():
 
     for poke in STATIC_POKES:
         offs = [value + 1 for key, value in syms.items()
-                if key.startswith('Randomizer_{}'.format(poke))]
+                if (key.startswith('Randomizer_{}'.format(poke)) and '.' not in key)]
         if len(offs) == 1:
             setconfig('StaticPokemon[]', '0x{:X}'.format(offs[0]))
         else:
