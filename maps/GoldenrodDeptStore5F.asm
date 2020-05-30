@@ -33,13 +33,28 @@ ClerkScript_0x5609c:
 	checkevent EVENT_GOT_TM02_HEADBUTT
 	iftrue .headbutt
 	checkevent EVENT_GOT_TM08_ROCK_SMASH
-	iftrue .onlyrocksmash
+	iftrue .rocksmash
+	check_permaoptions BETTER_MARTS
+	iffalse .neither
+	checkevent EVENT_GOT_TM12_SWEET_SCENT
+	iftrue .onlysweetscent
 	jump .neither
 
 .headbutt:
 	checkevent EVENT_GOT_TM08_ROCK_SMASH
-	iftrue .both
+	iftrue .headbuttandrocksmash
+	check_permaoptions BETTER_MARTS
+	iffalse .onlyheadbutt
+	checkevent EVENT_GOT_TM12_SWEET_SCENT
+	iftrue .headbuttandsweetscent
 	jump .onlyheadbutt
+
+.rocksmash
+	check_permaoptions BETTER_MARTS
+	iffalse .onlyrocksmash
+	checkevent EVENT_GOT_TM12_SWEET_SCENT
+	iftrue .rocksmashandsweetscent
+	jump .onlyrocksmash
 
 .neither:
 	pokemart MARTTYPE_STANDARD, MART_GOLDENROD_5F_1
@@ -56,8 +71,37 @@ ClerkScript_0x5609c:
 	closetext
 	end
 
-.both:
+.onlysweetscent:
+	pokemart MARTTYPE_STANDARD, MART_GOLDENROD_5F_5_BETTER
+	closetext
+	end
+
+.headbuttandrocksmash:
+	check_permaoptions BETTER_MARTS
+	iftrue .checkall
 	pokemart MARTTYPE_STANDARD, MART_GOLDENROD_5F_4
+	closetext
+	end
+
+.headbuttandsweetscent
+	pokemart MARTTYPE_STANDARD, MART_GOLDENROD_5F_6_BETTER
+	closetext
+	end
+
+.rocksmashandsweetscent:
+	pokemart MARTTYPE_STANDARD, MART_GOLDENROD_5F_7_BETTER
+	closetext
+	end
+
+.checkall
+	checkevent EVENT_GOT_TM12_SWEET_SCENT
+	iftrue .all
+	pokemart MARTTYPE_STANDARD, MART_GOLDENROD_5F_4
+	closetext
+	end
+
+.all
+	pokemart MARTTYPE_STANDARD, MART_GOLDENROD_5F_8_BETTER
 	closetext
 	end
 

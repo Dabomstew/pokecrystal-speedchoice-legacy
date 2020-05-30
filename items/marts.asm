@@ -37,6 +37,10 @@ Marts: ; 160a9
 	dw MartVioletBetter
 	dw MartAzaleaBetter
 	dw MartGoldenrod4FBetter
+	dw MartGoldenrod5FBetter1
+	dw MartGoldenrod5FBetter2
+	dw MartGoldenrod5FBetter3
+	dw MartGoldenrod5FBetter4
 MartsEnd
 ; 160ed
 
@@ -493,6 +497,46 @@ MartGoldenrod4FBetter: ; 16134
 	db CALCIUM
 	db HP_UP
 	db $ff
+
+MartGoldenrod5FBetter1: ; 1614c
+	db 4 ; # items
+	db TM_THUNDERPUNCH
+	db TM_FIRE_PUNCH
+	db TM_ICE_PUNCH
+	db TM_SWEET_SCENT
+	db $ff
+; 16153
+
+MartGoldenrod5FBetter2: ; 1614c
+	db 5 ; # items
+	db TM_THUNDERPUNCH
+	db TM_FIRE_PUNCH
+	db TM_ICE_PUNCH
+	db TM_HEADBUTT
+	db TM_SWEET_SCENT
+	db $ff
+; 16153
+
+MartGoldenrod5FBetter3: ; 1614c
+	db 5 ; # items
+	db TM_THUNDERPUNCH
+	db TM_FIRE_PUNCH
+	db TM_ICE_PUNCH
+	db TM_ROCK_SMASH
+	db TM_SWEET_SCENT
+	db $ff
+; 16153
+
+MartGoldenrod5FBetter4: ; 1614c
+	db 6 ; # items
+	db TM_THUNDERPUNCH
+	db TM_FIRE_PUNCH
+	db TM_ICE_PUNCH
+	db TM_HEADBUTT
+	db TM_ROCK_SMASH
+	db TM_SWEET_SCENT
+	db $ff
+; 16153
 
 DefaultMart: ; 16214
 	db 2 ; # items
