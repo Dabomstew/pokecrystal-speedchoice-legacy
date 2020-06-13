@@ -480,9 +480,7 @@ Route27_MapEventHeader:
 	warp_def $5, $24, 2, TOHJO_FALLS
 
 .XYTriggers:
-	db 2
-	xy_trigger 0, $a, $12, $0, UnknownScript_0x1a0873, $0, $0
-	xy_trigger 0, $a, $13, $0, UnknownScript_0x1a0881, $0, $0
+	db 0
 
 .Signposts:
 	db 1
