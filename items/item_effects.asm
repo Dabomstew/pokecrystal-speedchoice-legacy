@@ -282,7 +282,7 @@ endr
 	jp z, .skip_hp_calc
 
 	ld a, b
-	ld [hMultiplicand + 2], a
+	ld [hMultiplier], a
 
 	ld hl, EnemyMonHP
 	ld b, [hl]
@@ -319,58 +319,46 @@ endr
 	ld l, c
 	add hl, bc
 	add hl, bc ; hl = MaxHP*3
-	
-	ld a, d
-	cp h
-	jr c, .divisorCheck
-	jr nz, .capValue
-	
+
 	ld a, e
 	cp l
-	jr c, .divisorCheck
-	jr z, .divisorCheck
+	ld a, d
+	sbc h
+	jr c, .doMultiply
+	jr z, .doMultiply
 	
 .capValue
 	ld d, h
 	ld e, l
 	
-.divisorCheck
-	; Divide hl and de by 2 until hl fits in a single byte
-	ld a, h
-	and a
-	jr z, .multiplyCatchRate
-
-	srl h
-	rr l
-	srl d
-	rr e
-
-	jr .divisorCheck
-
-.multiplyCatchRate
-	ld a, [$ffb6]
-	ld [hMultiplier], a
+.doMultiply
 	ld a, d
-	ld [$ffb5], a
+	ld [hMultiplicand + 1], a
 	ld a, e
-	ld [$ffb6], a
+	ld [hMultiplicand + 2], a
 	xor a
 	ld [hProduct], a
 	ld [hMultiplicand], a
 	push hl
 	call Multiply
 	pop hl
-	
-.realDivide
+
+	ld a, h
+	ld [hLongDivisor], a
 	ld a, l
-	ld [hMultiplier], a
-	ld b, $4
-	call Divide
-; modifications done
-	ld a, [hQuotient + 2]
+	ld [hLongDivisor + 1], a
+	callba DivideLong
+	ld a, [hLongQuotient + 2]
+	and a
+	jr nz, .capAfterMulDiv
+	ld a, [hLongQuotient + 3]
 	and a
 	jr nz, .statuscheck
 	ld a, 1
+	jr .statuscheck
+
+.capAfterMulDiv
+	ld a, 255
 .statuscheck
 ; fixed
 	ld b, a

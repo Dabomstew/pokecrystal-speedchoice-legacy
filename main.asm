@@ -11645,3 +11645,5 @@ INCLUDE "engine/stat_tracking.asm"
 SECTION "statsdisplay", ROMX
 INCLUDE "engine/playthrough_stats_screen.asm"
 
+SECTION "math16", ROMX
+INCLUDE "engine/math16.asm"
