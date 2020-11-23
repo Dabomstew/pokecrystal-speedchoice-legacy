@@ -9,11 +9,11 @@ If you run into trouble, ask on irc ([**freenode#pret**](https://kiwiirc.com/cli
 Python 2.7 and Python 3 are required.
 
 ```bash
-sudo apt-get install make gcc bison git python python3
+sudo apt-get install make gcc bison git python python3 libpng-dev flex
 
-wget https://github.com/rednex/rgbds/releases/download/v0.3.9/rgbds-0.3.9.tar.gz
-tar -xvf rgbds-0.3.9.tar.gz
-cd rgbds-0.3.9
+wget https://github.com/gbdev/rgbds/releases/download/v0.4.1/rgbds-0.4.1.tar.gz
+tar -xvf rgbds-0.4.1.tar.gz
+cd rgbds
 sudo make install
 cd ..
 
