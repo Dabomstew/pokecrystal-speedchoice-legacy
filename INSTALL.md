@@ -17,7 +17,7 @@ cd rgbds
 sudo make install
 cd ..
 
-git clone --recursive https://github.com/dabomstew/pokecrystal-speedchoice
+git clone --recursive https://github.com/dabomstew/pokecrystal-speedchoice-legacy
 cd pokecrystal-speedchoice
 ```
 
@@ -41,7 +41,7 @@ cd rgbds-0.3.9
 sudo make install
 cd ..
 
-git clone --recursive https://github.com/dabomstew/pokecrystal-speedchoice
+git clone --recursive https://github.com/dabomstew/pokecrystal-speedchoice-legacy
 cd pokecrystal-speedchoice
 ```
 
@@ -65,7 +65,7 @@ In the **Cygwin terminal**:
 
 ```bash
 
-git clone --recursive https://github.com/dabomstew/pokecrystal-speedchoice
+git clone --recursive https://github.com/dabomstew/pokecrystal-speedchoice-legacy
 cd pokecrystal-speedchoice
 ```
 
